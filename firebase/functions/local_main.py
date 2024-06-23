@@ -1,4 +1,5 @@
 import os
+from storage_repository import upload_image_to_storage
 from generate_summarized_image import generate_image
 from summarize import summarize_text
 import json
@@ -7,7 +8,11 @@ def main():
     print("Hello, World!")
     # text = local_summarize_text()
     # print(text)
-    local_gen_summarized_image()
+    file_path = local_gen_summarized_image()
+    # 例として、generate_imageから生成された画像をアップロードする
+    image_url = upload_image_to_storage(file_path)
+
+    print(f"Uploaded image URL: {image_url}")
 
 def local_summarize_text():
     url = "https://zenn.dev/miyasic/articles/lgtm-shellscript"
@@ -29,8 +34,7 @@ def local_gen_summarized_image():
     summary1 = data["summary1"]
     summary2 = data["summary2"]
     summary3 = data["summary3"]
-    generate_image(title, summary1, summary2, summary3)
-    return None
+    return generate_image(title, summary1, summary2, summary3)
 
 
 if __name__ == '__main__':
