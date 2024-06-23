@@ -6,7 +6,7 @@ import json
 
 def summarize_text(url, api_key):
     content = fetch_article_content(url)
-    response_text = request_gemini("次の内容を50文字×3の箇条書きで読者が興味を持つように要約してください。title,summary1~3をkeyとしたjsonで返してください。" + content, api_key)
+    response_text = request_gemini("次の内容を30文字×3の箇条書きで読者が興味を持つように要約してください。title,summary1~3をkeyとしたjsonで返してください。" + content, api_key)
     extracted_data = extract_json_from_markdown(response_text)
     print(extracted_data['title'])
     print(extracted_data['summary1'])

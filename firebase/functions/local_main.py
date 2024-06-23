@@ -5,6 +5,8 @@ import json
 
 def main():
     print("Hello, World!")
+    # text = local_summarize_text()
+    # print(text)
     local_gen_summarized_image()
 
 def local_summarize_text():
@@ -16,10 +18,10 @@ def local_summarize_text():
 def local_gen_summarized_image():
     input = '''
 {
-  "title": "Raycastで猫ちゃんLGTM画像を爆速でペースト！",
-  "summary1": "LGTMeowのAPIを使って、Raycastから猫ちゃんLGTM画像を簡単に取得＆ペースト！",
-  "summary2": "シェルスクリプトで画像URLをコピーし、Raycastに登録すれば、タブ切り替え不要で爆速ペースト！",
-  "summary3": "LGTMeow開発者も快諾！ぜひ試して、プルリクを猫ちゃんで彩りましょう！"
+  "title": "RaycastでLGTM画像を爆速ゲット！",
+  "summary1": "LGTM画像を自動で取得し、クリップボードにコピー",
+  "summary2": "LGTMeow APIを利用したシェルスクリプトを作成",
+  "summary3": "Raycastから簡単に呼び出して、画像をペースト"
 }
 '''
     data = json.loads(input)
