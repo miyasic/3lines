@@ -1,12 +1,8 @@
-import firebase_admin
-from firebase_admin import credentials, storage
+
+from firebase_admin import storage
 import uuid
 
-# Firebase Admin SDKの初期化
-cred = credentials.Certificate("../serviceAccountKey.json")
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'lines-31c04.appspot.com'
-})
+
 
 def upload_image_to_storage(file_path):
     # Storageバケットを取得

@@ -3,6 +3,14 @@ from storage_repository import upload_image_to_storage
 from generate_summarized_image import generate_image
 from summarize import summarize_text
 import json
+import firebase_admin
+from firebase_admin import credentials
+
+# Firebase Admin SDKの初期化
+cred = credentials.Certificate("../serviceAccountKey.json")
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'lines-31c04.appspot.com'
+})
 
 def main():
     print("Hello, World!")
