@@ -15,9 +15,9 @@ def on_request_example(req: https_fn.Request) -> https_fn.Response:
 def on_request_example2(req: https_fn.Request) -> https_fn.Response:
     return https_fn.Response("Hello world2!")
 
-@https_fn.on_request(secrets=[API_KEY])
+@https_fn.on_call(secrets=[API_KEY])
 def summarize(req: https_fn.Request) -> https_fn.Response:
-    url = req.json['url']
+    url = req.data['url']
     api_key = API_KEY.value
     content = summarize_text(url,api_key)
     return content
