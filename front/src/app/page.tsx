@@ -18,6 +18,7 @@ interface Article {
 
 const Home = () => {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [url, setUrl] = useState<string>('');
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -39,8 +40,33 @@ const Home = () => {
     fetchArticles();
   }, []);
 
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!url) return;
+
+    // ここでFirebase Functionsなどを使って記事のデータを生成して保存する処理を実装する
+    // 例: functions.saveArticle(url);
+
+    console.log('URL submitted:', url);
+    setUrl(''); // 入力欄をクリア
+  };
+
   return (
     <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <input 
+          type="text" 
+          value={url} 
+          onChange={handleUrlChange} 
+          placeholder="記事のURLを入力してください" 
+          className={styles.input}
+        />
+        <button type="submit" className={styles.button}>登録</button>
+      </form>
       <div className={styles.grid}>
         {articles.map(article => (
           <div key={article.id} className={styles.article}>
