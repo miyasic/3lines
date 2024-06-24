@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { firestore } from './firebase/firebase';
+import styles from './page.module.css';
 
 interface Article {
   id: string;
+  userId: string;
+  articleUrl: string;
+  imageUrl: string;
+  domain: string;
   title: string;
+  summary: string[];
+  language: string;
 }
 
 const Home = () => {
@@ -32,15 +40,16 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Generated Summaries</h1>
-      <ul>
+    <div className={styles.container}>
+      <div className={styles.grid}>
         {articles.map(article => (
-          <li key={article.id}>
-            <h1>{article.title}</h1>
-          </li>
+          <div key={article.id} className={styles.article}>
+            <Link href={`/article/${article.id}`}>
+              <img src={article.imageUrl} alt={article.title} className={styles.image} />
+            </Link>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

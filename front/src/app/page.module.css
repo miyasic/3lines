@@ -1,0 +1,25 @@
+.container {
+    margin: 96px;
+    /* 外側の余白 */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.article {
+    text-align: center;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
