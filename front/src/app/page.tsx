@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
-import { set } from 'firebase/database';
 
 interface Article {
   id: string;
@@ -62,10 +61,20 @@ const Home = () => {
     try {
       const result = await summarizeFunction({ url });
 
-      const data: SummaryResponse = await result.data;
-      console.log(data);
+      console.log('Function result:', result); // summarizeFunctionの結果をログに表示
 
-      setSummary(data);
+      const data = result.data as SummaryResponse;
+      console.log('Parsed data:', data); // パースされたデータをログに表示
+
+      setSummary({
+        title: data.title,
+        summary1: data.summary1,
+        summary2: data.summary2,
+        summary3: data.summary3
+      });
+
+      console.log('Updated summary:', summary);
+
       setUrl('');
 
     } catch (error) {
@@ -74,6 +83,10 @@ const Home = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log('Updated summary:', summary); // summaryの変更を追跡してログに表示
+  }, [summary]);
 
   return (
     <div className={styles.container}>
