@@ -13,8 +13,10 @@ const firebaseConfig = {
     measurementId: "G-R3KEXWL32W"
 };
 
+
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
+    firebase.functions().useEmulator("localhost", 5001);
 }
 
 const firestore = firebase.firestore();

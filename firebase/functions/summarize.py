@@ -3,18 +3,14 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 import re
 import json
+from firebase_functions import https_fn
 
 def summarize_text(url, api_key):
     content = fetch_article_content(url)
     response_text = request_gemini("次の内容を30文字×3の箇条書きで読者が興味を持つように要約してください。title,summary1~3をkeyとしたjsonで返してください。" + content, api_key)
     extracted_data = extract_json_from_markdown(response_text)
-    print(extracted_data['title'])
-    print(extracted_data['summary1'])
-    print(extracted_data['summary2'])
-    print(extracted_data['summary3'])
+    return extracted_data
 
-    json_data = json.dumps(extracted_data, ensure_ascii=False, indent=2)
-    return json_data
 
 
 def fetch_article_content(url):
