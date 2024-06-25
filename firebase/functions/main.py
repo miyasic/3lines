@@ -21,3 +21,14 @@ def summarize(req: https_fn.Request) -> https_fn.Response:
     api_key = API_KEY.value
     content = summarize_text(url,api_key)
     return content
+
+@https_fn.on_call()
+def mock_summarize(req: https_fn.Request) -> https_fn.Response:
+    url = req.data['url']
+    content = dict(
+        title="title",
+        summary1="summary1",
+        summary2="summary2",
+        summary3="summary3"
+    )
+    return content
