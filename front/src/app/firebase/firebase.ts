@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
@@ -17,11 +18,23 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     // emulatorを使うときはコメントアウトを外す
-    // firebase.functions().useEmulator("localhost", 5001);
+    firebase.functions().useEmulator("localhost", 5001);
+    firebase.firestore().useEmulator("localhost", 8080);
+    firebase.auth().useEmulator("http://localhost:9099");
 }
 
 const firestore = firebase.firestore();
 const functions = firebase.functions();
+const auth = firebase.auth();
 
-export { firestore, functions };
+signInAnonymously(auth)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('User ID:', user.uid);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+export { firestore, functions, auth };
 export default firebase;

@@ -23,6 +23,14 @@ interface SummaryResponse {
   summary3: string;
 }
 
+interface SaveSummaryRequest {
+  articleUrl: string;
+  imageUrl: string;
+  title: string;
+  summary: string[];
+  language: string;
+}
+
 const Home = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [url, setUrl] = useState<string>('');
@@ -56,7 +64,7 @@ const Home = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    const summarizeFunction = functions.httpsCallable('summarize');
+    const summarizeFunction = functions.httpsCallable('mock_summarize');
 
     try {
       const result = await summarizeFunction({ url });
@@ -87,6 +95,29 @@ const Home = () => {
   useEffect(() => {
     console.log('Updated summary:', summary); // summaryの変更を追跡してログに表示
   }, [summary]);
+  const saveSummary = async (articleData: SaveSummaryRequest) => {
+    const saveArticleFunction = functions.httpsCallable('save_summary');
+    try {
+      const result = await saveArticleFunction(articleData);
+      console.log('Article saved:', result.data);
+    } catch (error) {
+      console.error('Error saving article:', error);
+    }
+  };
+
+  const handleSaveSummary = async () => {
+    if (!summary) {
+      return;
+    }
+    const requestData: SaveSummaryRequest = {
+      articleUrl: url,
+      imageUrl: 'https://example.com/image.jpg',
+      title: summary.title,
+      language: 'ja',
+      summary: [summary.summary1, summary.summary2, summary.summary3],
+    }
+    await saveSummary(requestData);
+  }
 
   return (
     <div className={styles.container}>
@@ -103,12 +134,16 @@ const Home = () => {
         </button>
       </form>
 
+
       {summary && (
         <div className={styles.summary}>
           <h2>{summary.title}</h2>
           <p>{summary.summary1}</p>
           <p>{summary.summary2}</p>
           <p>{summary.summary3}</p>
+          <button onClick={handleSaveSummary} className={styles.saveButton}>
+            記事を保存
+          </button>
         </div>
       )}
 
