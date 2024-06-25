@@ -2,6 +2,7 @@
 from firebase_admin import storage
 import uuid
 
+
 def upload_image_to_storage(file_path):
     # Storageバケットを取得
     bucket = storage.bucket()

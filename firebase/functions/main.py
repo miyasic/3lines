@@ -1,13 +1,19 @@
 from firebase_functions import https_fn
-from firebase_admin import initialize_app,firestore
+from firebase_admin import initialize_app,firestore, storage
+from storage_repository import upload_image_to_storage
 from firestore_repository import save_article_data
 from summarize import summarize_text
 from firebase_functions.params import SecretParam
+from generate_summarized_image import generate_image
+import os
 
 initialize_app()
 
 API_KEY = SecretParam('API_KEY')
 firestore.client()._firestore_api._target = 'localhost:8080'
+# Storageエミュレータの設定
+os.environ['FIREBASE_STORAGE_EMULATOR_HOST'] = 'localhost:9199'
+
 
 @https_fn.on_request()
 def on_request_example(req: https_fn.Request) -> https_fn.Response:
@@ -37,17 +43,23 @@ def mock_summarize(req: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_call()
 def save_summary(req: https_fn.Request) -> https_fn.Response:
+    file_path = generate_image(
+        req.data['title'],
+        req.data['summary'][0],
+        req.data['summary'][1],
+        req.data['summary'][2],
+    )
+    image_url = upload_image_to_storage(file_path)
     db = firestore.client()
 
-    # uid = req.auth.uid
-    uid = "exampleUserId"
+    uid = req.auth.uid
     print(uid)
 
     save_article_data(
         db,
         uid,
         req.data['articleUrl'],
-        req.data['imageUrl'],
+        image_url,
         req.data['title'],
         req.data['summary'],
         req.data['language'],)
