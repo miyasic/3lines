@@ -1,4 +1,6 @@
 firebase_functions~=0.1.0
+firebase-admin
 requests
 beautifulsoup4
 google-generativeai
+pillow
