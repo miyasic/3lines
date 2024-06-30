@@ -25,7 +25,6 @@ interface SummaryResponse {
 
 interface SaveSummaryRequest {
   articleUrl: string;
-  imageUrl: string;
   title: string;
   summary: string[];
   language: string;
@@ -34,6 +33,7 @@ interface SaveSummaryRequest {
 const Home = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [url, setUrl] = useState<string>('');
+  const [summarizedArticleUrl, setSummarizedArticleUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [summary, setSummary] = useState<SummaryResponse | null>(null);
 
@@ -83,7 +83,9 @@ const Home = () => {
 
       console.log('Updated summary:', summary);
 
+      setSummarizedArticleUrl(url);
       setUrl('');
+
 
     } catch (error) {
       console.error("Error summarizing article:", error);
@@ -110,13 +112,18 @@ const Home = () => {
       return;
     }
     const requestData: SaveSummaryRequest = {
-      articleUrl: url,
-      imageUrl: 'https://example.com/image.jpg',
+      articleUrl: summarizedArticleUrl,
       title: summary.title,
       language: 'ja',
       summary: [summary.summary1, summary.summary2, summary.summary3],
     }
     await saveSummary(requestData);
+    clearAll();
+  }
+
+  const clearAll = () => {
+    setSummary(null);
+    setSummarizedArticleUrl('');
   }
 
   return (
@@ -141,6 +148,7 @@ const Home = () => {
           <p>{summary.summary1}</p>
           <p>{summary.summary2}</p>
           <p>{summary.summary3}</p>
+          <p>元の記事: {summarizedArticleUrl}</p>
           <button onClick={handleSaveSummary} className={styles.saveButton}>
             記事を保存
           </button>
