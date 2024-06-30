@@ -23,8 +23,9 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setState(topPageStateCopyWith(state, { fetchSummariesLoading: true }));
     const fetchSummaries = async () => {
+      setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
+
       try {
         const snapshot = await firestore.collection('summary').get();
         const summariesData = snapshot.docs.map(doc => ({
@@ -32,11 +33,12 @@ const Home = () => {
           ...doc.data()
         })) as Summary[];
 
-        console.log(`Fetched ${summariesData.length} summaries`); // 取得した記事の件数をログに表示
+        console.log(`Fetched ${summariesData.length} summaries`);
 
-        setState(topPageStateCopyWith(state, { summaries: summariesData, fetchSummariesLoading: false }));
+        setState(prevState => topPageStateCopyWith(prevState, { summaries: summariesData, fetchSummariesLoading: false }));
       } catch (error) {
-        console.error("Error fetching summaries:", error); // エラーログを表示
+        console.error("Error fetching summaries:", error);
+        setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: false }));
       }
     };
 
@@ -44,36 +46,36 @@ const Home = () => {
   }, []);
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState(topPageStateCopyWith(state, { url: event.target.value }));
+    setState(prevState => topPageStateCopyWith(prevState, { url: event.target.value }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setState(topPageStateCopyWith(state, { summarizeLoading: true }));
+    setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: true }));
+
     const summarizeFunction = functions.httpsCallable('mock_summarize');
 
     try {
       const url = state.url;
-      const result = await summarizeFunction({ url }); // summarizeFunctionを呼び出す
+      const result = await summarizeFunction({ url });
 
-      console.log('Function result:', result); // summarizeFunctionの結果をログに表示
+      console.log('Function result:', result);
 
       const data = result.data as SummaryResponse;
-      setState(topPageStateCopyWith(state, {
+      setState(prevState => topPageStateCopyWith(prevState, {
+        url: '',
+        summarizedArticleUrl: url,
         summary: {
           title: data.title,
           summary1: data.summary1,
           summary2: data.summary2,
           summary3: data.summary3
-        }
+        },
+        summarizeLoading: false
       }));
-      setState(topPageStateCopyWith(state, { url: '', summarizedArticleUrl: state.url }));
-
-
     } catch (error) {
       console.error("Error summarizing article:", error);
-    } finally {
-      setState(topPageStateCopyWith(state, { summarizeLoading: false }));
+      setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: false }));
     }
   };
 
@@ -97,12 +99,12 @@ const Home = () => {
       title: state.summary.title,
       language: 'ja',
       summary: [state.summary.summary1, state.summary.summary2, state.summary.summary3],
-    }
+    };
     const summaryId = await saveSummary(requestData);
     if (summaryId) {
-      router.push(`/summary/${summaryId}`); // summaryIdを使用して詳細ページに遷移
+      router.push(`/summary/${summaryId}`);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -119,7 +121,6 @@ const Home = () => {
         </button>
       </form>
 
-
       {state.summary && (
         <div className={styles.summary}>
           <h2>{state.summary.title}</h2>
@@ -134,21 +135,22 @@ const Home = () => {
       )}
 
       <div className={styles.grid}>
-        {state.fetchSummariesLoading ?
-          (
-            Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className={styles.skeleton}>
-                <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
-              </div>
-            ))
-          ) :
+        {state.fetchSummariesLoading ? (
+          Array.from({ length: 12 }).map((_, index) => (
+            <div key={index} className={styles.skeleton}>
+              <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
+              <div className={styles.shimmer}></div>
+            </div>
+          ))
+        ) : (
           state.summaries.map(summary => (
             <div key={summary.id} className={styles.article}>
               <Link href={`/summary/${summary.id}`}>
                 <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
               </Link>
             </div>
-          ))}
+          ))
+        )}
       </div>
     </div>
   );
