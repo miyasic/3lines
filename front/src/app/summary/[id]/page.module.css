@@ -1,0 +1,31 @@
+.summaryContainer {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.summaryTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.summaryImage {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.openButton {
+    padding: 10px 20px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.openButton:hover {
+    background-color: #005bb5;
+}

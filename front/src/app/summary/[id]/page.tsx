@@ -4,11 +4,17 @@ import { useEffect, useState } from 'react';
 import { firestore } from '../../firebase/firebase';
 import React from 'react';
 import { useParams } from 'next/navigation';
+import styles from './page.module.css';
 
 interface Summary {
     id: string;
+    userId: string;
+    articleUrl: string;
+    imageUrl: string;
+    domain: string;
     title: string;
     summary: string[];
+    language: string;
 }
 
 const SummaryDetail = () => {
@@ -18,14 +24,18 @@ const SummaryDetail = () => {
     useEffect(() => {
         if (id) {
             const fetchSummary = async () => {
-                const doc = await firestore.collection('summary').doc(id as string).get();
-                if (doc.exists) {
-                    setSummary({
-                        id: doc.id,
-                        ...doc.data()
-                    } as Summary);
-                } else {
-                    console.error("No such document!");
+                try {
+                    const doc = await firestore.collection('summary').doc(id as string).get();
+                    if (doc.exists) {
+                        setSummary({
+                            id: doc.id,
+                            ...doc.data()
+                        } as Summary);
+                    } else {
+                        console.error("No such document!");
+                    }
+                } catch (error) {
+                    console.error("Error fetching document:", error);
                 }
             };
 
@@ -34,17 +44,24 @@ const SummaryDetail = () => {
     }, [id]);
 
     if (!summary) {
-        return <div>Loading...</div>;
+        return <div className="p-5">Loading...</div>;
     }
 
     return (
-        <div className="p-5">
-            <h1 className="text-3xl font-bold mb-5">{summary.title}</h1>
+        <div className={styles.summaryContainer}>
+            <h1 className={styles.summaryTitle}>{summary.title}</h1>
+            <img src={summary.imageUrl} alt={summary.title} className={styles.summaryImage} />
             <ul className="list-disc pl-5">
                 {summary.summary.map((point, index) => (
                     <li key={index} className="mb-2">{point}</li>
                 ))}
             </ul>
+            <button
+                onClick={() => window.open(summary.articleUrl, '_blank')}
+                className={styles.openButton}
+            >
+                記事を開く
+            </button>
         </div>
     );
 };
