@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 
 
-def save_article_data(db,uid, articleUrl, imageUrl, title, summary, language):
+def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language):
     # ドメインをarticleUrlから抽出
     parsed_url = urlparse(articleUrl)
     domain = parsed_url.netloc
@@ -23,6 +23,9 @@ def save_article_data(db,uid, articleUrl, imageUrl, title, summary, language):
         "numRead": 0
     }
 
+    summaryId = str(uuid.uuid4())
     # Firestoreのコレクションにデータを追加
-    doc_ref = db.collection("article").document(str(uuid.uuid4()))
+    doc_ref = db.collection("summary").document(summaryId)
     doc_ref.set(data)
+
+    return summaryId

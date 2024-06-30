@@ -1,7 +1,7 @@
 from firebase_functions import https_fn
 from firebase_admin import initialize_app,firestore, storage,credentials
 from storage_repository import upload_image_to_storage
-from firestore_repository import save_article_data
+from firestore_repository import  save_summary_data
 from summarize import summarize_text
 from firebase_functions.params import SecretParam
 from generate_summarized_image import generate_image
@@ -56,7 +56,7 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
     uid = req.auth.uid
     print(uid)
 
-    save_article_data(
+    summaryId = save_summary_data(
         db,
         uid,
         req.data['articleUrl'],
@@ -64,4 +64,4 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
         req.data['title'],
         req.data['summary'],
         req.data['language'],)
-    return {"result": "ok"}
+    return {"summaryId": summaryId}

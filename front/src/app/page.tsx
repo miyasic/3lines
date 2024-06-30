@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
 
-interface Article {
+interface Summary {
   id: string;
   userId: string;
   articleUrl: string;
@@ -31,30 +31,30 @@ interface SaveSummaryRequest {
 }
 
 const Home = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [summaries, setSummaries] = useState<Summary[]>([]);
   const [url, setUrl] = useState<string>('');
   const [summarizedArticleUrl, setSummarizedArticleUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [summary, setSummary] = useState<SummaryResponse | null>(null);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchSummaries = async () => {
       try {
-        const snapshot = await firestore.collection('article').get();
-        const articlesData = snapshot.docs.map(doc => ({
+        const snapshot = await firestore.collection('summary').get();
+        const summariesData = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        })) as Article[];
+        })) as Summary[];
 
-        console.log(`Fetched ${articlesData.length} articles`); // 取得した記事の件数をログに表示
+        console.log(`Fetched ${summariesData.length} summaries`); // 取得した記事の件数をログに表示
 
-        setArticles(articlesData);
+        setSummaries(summariesData);
       } catch (error) {
-        console.error("Error fetching articles:", error); // エラーログを表示
+        console.error("Error fetching summaries:", error); // エラーログを表示
       }
     };
 
-    fetchArticles();
+    fetchSummaries();
   }, []);
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,13 +97,13 @@ const Home = () => {
   useEffect(() => {
     console.log('Updated summary:', summary); // summaryの変更を追跡してログに表示
   }, [summary]);
-  const saveSummary = async (articleData: SaveSummaryRequest) => {
-    const saveArticleFunction = functions.httpsCallable('save_summary');
+  const saveSummary = async (summaryData: SaveSummaryRequest) => {
+    const saveSummaryFunction = functions.httpsCallable('save_summary');
     try {
-      const result = await saveArticleFunction(articleData);
-      console.log('Article saved:', result.data);
+      const result = await saveSummaryFunction(summaryData);
+      console.log('Summary saved:', result.data);
     } catch (error) {
-      console.error('Error saving article:', error);
+      console.error('Error saving summary:', error);
     }
   };
 
@@ -156,10 +156,10 @@ const Home = () => {
       )}
 
       <div className={styles.grid}>
-        {articles.map(article => (
-          <div key={article.id} className={styles.article}>
-            <Link href={`/article/${article.id}`}>
-              <img src={article.imageUrl} alt={article.title} className={styles.image} />
+        {summaries.map(summary => (
+          <div key={summary.id} className={styles.article}>
+            <Link href={`/summary/${summary.id}`}>
+              <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
             </Link>
           </div>
         ))}
