@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
+import Header from './components/Header';
+
 
 const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
   return { ...state, ...updates };
@@ -108,11 +110,7 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <header className="header">
-        <Link href="/" className={styles.logo}>
-          今北産業
-        </Link>
-      </header>
+      <Header />
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"

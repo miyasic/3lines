@@ -18,9 +18,9 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     // emulatorを使うときはコメントアウトを外す
-    // firebase.functions().useEmulator("localhost", 5001);
-    // firebase.firestore().useEmulator("localhost", 8080);
-    // firebase.auth().useEmulator("http://localhost:9099");
+    firebase.functions().useEmulator("localhost", 5001);
+    firebase.firestore().useEmulator("localhost", 8080);
+    firebase.auth().useEmulator("http://localhost:9099");
 }
 
 const firestore = firebase.firestore();

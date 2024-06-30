@@ -5,7 +5,8 @@ import { firestore } from '../../firebase/firebase';
 import React from 'react';
 import { useParams } from 'next/navigation';
 import styles from './page.module.css';
-import Link from 'next/link';
+import Header from '../../components/Header';
+
 
 const SummaryDetail = () => {
     const [summary, setSummary] = useState<Summary | null>(null);
@@ -49,11 +50,7 @@ const SummaryDetail = () => {
 
     return (
         <div className={styles.summaryContainer}>
-            <header className="header">
-                <Link href="/" className={styles.logo}>
-                    今北産業
-                </Link>
-            </header>
+            <Header />
             <h1 className={styles.summaryTitle}>{summary.title}</h1>
             <img src={summary.imageUrl} alt={summary.title} className={styles.summaryImage} />
             <ul className="list-disc pl-5">
