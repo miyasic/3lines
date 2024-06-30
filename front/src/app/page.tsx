@@ -7,31 +7,6 @@ import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 
 
-interface Summary {
-  id: string;
-  userId: string;
-  articleUrl: string;
-  imageUrl: string;
-  domain: string;
-  title: string;
-  summary: string[];
-  language: string;
-}
-
-interface SummaryResponse {
-  title: string;
-  summary1: string;
-  summary2: string;
-  summary3: string;
-}
-
-interface SaveSummaryRequest {
-  articleUrl: string;
-  title: string;
-  summary: string[];
-  language: string;
-}
-
 const Home = () => {
   const [summaries, setSummaries] = useState<Summary[]>([]);
   const [url, setUrl] = useState<string>('');

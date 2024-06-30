@@ -6,17 +6,6 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import styles from './page.module.css';
 
-interface Summary {
-    id: string;
-    userId: string;
-    articleUrl: string;
-    imageUrl: string;
-    domain: string;
-    title: string;
-    summary: string[];
-    language: string;
-}
-
 const SummaryDetail = () => {
     const [summary, setSummary] = useState<Summary | null>(null);
     const { id } = useParams();
