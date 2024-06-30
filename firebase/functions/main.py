@@ -1,5 +1,5 @@
 from firebase_functions import https_fn
-from firebase_admin import initialize_app,firestore, storage
+from firebase_admin import initialize_app,firestore, storage,credentials
 from storage_repository import upload_image_to_storage
 from firestore_repository import save_article_data
 from summarize import summarize_text
@@ -7,7 +7,8 @@ from firebase_functions.params import SecretParam
 from generate_summarized_image import generate_image
 import os
 
-initialize_app()
+cred = credentials.Certificate('serviceAccountKey.json')
+initialize_app(cred)
 
 API_KEY = SecretParam('API_KEY')
 firestore.client()._firestore_api._target = 'localhost:8080'
