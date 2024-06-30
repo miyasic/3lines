@@ -63,6 +63,13 @@
     padding: 10px;
 }
 
+.skeleton {
+    flex: 1 0 30%;
+    max-width: 30%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
 .image {
     width: 100%;
     height: auto;

@@ -15,12 +15,15 @@ const Home = () => {
     summaries: [],
     url: '',
     summarizedArticleUrl: '',
-    loading: false,
+    fetchSummariesLoading: false,
+    summarizeLoading: false,
+    saveSummaryLoading: false,
     summary: null
   });
   const router = useRouter();
 
   useEffect(() => {
+    setState(topPageStateCopyWith(state, { fetchSummariesLoading: true }));
     const fetchSummaries = async () => {
       try {
         const snapshot = await firestore.collection('summary').get();
@@ -31,7 +34,7 @@ const Home = () => {
 
         console.log(`Fetched ${summariesData.length} summaries`); // 取得した記事の件数をログに表示
 
-        setState(topPageStateCopyWith(state, { summaries: summariesData }));
+        setState(topPageStateCopyWith(state, { summaries: summariesData, fetchSummariesLoading: false }));
       } catch (error) {
         console.error("Error fetching summaries:", error); // エラーログを表示
       }
@@ -46,7 +49,7 @@ const Home = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setState(topPageStateCopyWith(state, { loading: true }));
+    setState(topPageStateCopyWith(state, { summarizeLoading: true }));
     const summarizeFunction = functions.httpsCallable('mock_summarize');
 
     try {
@@ -70,7 +73,7 @@ const Home = () => {
     } catch (error) {
       console.error("Error summarizing article:", error);
     } finally {
-      setState(topPageStateCopyWith(state, { loading: false }));
+      setState(topPageStateCopyWith(state, { summarizeLoading: false }));
     }
   };
 
@@ -111,8 +114,8 @@ const Home = () => {
           placeholder="記事のURLを入力してください"
           className={styles.input}
         />
-        <button type="submit" className={styles.button} disabled={state.loading}>
-          {state.loading ? '要約中...' : '要約を取得'}
+        <button type="submit" className={styles.button} disabled={state.summarizeLoading}>
+          {state.summarizeLoading ? '要約中...' : '要約を取得'}
         </button>
       </form>
 
@@ -131,13 +134,21 @@ const Home = () => {
       )}
 
       <div className={styles.grid}>
-        {state.summaries.map(summary => (
-          <div key={summary.id} className={styles.article}>
-            <Link href={`/summary/${summary.id}`}>
-              <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
-            </Link>
-          </div>
-        ))}
+        {state.fetchSummariesLoading ?
+          (
+            Array.from({ length: 12 }).map((_, index) => (
+              <div key={index} className={styles.skeleton}>
+                <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
+              </div>
+            ))
+          ) :
+          state.summaries.map(summary => (
+            <div key={summary.id} className={styles.article}>
+              <Link href={`/summary/${summary.id}`}>
+                <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );
