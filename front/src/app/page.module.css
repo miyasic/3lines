@@ -1,8 +1,4 @@
-@font-face {
-    font-family: 'RocknRollOne-Regular';
-    src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
-    font-weight: 100;
-}
+
 
 .container {
     display: flex;
@@ -11,18 +7,6 @@
     height: 100vh;
     padding: 0 20px;
     box-sizing: border-box;
-}
-
-.header {
-    position: absolute;
-    font-size: 32px;
-    font-family: 'RocknRollOne-Regular';
-    top: 16;
-    left: 16;
-    width: 100%;
-    padding: 10px 20px;
-    box-sizing: border-box;
-    background-color: #fff;
 }
 
 .h2 {

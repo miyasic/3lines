@@ -108,7 +108,7 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <header className="header">
         <Link href="/" className={styles.logo}>
           今北産業
         </Link>
