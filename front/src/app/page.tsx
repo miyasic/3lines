@@ -6,13 +6,18 @@ import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 
+const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
+  return { ...state, ...updates };
+};
 
 const Home = () => {
-  const [summaries, setSummaries] = useState<Summary[]>([]);
-  const [url, setUrl] = useState<string>('');
-  const [summarizedArticleUrl, setSummarizedArticleUrl] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [summary, setSummary] = useState<SummaryResponse | null>(null);
+  const [state, setState] = useState<TopPageState>({
+    summaries: [],
+    url: '',
+    summarizedArticleUrl: '',
+    loading: false,
+    summary: null
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -26,7 +31,7 @@ const Home = () => {
 
         console.log(`Fetched ${summariesData.length} summaries`); // 取得した記事の件数をログに表示
 
-        setSummaries(summariesData);
+        setState(topPageStateCopyWith(state, { summaries: summariesData }));
       } catch (error) {
         console.error("Error fetching summaries:", error); // エラーログを表示
       }
@@ -36,45 +41,39 @@ const Home = () => {
   }, []);
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUrl(event.target.value);
+    setState(topPageStateCopyWith(state, { url: event.target.value }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
+    setState(topPageStateCopyWith(state, { loading: true }));
     const summarizeFunction = functions.httpsCallable('mock_summarize');
 
     try {
-      const result = await summarizeFunction({ url });
+      const url = state.url;
+      const result = await summarizeFunction({ url }); // summarizeFunctionを呼び出す
 
       console.log('Function result:', result); // summarizeFunctionの結果をログに表示
 
       const data = result.data as SummaryResponse;
-      console.log('Parsed data:', data); // パースされたデータをログに表示
-
-      setSummary({
-        title: data.title,
-        summary1: data.summary1,
-        summary2: data.summary2,
-        summary3: data.summary3
-      });
-
-      console.log('Updated summary:', summary);
-
-      setSummarizedArticleUrl(url);
-      setUrl('');
+      setState(topPageStateCopyWith(state, {
+        summary: {
+          title: data.title,
+          summary1: data.summary1,
+          summary2: data.summary2,
+          summary3: data.summary3
+        }
+      }));
+      setState(topPageStateCopyWith(state, { url: '', summarizedArticleUrl: state.url }));
 
 
     } catch (error) {
       console.error("Error summarizing article:", error);
     } finally {
-      setLoading(false);
+      setState(topPageStateCopyWith(state, { loading: false }));
     }
   };
 
-  useEffect(() => {
-    console.log('Updated summary:', summary); // summaryの変更を追跡してログに表示
-  }, [summary]);
   const saveSummary = async (summaryData: SaveSummaryRequest) => {
     const saveSummaryFunction = functions.httpsCallable('save_summary');
     try {
@@ -87,14 +86,14 @@ const Home = () => {
   };
 
   const handleSaveSummary = async () => {
-    if (!summary) {
+    if (!state.summary) {
       return;
     }
     const requestData: SaveSummaryRequest = {
-      articleUrl: summarizedArticleUrl,
-      title: summary.title,
+      articleUrl: state.summarizedArticleUrl,
+      title: state.summary.title,
       language: 'ja',
-      summary: [summary.summary1, summary.summary2, summary.summary3],
+      summary: [state.summary.summary1, state.summary.summary2, state.summary.summary3],
     }
     const summaryId = await saveSummary(requestData);
     if (summaryId) {
@@ -107,24 +106,24 @@ const Home = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
-          value={url}
+          value={state.url}
           onChange={handleUrlChange}
           placeholder="記事のURLを入力してください"
           className={styles.input}
         />
-        <button type="submit" className={styles.button} disabled={loading}>
-          {loading ? '要約中...' : '要約を取得'}
+        <button type="submit" className={styles.button} disabled={state.loading}>
+          {state.loading ? '要約中...' : '要約を取得'}
         </button>
       </form>
 
 
-      {summary && (
+      {state.summary && (
         <div className={styles.summary}>
-          <h2>{summary.title}</h2>
-          <p>{summary.summary1}</p>
-          <p>{summary.summary2}</p>
-          <p>{summary.summary3}</p>
-          <p>元の記事: {summarizedArticleUrl}</p>
+          <h2>{state.summary.title}</h2>
+          <p>{state.summary.summary1}</p>
+          <p>{state.summary.summary2}</p>
+          <p>{state.summary.summary3}</p>
+          <p>元の記事: {state.summarizedArticleUrl}</p>
           <button onClick={handleSaveSummary} className={styles.saveButton}>
             記事を保存
           </button>
@@ -132,7 +131,7 @@ const Home = () => {
       )}
 
       <div className={styles.grid}>
-        {summaries.map(summary => (
+        {state.summaries.map(summary => (
           <div key={summary.id} className={styles.article}>
             <Link href={`/summary/${summary.id}`}>
               <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
