@@ -43,6 +43,16 @@ const SummaryDetail = () => {
         }
     }, [id]);
 
+    useEffect(() => {
+        if (summary) {
+            const timer = setTimeout(() => {
+                window.open(summary.articleUrl, '_blank');
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [summary]);
+
     if (!summary) {
         return <div className="p-5">Loading...</div>;
     }
@@ -56,6 +66,7 @@ const SummaryDetail = () => {
                     <li key={index} className="mb-2">{point}</li>
                 ))}
             </ul>
+            <p className={styles.countdown}>3秒後に記事を開きます...</p>
             <button
                 onClick={() => window.open(summary.articleUrl, '_blank')}
                 className={styles.openButton}
