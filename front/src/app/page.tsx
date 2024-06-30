@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
+import { useRouter } from 'next/navigation';
+
 
 interface Summary {
   id: string;
@@ -36,6 +38,7 @@ const Home = () => {
   const [summarizedArticleUrl, setSummarizedArticleUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [summary, setSummary] = useState<SummaryResponse | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchSummaries = async () => {
@@ -102,6 +105,7 @@ const Home = () => {
     try {
       const result = await saveSummaryFunction(summaryData);
       console.log('Summary saved:', result.data);
+      return result.data.summaryId;
     } catch (error) {
       console.error('Error saving summary:', error);
     }
@@ -117,13 +121,10 @@ const Home = () => {
       language: 'ja',
       summary: [summary.summary1, summary.summary2, summary.summary3],
     }
-    await saveSummary(requestData);
-    clearAll();
-  }
-
-  const clearAll = () => {
-    setSummary(null);
-    setSummarizedArticleUrl('');
+    const summaryId = await saveSummary(requestData);
+    if (summaryId) {
+      router.push(`/summary/${summaryId}`); // summaryIdを使用して詳細ページに遷移
+    }
   }
 
   return (
