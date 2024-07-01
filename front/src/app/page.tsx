@@ -21,7 +21,8 @@ const Home = () => {
     fetchSummariesLoading: false,
     summarizeLoading: false,
     saveSummaryLoading: false,
-    summary: null
+    summary: null,
+    editedSummary: null,
   });
   const router = useRouter();
 
@@ -74,6 +75,12 @@ const Home = () => {
           summary2: data.summary2,
           summary3: data.summary3
         },
+        editedSummary: {
+          title: data.title,
+          summary1: data.summary1,
+          summary2: data.summary2,
+          summary3: data.summary3
+        },
         summarizeLoading: false
       }));
     } catch (error) {
@@ -94,14 +101,14 @@ const Home = () => {
   };
 
   const handleSaveSummary = async () => {
-    if (!state.summary) {
+    if (!state.editedSummary) {
       return;
     }
     const requestData: SaveSummaryRequest = {
       articleUrl: state.summarizedArticleUrl,
-      title: state.summary.title,
+      title: state.editedSummary.title,
       language: 'ja',
-      summary: [state.summary.summary1, state.summary.summary2, state.summary.summary3],
+      summary: [state.editedSummary.summary1, state.editedSummary.summary2, state.editedSummary.summary3],
     };
     const summaryId = await saveSummary(requestData);
     if (summaryId) {
@@ -134,6 +141,38 @@ const Home = () => {
             summary1={state.summary.summary1}
             summary2={state.summary.summary2}
             summary3={state.summary.summary3}
+            setTitle={title => setState(prevState => topPageStateCopyWith(prevState, {
+              editedSummary: {
+                title: title,
+                summary1: state.editedSummary?.summary1 || '',
+                summary2: state.editedSummary?.summary2 || '',
+                summary3: state.editedSummary?.summary3 || '',
+              },
+            }))}
+            setSummary1={summary1 => setState(prevState => topPageStateCopyWith(prevState, {
+              editedSummary: {
+                title: state.editedSummary?.title || '',
+                summary1: summary1,
+                summary2: state.editedSummary?.summary2 || '',
+                summary3: state.editedSummary?.summary3 || '',
+              },
+            }))}
+            setSummary2={summary2 => setState(prevState => topPageStateCopyWith(prevState, {
+              editedSummary: {
+                title: state.editedSummary?.title || '',
+                summary1: state.editedSummary?.summary1 || '',
+                summary2: summary2,
+                summary3: state.editedSummary?.summary3 || '',
+              },
+            }))}
+            setSummary3={summary3 => setState(prevState => topPageStateCopyWith(prevState, {
+              editedSummary: {
+                title: state.editedSummary?.title || '',
+                summary1: state.editedSummary?.summary1 || '',
+                summary2: state.editedSummary?.summary2 || '',
+                summary3: summary3,
+              },
+            }))}
             backgroundImage={backgroundImage}
           />
           <p>元の記事: {state.summarizedArticleUrl}</p>

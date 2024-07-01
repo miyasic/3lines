@@ -1,13 +1,6 @@
 // app/components/ImagePreview.tsx
-import React from 'react';
+import React, { useRef } from 'react';
 
-interface ImagePreviewProps {
-    title: string;
-    summary1: string;
-    summary2: string;
-    summary3: string;
-    backgroundImage: string;
-}
 
 const IMAGE_WIDTH = 1200;
 const IMAGE_HEIGHT = 628;
@@ -20,7 +13,12 @@ const FRAME_WIDTH = 32;
 
 const LOGO_TEXT = "今北産業";
 
-const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, summary3, backgroundImage }) => {
+const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, summary3, backgroundImage, setTitle, setSummary1, setSummary2, setSummary3 }) => {
+    const titleRef = useRef<HTMLDivElement>(null);
+
+    const handleInput = (setter: (value: string) => void) => (event: React.FormEvent<HTMLDivElement>) => {
+        setter(event.currentTarget.textContent || "");
+    };
     return (
         <div style={{ position: 'relative', width: `${IMAGE_WIDTH}px`, height: `${IMAGE_HEIGHT}px`, backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover' }}>
             <div
@@ -34,7 +32,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, 
                     fontSize: `${TITLE_FONT_SIZE}px`,
                     fontWeight: 'bold',
                     outline: 'none'
-                }}>
+                }}
+                onInput={handleInput(setTitle)}
+            >
                 {title}
             </div>
             <div
@@ -46,7 +46,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, 
                     left: `${FRAME_WIDTH + PADDING}px`,
                     fontSize: `${NORMAL_FONT_SIZE}px`,
                     outline: 'none'
-                }}>
+                }}
+                onInput={handleInput(setSummary1)}
+            >
                 {summary1}
             </div>
             <div
@@ -58,7 +60,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, 
                     left: `${FRAME_WIDTH + PADDING}px`,
                     fontSize: `${NORMAL_FONT_SIZE}px`,
                     outline: 'none'
-                }}>
+                }}
+                onInput={handleInput(setSummary2)}
+            >
                 {summary2}
             </div>
             <div
@@ -70,7 +74,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, 
                     left: `${FRAME_WIDTH + PADDING}px`,
                     fontSize: `${NORMAL_FONT_SIZE}px`,
                     outline: 'none'
-                }}>
+                }}
+                onInput={handleInput(setSummary3)}
+            >
                 {summary3}
             </div>
             <div style={{

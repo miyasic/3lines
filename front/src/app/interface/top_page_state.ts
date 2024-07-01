@@ -7,5 +7,6 @@ interface TopPageState {
     summarizeLoading: boolean;
     saveSummaryLoading: boolean;
     summary: SummaryResponse | null;
+    editedSummary: SummaryResponse | null;
 }
 
