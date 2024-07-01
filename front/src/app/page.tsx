@@ -6,6 +6,7 @@ import { firestore, functions } from './firebase/firebase';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import Header from './components/Header';
+import ImagePreview from './components/IMagePreview';
 
 
 const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
@@ -108,6 +109,8 @@ const Home = () => {
     }
   };
 
+  const backgroundImage = '/default_background.png';
+
   return (
     <div className={styles.container}>
       <Header />
@@ -125,11 +128,14 @@ const Home = () => {
       </form>
 
       {state.summary && (
-        <div className={styles.summary}>
-          <h2>{state.summary.title}</h2>
-          <p>{state.summary.summary1}</p>
-          <p>{state.summary.summary2}</p>
-          <p>{state.summary.summary3}</p>
+        <div>
+          <ImagePreview
+            title={state.summary.title}
+            summary1={state.summary.summary1}
+            summary2={state.summary.summary2}
+            summary3={state.summary.summary3}
+            backgroundImage={backgroundImage}
+          />
           <p>元の記事: {state.summarizedArticleUrl}</p>
           <button onClick={handleSaveSummary} className={styles.saveButton}>
             記事を保存
