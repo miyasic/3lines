@@ -121,21 +121,24 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <Header />
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="text"
-          value={state.url}
-          onChange={handleUrlChange}
-          placeholder="記事のURLを入力してください"
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button} disabled={state.summarizeLoading}>
-          {state.summarizeLoading ? '要約中...' : '要約を取得'}
-        </button>
-      </form>
-
+      {!state.summary &&
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input
+            type="text"
+            value={state.url}
+            onChange={handleUrlChange}
+            placeholder="記事のURLを入力してください"
+            className={styles.input}
+          />
+          {!state.summary && (
+            <button type="submit" className={styles.button} disabled={state.summarizeLoading}>
+              {state.summarizeLoading ? '要約中...' : '要約を取得'}
+            </button>
+          )}
+        </form>
+      }
       {state.summary && (
-        <div>
+        <div className={styles.summary}>
           <ImagePreview
             title={state.summary.title}
             summary1={state.summary.summary1}
@@ -175,12 +178,12 @@ const Home = () => {
             }))}
             backgroundImage={backgroundImage}
           />
-          <p>元の記事: {state.summarizedArticleUrl}</p>
           <button onClick={handleSaveSummary} className={styles.saveButton}>
             記事を保存
           </button>
         </div>
       )}
+
 
       <div className={styles.grid}>
         {state.fetchSummariesLoading ? (

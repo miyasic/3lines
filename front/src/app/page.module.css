@@ -23,6 +23,17 @@
     justify-content: center;
 }
 
+.summary {
+    width: 100%;
+    border-radius: 8px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-top: 20px;
+
+}
+
 .input {
     width: 100%;
     padding: 10px;
@@ -44,21 +55,29 @@
     transition: background-color 0.3s;
 }
 
+.saveButton {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #0070f3;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 .button:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
 
-.summary {
-    margin-top: 15vh;
-    padding: 20px;
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
 }
+
+
 
 .grid {
     display: flex;
