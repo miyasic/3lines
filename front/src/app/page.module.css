@@ -28,10 +28,16 @@
     border-radius: 8px;
     align-items: center;
     display: flex;
+    flex: 0 0 50%;
     flex-direction: column;
     padding: 20px;
     margin-top: 20px;
-
+    transform: scale(0.8);
+    /* 初期スケールを1に設定 */
+    transform-origin: center;
+    /* 拡大縮小の中心を中央に設定 */
+    width: 100%;
+    /* 初期サイズを設定、必要に応じて変更 */
 }
 
 .input {
