@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 const LOGO_TEXT = "今北産業";
 
-const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, summary3, backgroundImage, setTitle, setSummary1, setSummary2, setSummary3 }) => {
+const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, summary3, backgroundImage, setTitle, setSummary1, setSummary2, setSummary3, style }) => {
     const titleRef = useRef<HTMLDivElement>(null);
 
     const handleInput = (setter: (value: string) => void) => (event: React.FormEvent<HTMLDivElement>) => {
@@ -11,82 +11,50 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ title, summary1, summary2, 
     };
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '0', paddingBottom: '52.33%', backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover' }}>
-            <div
-                contentEditable
-                suppressContentEditableWarning
+        <div style={{ ...style, position: 'relative' }}>
+            <svg
+                viewBox="0 0 1920 1005"
+                preserveAspectRatio="xMidYMid meet"
                 style={{
-                    position: 'absolute',
-                    top: '5.08%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    fontSize: '3.33vw',
-                    fontWeight: 'bold',
-                    outline: 'none',
-                    width: '90%', /* Add width to ensure text doesn't overflow */
-                    textAlign: 'center', /* Center text */
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
                 }}
-                onInput={handleInput(setTitle)}
             >
-                {title}
-            </div>
-            <div
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                    position: 'absolute',
-                    top: '14.64%',
-                    left: '5.33%',
-                    fontSize: '2.92vw',
-                    outline: 'none',
-                    width: '90%', /* Add width to ensure text doesn't overflow */
-                }}
-                onInput={handleInput(setSummary1)}
-            >
-                {summary1}
-            </div>
-            <div
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                    position: 'absolute',
-                    top: '27.86%',
-                    left: '5.33%',
-                    fontSize: '2.92vw',
-                    outline: 'none',
-                    width: '90%', /* Add width to ensure text doesn't overflow */
-                }}
-                onInput={handleInput(setSummary2)}
-            >
-                {summary2}
-            </div>
-            <div
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                    position: 'absolute',
-                    top: '41.08%',
-                    left: '5.33%',
-                    fontSize: '2.92vw',
-                    outline: 'none',
-                    width: '90%', /* Add width to ensure text doesn't overflow */
-                }}
-                onInput={handleInput(setSummary3)}
-            >
-                {summary3}
-            </div>
-            <div style={{
-                position: 'absolute',
-                bottom: '5.08%',
-                right: '5.33%',
-                fontSize: '3.5vw',
-                fontWeight: 'bold',
-                fontFamily: 'RocknRollOne-Regular',
-            }}>
-                {LOGO_TEXT}
-            </div>
+                <image
+                    href={backgroundImage}
+                    width="1920"
+                    height="1005"
+                />
+                <text
+                    x="960"
+                    y="76"
+                    textAnchor="middle"
+                    fontSize="64"
+                    fontWeight="bold"
+                    fill="#333"
+                >
+                    {title}
+                </text>
+                <text x="102" y="220" fontSize="48" fill="#333">{summary1}</text>
+                <text x="102" y="420" fontSize="48" fill="#333">{summary2}</text>
+                <text x="102" y="620" fontSize="48" fill="#333">{summary3}</text>
+                <text
+                    x="1818"
+                    y="955"
+                    textAnchor="end"
+                    fontSize="72"
+                    fontWeight="bold"
+                    fontFamily="RocknRollOne-Regular, sans-serif"
+                    fill="#333"
+                >
+                    {LOGO_TEXT}
+                </text>
+            </svg>
         </div>
     );
 };
+
 
 export default ImagePreview;

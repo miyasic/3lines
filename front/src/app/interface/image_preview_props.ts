@@ -8,4 +8,5 @@ interface ImagePreviewProps {
     setSummary1: (summary1: string) => void;
     setSummary2: (summary2: string) => void;
     setSummary3: (summary3: string) => void;
+    style: React.CSSProperties;
 }
