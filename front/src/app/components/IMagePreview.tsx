@@ -56,6 +56,22 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
             logoY: IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING,
         };
     }, []);
+    const editableStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        fontSize: 'inherit',
+        fontWeight: 'inherit',
+        textAlign: 'inherit',
+        color: 'inherit',
+        background: 'transparent',
+        border: 'none',
+        outline: 'none',
+        padding: '0',
+        margin: '0',
+        overflow: 'hidden',
+        resize: 'none',
+        fontFamily: 'inherit',
+    };
 
     return (
         <div style={{ ...style, width: '100%', height: '100%' }}>
@@ -69,6 +85,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                 <foreignObject x="0" y={layout.titleY - TITLE_FONT_SIZE} width={IMAGE_WIDTH} height={TITLE_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div
                         style={{
+                            ...editableStyle,
                             width: '100%',
                             height: '100%',
                             display: 'flex',
@@ -95,10 +112,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     <foreignObject key={index} x={layout.summaryX} y={item.y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
                         <div
                             style={{
-                                width: '100%',
-                                height: '100%',
+                                ...editableStyle,
                                 fontSize: `${NORMAL_FONT_SIZE}px`,
-                                color: '#000',
                             }}
                             contentEditable
                             suppressContentEditableWarning
