@@ -167,16 +167,31 @@ const Home = () => {
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh',
+      width: '100%',
       maxWidth: `${MAX_WIDTH}px`,
       margin: '0 auto',
       padding: '20px',
       boxSizing: 'border-box',
     }}>
-
       <Header />
-      {!state.windowSizeLoading &&
-        <div ref={containerRef} style={{ ...containerStyle, marginBottom: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ ...innerContainerStyle, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      {!state.windowSizeLoading && (
+        <div ref={containerRef} style={{
+          ...containerStyle,
+          marginBottom: '30px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}>
+          <div style={{
+            ...innerContainerStyle,
+            width: '100%',
+            maxWidth: `${INNER_MAX_WIDTH}px`,
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}>
             {state.summary ? (
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
                 <div style={{ marginBottom: '20px' }}>
@@ -269,12 +284,31 @@ const Home = () => {
               </div>
             )}
           </div>
-        </div>}
+        </div>
+      )}
 
-      {!state.windowSizeLoading &&
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', flexShrink: 0 }}>保存された要約一覧</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', }}>
+      {!state.windowSizeLoading && (
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 0,
+          width: '100%',
+        }}>
+          <h2 style={{
+            fontSize: '20px',
+            fontWeight: 'bold',
+            marginBottom: '10px',
+            flexShrink: 0,
+          }}>
+            保存された要約一覧
+          </h2>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
             {state.fetchSummariesLoading ?
               (Array.from({ length: 12 }).map((_, index) => (
                 <div key={index} className={styles.skeleton}>
@@ -290,7 +324,7 @@ const Home = () => {
               ))}
           </div>
         </div>
-      }
+      )}
 
     </div>
   );
