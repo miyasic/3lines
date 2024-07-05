@@ -275,13 +275,19 @@ const Home = () => {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', flexShrink: 0 }}>保存された要約一覧</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', }}>
-            {state.summaries.map(summary => (
-              <div key={summary.id} className={styles.article}>
-                <Link href={`/summary/${summary.id}`}>
-                  <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
-                </Link>
-              </div>
-            ))}
+            {state.fetchSummariesLoading ?
+              (Array.from({ length: 12 }).map((_, index) => (
+                <div key={index} className={styles.skeleton}>
+                  <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
+                  <div className={styles.shimmer}></div>
+                </div>))) :
+              state.summaries.map(summary => (
+                <div key={summary.id} className={styles.article}>
+                  <Link href={`/summary/${summary.id}`}>
+                    <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
+                  </Link>
+                </div>
+              ))}
           </div>
         </div>
       }
