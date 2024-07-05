@@ -1,5 +1,5 @@
 // app/components/ImagePreview.tsx
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 const LOGO_TEXT = "今北産業";
 const IMAGE_WIDTH = 1200;
@@ -10,6 +10,7 @@ const LOGO_FONT_SIZE = 42;
 const PADDING = 32;
 const HEIGHT_PADDING = 32;
 const FRAME_WIDTH = 32;
+const MAX_CHARS = 30;
 
 interface ImagePreviewProps {
     title: string;
@@ -36,9 +37,34 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     setSummary3,
     style
 }) => {
-    const handleInput = (setter: (value: string) => void) => (event: React.FormEvent<HTMLDivElement>) => {
-        setter(event.currentTarget.textContent || "");
-    };
+    const [isOverLimit, setIsOverLimit] = useState({
+        title: false,
+        summary1: false,
+        summary2: false,
+        summary3: false
+    });
+
+    const handleInput = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.FormEvent<HTMLDivElement>) => {
+        const newText = event.currentTarget.textContent || "";
+        if (newText.length <= MAX_CHARS) {
+            setter(newText);
+            setIsOverLimit(prev => ({ ...prev, [field]: false }));
+        } else {
+            event.currentTarget.textContent = newText.slice(0, MAX_CHARS + 1);
+            setter(newText.slice(0, MAX_CHARS + 1));
+            setIsOverLimit(prev => ({ ...prev, [field]: true }));
+        }
+    }, []);
+
+    const handlePaste = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.ClipboardEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        const pastedText = event.clipboardData.getData('text');
+        const currentText = event.currentTarget.textContent || "";
+        const newText = (currentText + pastedText).slice(0, MAX_CHARS + 1);
+        event.currentTarget.textContent = newText;
+        setter(newText);
+        setIsOverLimit(prev => ({ ...prev, [field]: newText.length > MAX_CHARS }));
+    }, []);
 
     const layout = useMemo(() => {
         const titleY = FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE;
@@ -75,49 +101,46 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
 
     return (
         <div style={{ ...style, width: '100%', height: '100%' }}>
-            <svg
-                viewBox={`0 0 ${IMAGE_WIDTH} ${IMAGE_HEIGHT}`}
-                preserveAspectRatio="xMidYMid meet"
-                style={{ width: '100%', height: '100%' }}
-            >
+            <svg viewBox={`0 0 ${IMAGE_WIDTH} ${IMAGE_HEIGHT}`} preserveAspectRatio="xMidYMid meet" style={{ width: '100%', height: '100%' }}>
                 <image href={backgroundImage} width={IMAGE_WIDTH} height={IMAGE_HEIGHT} />
 
                 <foreignObject x="0" y={layout.titleY - TITLE_FONT_SIZE} width={IMAGE_WIDTH} height={TITLE_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div
                         style={{
                             ...editableStyle,
-                            width: '100%',
-                            height: '100%',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             fontSize: `${TITLE_FONT_SIZE}px`,
                             fontWeight: 'bold',
                             textAlign: 'center',
-                            color: '#000',
+                            color: isOverLimit.title ? 'red' : 'inherit',
                         }}
                         contentEditable
                         suppressContentEditableWarning
-                        onInput={handleInput(setTitle)}
+                        onInput={handleInput(setTitle, 'title')}
+                        onPaste={handlePaste(setTitle, 'title')}
                     >
                         {title}
                     </div>
                 </foreignObject>
 
                 {[
-                    { y: layout.summary1Y, text: summary1, setter: setSummary1 },
-                    { y: layout.summary2Y, text: summary2, setter: setSummary2 },
-                    { y: layout.summary3Y, text: summary3, setter: setSummary3 },
+                    { y: layout.summary1Y, text: summary1, setter: setSummary1, field: 'summary1' as const },
+                    { y: layout.summary2Y, text: summary2, setter: setSummary2, field: 'summary2' as const },
+                    { y: layout.summary3Y, text: summary3, setter: setSummary3, field: 'summary3' as const },
                 ].map((item, index) => (
                     <foreignObject key={index} x={layout.summaryX} y={item.y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
                         <div
                             style={{
                                 ...editableStyle,
                                 fontSize: `${NORMAL_FONT_SIZE}px`,
+                                color: isOverLimit[item.field] ? 'red' : 'inherit',
                             }}
                             contentEditable
                             suppressContentEditableWarning
-                            onInput={handleInput(item.setter)}
+                            onInput={handleInput(item.setter, item.field)}
+                            onPaste={handlePaste(item.setter, item.field)}
                         >
                             {item.text}
                         </div>
