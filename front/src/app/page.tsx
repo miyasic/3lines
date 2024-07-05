@@ -306,7 +306,7 @@ const Home = () => {
           <div style={{
             display: 'flex',
             flexWrap: 'wrap',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             width: '100%',
           }}>
             {state.fetchSummariesLoading ?
@@ -314,13 +314,18 @@ const Home = () => {
                 <div key={index} className={styles.skeleton}>
                   <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
                   <div className={styles.shimmer}></div>
-                </div>))) :
-              state.summaries.map(summary => (
-                <div key={summary.id} className={styles.article}>
-                  <Link href={`/summary/${summary.id}`}>
-                    <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
-                  </Link>
                 </div>
+              ))) :
+              [...state.summaries, ...Array(3 - (state.summaries.length % 3)).fill(null)].map((summary, index) => (
+                summary ? (
+                  <div key={summary.id} className={styles.article}>
+                    <Link href={`/summary/${summary.id}`}>
+                      <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
+                    </Link>
+                  </div>
+                ) : (
+                  <div key={`placeholder-${index}`} className={styles.article} style={{ visibility: 'hidden' }} />
+                )
               ))}
           </div>
         </div>
