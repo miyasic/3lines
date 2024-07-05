@@ -22,6 +22,7 @@ const Home = () => {
     summaries: [],
     url: '',
     summarizedArticleUrl: '',
+    windowSizeLoading: true,
     fetchSummariesLoading: false,
     summarizeLoading: false,
     saveSummaryLoading: false,
@@ -81,6 +82,7 @@ const Home = () => {
         height: `${imageHeight}px`,
         margin: '0 auto',
       });
+      setState(prevState => topPageStateCopyWith(prevState, { windowSizeLoading: false }));
     };
 
     updateLayout();
@@ -160,6 +162,7 @@ const Home = () => {
   const backgroundImage = '/default_background.png';
 
   return (
+
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -169,116 +172,120 @@ const Home = () => {
       padding: '20px',
       boxSizing: 'border-box',
     }}>
+
       <Header />
-
-      <div ref={containerRef} style={{ ...containerStyle, marginBottom: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ ...innerContainerStyle, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {state.summary ? (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-              <div style={{ marginBottom: '20px' }}>
-                <ImagePreview
-                  title={state.summary.title}
-                  summary1={state.summary.summary1}
-                  summary2={state.summary.summary2}
-                  summary3={state.summary.summary3}
-                  setTitle={title => setState(prevState => topPageStateCopyWith(prevState, {
-                    editedSummary: {
-                      title: title,
-                      summary1: state.editedSummary?.summary1 || '',
-                      summary2: state.editedSummary?.summary2 || '',
-                      summary3: state.editedSummary?.summary3 || '',
-                    },
-                  }))}
-                  setSummary1={summary1 => setState(prevState => topPageStateCopyWith(prevState, {
-                    editedSummary: {
-                      title: state.editedSummary?.title || '',
-                      summary1: summary1,
-                      summary2: state.editedSummary?.summary2 || '',
-                      summary3: state.editedSummary?.summary3 || '',
-                    },
-                  }))}
-                  setSummary2={summary2 => setState(prevState => topPageStateCopyWith(prevState, {
-                    editedSummary: {
-                      title: state.editedSummary?.title || '',
-                      summary1: state.editedSummary?.summary1 || '',
-                      summary2: summary2,
-                      summary3: state.editedSummary?.summary3 || '',
-                    },
-                  }))}
-                  setSummary3={summary3 => setState(prevState => topPageStateCopyWith(prevState, {
-                    editedSummary: {
-                      title: state.editedSummary?.title || '',
-                      summary1: state.editedSummary?.summary1 || '',
-                      summary2: state.editedSummary?.summary2 || '',
-                      summary3: summary3,
-                    },
-                  }))}
-                  backgroundImage={backgroundImage}
-                  style={{ ...imagePreviewStyle, maxWidth: '100%' }}
-                />
+      {!state.windowSizeLoading &&
+        <div ref={containerRef} style={{ ...containerStyle, marginBottom: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ ...innerContainerStyle, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            {state.summary ? (
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+                <div style={{ marginBottom: '20px' }}>
+                  <ImagePreview
+                    title={state.summary.title}
+                    summary1={state.summary.summary1}
+                    summary2={state.summary.summary2}
+                    summary3={state.summary.summary3}
+                    setTitle={title => setState(prevState => topPageStateCopyWith(prevState, {
+                      editedSummary: {
+                        title: title,
+                        summary1: state.editedSummary?.summary1 || '',
+                        summary2: state.editedSummary?.summary2 || '',
+                        summary3: state.editedSummary?.summary3 || '',
+                      },
+                    }))}
+                    setSummary1={summary1 => setState(prevState => topPageStateCopyWith(prevState, {
+                      editedSummary: {
+                        title: state.editedSummary?.title || '',
+                        summary1: summary1,
+                        summary2: state.editedSummary?.summary2 || '',
+                        summary3: state.editedSummary?.summary3 || '',
+                      },
+                    }))}
+                    setSummary2={summary2 => setState(prevState => topPageStateCopyWith(prevState, {
+                      editedSummary: {
+                        title: state.editedSummary?.title || '',
+                        summary1: state.editedSummary?.summary1 || '',
+                        summary2: summary2,
+                        summary3: state.editedSummary?.summary3 || '',
+                      },
+                    }))}
+                    setSummary3={summary3 => setState(prevState => topPageStateCopyWith(prevState, {
+                      editedSummary: {
+                        title: state.editedSummary?.title || '',
+                        summary1: state.editedSummary?.summary1 || '',
+                        summary2: state.editedSummary?.summary2 || '',
+                        summary3: summary3,
+                      },
+                    }))}
+                    backgroundImage={backgroundImage}
+                    style={{ ...imagePreviewStyle, maxWidth: '100%' }}
+                  />
+                </div>
+                <button
+                  onClick={handleSaveSummary}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    backgroundColor: '#38a169',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {state.summarizeLoading ? '要約中...' : '要約を取得'}
+                </button>
               </div>
-              <button
-                onClick={handleSaveSummary}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  backgroundColor: '#38a169',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                {state.summarizeLoading ? '要約中...' : '要約を取得'}
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
-              <input
-                type="text"
-                value={state.url}
-                onChange={handleUrlChange}
-                placeholder="記事のURLを入力してください"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  marginBottom: '10px',
-                  borderRadius: '5px',
-                  border: '1px solid #ccc',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <button
-                onClick={handleSubmit}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  backgroundColor: '#3490dc',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                要約を取得
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <input
+                  type="text"
+                  value={state.url}
+                  onChange={handleUrlChange}
+                  placeholder="記事のURLを入力してください"
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    marginBottom: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <button
+                  onClick={handleSubmit}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    backgroundColor: '#3490dc',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  要約を取得
+                </button>
+              </div>
+            )}
+          </div>
+        </div>}
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-        <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', flexShrink: 0 }}>保存された要約一覧</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', }}>
-          {state.summaries.map(summary => (
-            <div key={summary.id} className={styles.article}>
-              <Link href={`/summary/${summary.id}`}>
-                <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
-              </Link>
-            </div>
-          ))}
+      {!state.windowSizeLoading &&
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', flexShrink: 0 }}>保存された要約一覧</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', }}>
+            {state.summaries.map(summary => (
+              <div key={summary.id} className={styles.article}>
+                <Link href={`/summary/${summary.id}`}>
+                  <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      }
+
     </div>
   );
 };
