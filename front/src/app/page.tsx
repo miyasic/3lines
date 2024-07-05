@@ -239,16 +239,24 @@ const Home = () => {
                 <button
                   onClick={handleSaveSummary}
                   style={{
-                    width: '100%',
-                    padding: '10px',
+                    width: 'auto', // 幅を自動に設定
+                    minWidth: '200px', // 最小幅を設定
+                    padding: '12px 24px', // パディングを調整
                     backgroundColor: '#38a169',
                     color: 'white',
                     border: 'none',
                     borderRadius: '5px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontSize: '16px', // フォントサイズを調整
+                    fontWeight: 'bold', // フォントを太くする
+                    transition: 'background-color 0.3s', // トランジション効果を追加
+                    margin: '0 auto', // 中央に配置
+                    display: 'block', // ブロック要素に変更
                   }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2f855a'} // ホバー時の色を設定
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#38a169'} // マウスが離れたときの色を元に戻す
                 >
-                  {state.summarizeLoading ? '要約中...' : '要約を取得'}
+                  {state.summarizeLoading ? '要約中...' : '要約を登録'}
                 </button>
               </div>
             ) : (
@@ -260,24 +268,33 @@ const Home = () => {
                   placeholder="記事のURLを入力してください"
                   style={{
                     width: '100%',
-                    padding: '10px',
-                    marginBottom: '10px',
+                    padding: '12px', // パディングを少し増やす
+                    marginBottom: '20px', // 下マージンを20pxに増やす
                     borderRadius: '5px',
                     border: '1px solid #ccc',
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    fontSize: '16px', // フォントサイズを指定
                   }}
                 />
                 <button
                   onClick={handleSubmit}
                   style={{
-                    width: '100%',
-                    padding: '10px',
+                    width: 'auto',
+                    minWidth: '200px',
+                    padding: '12px 24px',
                     backgroundColor: '#3490dc',
                     color: 'white',
                     border: 'none',
                     borderRadius: '5px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    transition: 'background-color 0.3s',
+                    margin: '20px auto 0', // 上マージンを20pxに設定し、左右のマージンを自動に
+                    display: 'block',
                   }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2779bd'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3490dc'}
                 >
                   要約を取得
                 </button>
