@@ -4,12 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
 import { useParams } from 'next/navigation';
 import Header from '../../../components/Header';
-
-const MAX_WIDTH = 1500;
-const INNER_MAX_WIDTH = 600;
-const IMAGE_WIDTH = 1200;
-const IMAGE_HEIGHT = 628;
-const ASPECT_RATIO = IMAGE_HEIGHT / IMAGE_WIDTH;
+import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import AppButton from '@/components/AppButton';
 
 const SummaryDetail = () => {
     const [summary, setSummary] = useState<Summary | null>(null);
@@ -77,7 +73,7 @@ const SummaryDetail = () => {
             flexDirection: 'column',
             minHeight: '100vh',
             width: '100%',
-            maxWidth: `${MAX_WIDTH}px`,
+            maxWidth: `${PAGE_MAX_WIDTH}px`,
             margin: '0 auto',
             padding: '20px',
             boxSizing: 'border-box',
@@ -91,14 +87,13 @@ const SummaryDetail = () => {
             }}>
                 <div style={{
                     width: '100%',
-                    maxWidth: `${INNER_MAX_WIDTH}px`,
+                    maxWidth: `${PAGE_INNER_MAX_WIDTH}px`,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
                     <div style={{
                         width: '100%',
-                        paddingBottom: `${ASPECT_RATIO * 100}%`,
                         position: 'relative',
                         marginBottom: '20px'
                     }}>
@@ -106,38 +101,14 @@ const SummaryDetail = () => {
                             src={summary.imageUrl}
                             alt={summary.title}
                             style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
                                 width: '100%',
-                                height: '100%',
+                                height: 'auto',
                                 objectFit: 'cover',
                                 borderRadius: '10px'
                             }}
                         />
                     </div>
-                    <button
-                        onClick={() => window.open(summary.articleUrl, '_blank')}
-                        style={{
-                            width: 'auto', // 幅を自動に設定
-                            minWidth: '200px', // 最小幅を設定
-                            padding: '12px 24px', // パディングを調整
-                            backgroundColor: '#38a169',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            fontSize: '16px', // フォントサイズを調整
-                            fontWeight: 'bold', // フォントを太くする
-                            transition: 'background-color 0.3s', // トランジション効果を追加
-                            margin: '0 auto', // 中央に配置
-                            display: 'block', // ブロック要素に変更
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2f855a'} // ホバー時の色を設定
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#38a169'} // マウスが離れたときの色を元に戻す
-                    >
-                        記事を開く
-                    </button>
+                    <AppButton title={'記事を開く'} onClick={() => window.open(summary.articleUrl, '_blank')} />
                 </div>
             </div>
         </div>

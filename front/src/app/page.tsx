@@ -7,15 +7,15 @@ import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
+import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import AppButton from '@/components/AppButton';
 
 
 const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
   return { ...state, ...updates };
 };
 
-const MAX_WIDTH = 1500; // maxWidth
-const INNER_MAX_WIDTH = 600; // 上部要素の最大幅
-const ASPECT_RATIO = 1920 / 1005;
+
 
 const Home = () => {
   const [state, setState] = useState<TopPageState>({
@@ -58,8 +58,8 @@ const Home = () => {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
       const containerHeight = Math.floor(windowHeight * 2 / 3);
-      const containerWidth = Math.min(windowWidth - 40, MAX_WIDTH); // 左右に20pxずつのパディングを確保
-      const innerWidth = Math.min(containerWidth - 40, INNER_MAX_WIDTH); // 内部要素にも左右10pxずつのパディングを追加
+      const containerWidth = Math.min(windowWidth - 40, PAGE_MAX_WIDTH); // 左右に20pxずつのパディングを確保
+      const innerWidth = Math.min(containerWidth - 40, PAGE_INNER_MAX_WIDTH); // 内部要素にも左右10pxずつのパディングを追加
 
       setContainerStyle({
         height: `${containerHeight}px`,
@@ -168,7 +168,7 @@ const Home = () => {
       flexDirection: 'column',
       minHeight: '100vh',
       width: '100%',
-      maxWidth: `${MAX_WIDTH}px`,
+      maxWidth: `${PAGE_MAX_WIDTH}px`,
       margin: '0 auto',
       padding: '20px',
       boxSizing: 'border-box',
@@ -186,7 +186,7 @@ const Home = () => {
           <div style={{
             ...innerContainerStyle,
             width: '100%',
-            maxWidth: `${INNER_MAX_WIDTH}px`,
+            maxWidth: `${PAGE_INNER_MAX_WIDTH}px`,
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
@@ -236,28 +236,7 @@ const Home = () => {
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
-                <button
-                  onClick={handleSaveSummary}
-                  style={{
-                    width: 'auto', // 幅を自動に設定
-                    minWidth: '200px', // 最小幅を設定
-                    padding: '12px 24px', // パディングを調整
-                    backgroundColor: '#38a169',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontSize: '16px', // フォントサイズを調整
-                    fontWeight: 'bold', // フォントを太くする
-                    transition: 'background-color 0.3s', // トランジション効果を追加
-                    margin: '0 auto', // 中央に配置
-                    display: 'block', // ブロック要素に変更
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2f855a'} // ホバー時の色を設定
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#38a169'} // マウスが離れたときの色を元に戻す
-                >
-                  {state.summarizeLoading ? '要約中...' : '要約を登録'}
-                </button>
+                <AppButton title={'要約を登録'} onClick={handleSaveSummary} />
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
@@ -276,28 +255,7 @@ const Home = () => {
                     fontSize: '16px', // フォントサイズを指定
                   }}
                 />
-                <button
-                  onClick={handleSubmit}
-                  style={{
-                    width: 'auto',
-                    minWidth: '200px',
-                    padding: '12px 24px',
-                    backgroundColor: '#3490dc',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    transition: 'background-color 0.3s',
-                    margin: '20px auto 0', // 上マージンを20pxに設定し、左右のマージンを自動に
-                    display: 'block',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2779bd'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3490dc'}
-                >
-                  要約を取得
-                </button>
+                <AppButton title={'要約を取得'} onClick={handleSubmit} />
               </div>
             )}
           </div>
