@@ -1,0 +1,15 @@
+.editable {
+    height: 100%;
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    resize: none;
+    font-family: inherit;
+}

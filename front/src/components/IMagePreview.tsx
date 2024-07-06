@@ -1,7 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import CommonLayout from '@/components/summary/CommonLayout';
+import styles from './ImagePreview.module.css';
 
 const MAX_CHARS = 30;
+
+type EditableSummaryProps = {
+    summary: string;
+    isOverLimit: boolean;
+    handleInput: (event: React.FormEvent<HTMLDivElement>) => void;
+    handlePaste: (event: React.ClipboardEvent<HTMLDivElement>) => void;
+};
 
 interface ImagePreviewProps {
     title: string;
@@ -15,6 +23,22 @@ interface ImagePreviewProps {
     setSummary3: (value: string) => void;
     style?: React.CSSProperties;
 }
+
+const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit, handleInput, handlePaste }) => (
+    <div
+        className={styles.editable}
+        style={{
+            fontSize: '35px',
+            color: isOverLimit ? 'red' : 'inherit',
+        }}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={handleInput}
+        onPaste={handlePaste}
+    >
+        {summary}
+    </div>
+);
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({
     title,
@@ -41,8 +65,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
             setter(newText);
             setIsOverLimit(prev => ({ ...prev, [field]: false }));
         } else {
-            event.currentTarget.textContent = newText.slice(0, MAX_CHARS + 1);
-            setter(newText.slice(0, MAX_CHARS + 1));
+            event.currentTarget.textContent = newText.slice(0, MAX_CHARS);
+            setter(newText.slice(0, MAX_CHARS));
             setIsOverLimit(prev => ({ ...prev, [field]: true }));
         }
     }, []);
@@ -51,76 +75,45 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
         event.preventDefault();
         const pastedText = event.clipboardData.getData('text');
         const currentText = event.currentTarget.textContent || "";
-        const newText = (currentText + pastedText).slice(0, MAX_CHARS + 1);
+        const newText = (currentText + pastedText).slice(0, MAX_CHARS);
         event.currentTarget.textContent = newText;
         setter(newText);
         setIsOverLimit(prev => ({ ...prev, [field]: newText.length > MAX_CHARS }));
     }, []);
 
-    const editableStyle: React.CSSProperties = {
-        width: '100%',
-        height: '100%',
-        fontSize: 'inherit',
-        fontWeight: 'inherit',
-        textAlign: 'inherit',
-        color: 'inherit',
-        background: 'transparent',
-        border: 'none',
-        outline: 'none',
-        padding: '0',
-        margin: '0',
-        overflow: 'hidden',
-        resize: 'none',
-        fontFamily: 'inherit',
-    };
-
     return (
         <CommonLayout
-            title={title}
+            title={
+                <EditableSummary
+                    summary={title}
+                    isOverLimit={isOverLimit.title}
+                    handleInput={handleInput(setTitle, 'title')}
+                    handlePaste={handlePaste(setTitle, 'title')}
+                />
+            }
             summary1={
-                <div
-                    style={{
-                        ...editableStyle,
-                        fontSize: '35px',
-                        color: isOverLimit.summary1 ? 'red' : 'inherit',
-                    }}
-                    contentEditable
-                    suppressContentEditableWarning
-                    onInput={handleInput(setSummary1, 'summary1')}
-                    onPaste={handlePaste(setSummary1, 'summary1')}
-                >
-                    {summary1}
-                </div>
+                <EditableSummary
+                    summary={summary1}
+                    isOverLimit={isOverLimit.summary1}
+                    handleInput={handleInput(setSummary1, 'summary1')}
+                    handlePaste={handlePaste(setSummary1, 'summary1')}
+                />
             }
             summary2={
-                <div
-                    style={{
-                        ...editableStyle,
-                        fontSize: '35px',
-                        color: isOverLimit.summary2 ? 'red' : 'inherit',
-                    }}
-                    contentEditable
-                    suppressContentEditableWarning
-                    onInput={handleInput(setSummary2, 'summary2')}
-                    onPaste={handlePaste(setSummary2, 'summary2')}
-                >
-                    {summary2}
-                </div>
+                <EditableSummary
+                    summary={summary2}
+                    isOverLimit={isOverLimit.summary2}
+                    handleInput={handleInput(setSummary2, 'summary2')}
+                    handlePaste={handlePaste(setSummary2, 'summary2')}
+                />
             }
             summary3={
-                <div
-                    style={{
-                        ...editableStyle,
-                        fontSize: '35px',
-                        color: isOverLimit.summary3 ? 'red' : 'inherit',
-                    }}
-                    contentEditable
-                    suppressContentEditableWarning
-                    onInput={handleInput(setSummary3, 'summary3')}
-                    onPaste={handlePaste(setSummary3, 'summary3')}
-                >
-                    {summary3}
-                </div>
+                <EditableSummary
+                    summary={summary3}
+                    isOverLimit={isOverLimit.summary3}
+                    handleInput={handleInput(setSummary3, 'summary3')}
+                    handlePaste={handlePaste(setSummary3, 'summary3')}
+                />
             }
             backgroundImage={backgroundImage}
             style={style}

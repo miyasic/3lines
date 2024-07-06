@@ -11,7 +11,7 @@ const HEIGHT_PADDING = 32;
 const FRAME_WIDTH = 32;
 
 interface CommonLayoutProps {
-    title: string;
+    title: React.ReactNode;
     summary1: React.ReactNode;
     summary2: React.ReactNode;
     summary3: React.ReactNode;
@@ -48,16 +48,11 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({
             <svg viewBox={`0 0 ${IMAGE_WIDTH} ${IMAGE_HEIGHT}`} preserveAspectRatio="xMidYMid meet" style={{ width: '100%', height: '100%' }}>
                 <image href={backgroundImage} width={IMAGE_WIDTH} height={IMAGE_HEIGHT} />
 
-                <text
-                    x={IMAGE_WIDTH / 2}
-                    y={layout.titleY}
-                    fontSize={TITLE_FONT_SIZE}
-                    fontWeight="bold"
-                    textAnchor="middle"
-                    fill="#000"
-                >
-                    {title}
-                </text>
+                <foreignObject x={layout.summaryX} y={layout.titleY - TITLE_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={TITLE_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', fontSize: `${TITLE_FONT_SIZE}px` }}>
+                        {title}
+                    </div>
+                </foreignObject>
 
                 <foreignObject x={layout.summaryX} y={layout.summary1Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div style={{ fontSize: `${NORMAL_FONT_SIZE}px` }}>
