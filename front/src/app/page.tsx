@@ -64,7 +64,6 @@ const Home = () => {
           </div>
         </div>
       )}
-
       {!state.windowSizeLoading && (
         <div className={styles.summaryListContainer}>
           <h2 className={styles.summaryListHeader}>
@@ -92,7 +91,6 @@ const Home = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
