@@ -6,7 +6,7 @@ import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
-import { GET_SUMMARY, REGISTER_SUMMARY } from '@/constants/constantsTexts';
+import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 
 
@@ -32,7 +32,7 @@ const Home = () => {
         <div ref={containerRef} className={styles.container} style={containerStyle}>
           <div className={styles.innerContainer} style={{ ...innerContainerStyle, maxWidth: `${PAGE_INNER_MAX_WIDTH}px`, }}>
             {state.summary ? (
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+              <div className={styles.summaryContainer}>
                 <div style={{ marginBottom: '20px' }}>
                   <ImagePreview
                     title={state.summary.title}
@@ -50,21 +50,13 @@ const Home = () => {
                 <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} />
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+              <div className={styles.inputContainer}>
                 <input
                   type="text"
                   value={state.url}
                   onChange={handleUrlChange}
-                  placeholder="記事のURLを入力してください"
-                  style={{
-                    width: '100%',
-                    padding: '12px', // パディングを少し増やす
-                    marginBottom: '20px', // 下マージンを20pxに増やす
-                    borderRadius: '5px',
-                    border: '1px solid #ccc',
-                    boxSizing: 'border-box',
-                    fontSize: '16px', // フォントサイズを指定
-                  }}
+                  placeholder={INPUT_URL}
+                  className={styles.input}
                 />
                 <AppButton title={GET_SUMMARY} onClick={handleSubmit} />
               </div>
