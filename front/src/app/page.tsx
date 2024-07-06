@@ -16,6 +16,23 @@ const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState
   return { ...state, ...updates };
 };
 
+const summaryResponseCopyWith = (summaryResponse: SummaryResponse | null, update: Partial<SummaryResponse>): SummaryResponse => {
+  if (!summaryResponse) {
+    return {
+      ...{
+        title: "",
+        summary1: "",
+        summary2: "",
+        summary3: ""
+      },
+      ...update
+    };
+  }
+  return {
+    ...summaryResponse,
+    ...update
+  };
+}
 
 
 const Home = () => {
@@ -120,10 +137,10 @@ const Home = () => {
           summary3: data.summary3
         },
         editedSummary: {
-          title: data.title,
-          summary1: data.summary1,
-          summary2: data.summary2,
-          summary3: data.summary3
+          title: data.title ?? '',
+          summary1: data.summary1 ?? '',
+          summary2: data.summary2 ?? '',
+          summary3: data.summary3 ?? ''
         },
         summarizeLoading: false
       }));
@@ -158,6 +175,12 @@ const Home = () => {
     if (summaryId) {
       router.push(`/summary/${summaryId}`);
     }
+  };
+  const updateEditedSummary = (key: keyof SummaryResponse, value: string) => {
+    setState(prevState => topPageStateCopyWith(prevState, {
+      editedSummary: summaryResponseCopyWith(prevState.editedSummary, { [key]: value }),
+
+    }));
   };
 
   const backgroundImage = '/default_background.png';
@@ -201,38 +224,10 @@ const Home = () => {
                     summary1={state.summary.summary1}
                     summary2={state.summary.summary2}
                     summary3={state.summary.summary3}
-                    setTitle={title => setState(prevState => topPageStateCopyWith(prevState, {
-                      editedSummary: {
-                        title: title,
-                        summary1: state.editedSummary?.summary1 || '',
-                        summary2: state.editedSummary?.summary2 || '',
-                        summary3: state.editedSummary?.summary3 || '',
-                      },
-                    }))}
-                    setSummary1={summary1 => setState(prevState => topPageStateCopyWith(prevState, {
-                      editedSummary: {
-                        title: state.editedSummary?.title || '',
-                        summary1: summary1,
-                        summary2: state.editedSummary?.summary2 || '',
-                        summary3: state.editedSummary?.summary3 || '',
-                      },
-                    }))}
-                    setSummary2={summary2 => setState(prevState => topPageStateCopyWith(prevState, {
-                      editedSummary: {
-                        title: state.editedSummary?.title || '',
-                        summary1: state.editedSummary?.summary1 || '',
-                        summary2: summary2,
-                        summary3: state.editedSummary?.summary3 || '',
-                      },
-                    }))}
-                    setSummary3={summary3 => setState(prevState => topPageStateCopyWith(prevState, {
-                      editedSummary: {
-                        title: state.editedSummary?.title || '',
-                        summary1: state.editedSummary?.summary1 || '',
-                        summary2: state.editedSummary?.summary2 || '',
-                        summary3: summary3,
-                      },
-                    }))}
+                    setTitle={title => updateEditedSummary('title', title)}
+                    setSummary1={summary1 => updateEditedSummary('summary1', summary1)}
+                    setSummary2={summary2 => updateEditedSummary('summary2', summary2)}
+                    setSummary3={summary3 => updateEditedSummary('summary3', summary3)}
                     backgroundImage={backgroundImage}
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
