@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { firestore } from '../../firebase/firebase';
+import { firestore } from '../../../firebase/firebase';
 import { useParams } from 'next/navigation';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
 
 const MAX_WIDTH = 1500;
 const INNER_MAX_WIDTH = 600;

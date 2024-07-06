@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { firestore, functions } from './firebase/firebase';
+import { firestore, functions } from '../firebase/firebase';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
-import ImagePreview from './components/IMagePreview';
-import Header from './components/Header';
+import ImagePreview from '../components/IMagePreview';
+import Header from '../components/Header';
 
 
 const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
