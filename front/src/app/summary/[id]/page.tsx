@@ -1,67 +1,34 @@
 "use client";
 
+import React from 'react';
+import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 import Header from '../../../components/Header';
 import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
-import { useSummaryDetail } from '@/hooks/useSummaryDetail';
+import styles from './page.module.css';
 
 const SummaryDetail = () => {
     const { summary, countdown } = useSummaryDetail();
 
     if (!summary) {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                fontSize: '24px',
-                fontWeight: 'bold'
-            }}>
+            <div className={styles.loading}>
                 Loading...
             </div>
         );
     }
+
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '100%',
-            maxWidth: `${PAGE_MAX_WIDTH}px`,
-            margin: '0 auto',
-            padding: '20px',
-            boxSizing: 'border-box',
-        }}>
+        <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
             <Header />
-            <div style={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <div style={{
-                    width: '100%',
-                    maxWidth: `${PAGE_INNER_MAX_WIDTH}px`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}>
-                    <div style={{
-                        width: '100%',
-                        position: 'relative',
-                        marginBottom: '20px'
-                    }}>
+            <div className={styles.contentContainer}>
+                <div className={styles.innerContainer} style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
+                    <div className={styles.imageContainer}>
                         <img
                             src={summary.imageUrl}
                             alt={summary.title}
-                            style={{
-                                width: '100%',
-                                height: 'auto',
-                                objectFit: 'cover',
-                                borderRadius: '10px'
-                            }}
+                            className={styles.image}
                         />
                     </div>
                     <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
