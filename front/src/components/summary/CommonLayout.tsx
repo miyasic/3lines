@@ -28,20 +28,29 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({
     style
 }) => {
 
-    const layout = {
-        titleY: FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE,
-        availableHeight: IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2,
-        linePadding: (IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5,
-        summaryStartY: FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE + HEIGHT_PADDING + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5) / 2,
-        summary1Y: FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE + HEIGHT_PADDING + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5) / 2 + NORMAL_FONT_SIZE,
-        summary2Y: FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE + HEIGHT_PADDING + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5) / 2 + NORMAL_FONT_SIZE + NORMAL_FONT_SIZE + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5),
-        summary3Y: FRAME_WIDTH + HEIGHT_PADDING + TITLE_FONT_SIZE + HEIGHT_PADDING + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5) / 2 + NORMAL_FONT_SIZE + NORMAL_FONT_SIZE + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5) + NORMAL_FONT_SIZE + ((IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING - TITLE_FONT_SIZE - HEIGHT_PADDING * 2 - 3 * NORMAL_FONT_SIZE) / 5),
-        summaryX: FRAME_WIDTH + PADDING,
-        logoX: IMAGE_WIDTH - FRAME_WIDTH - PADDING,
-        logoY: IMAGE_HEIGHT - FRAME_WIDTH - HEIGHT_PADDING,
+    const calculateLayout = (frameWidth: number, heightPadding: number, titleFontSize: number, normalFontSize: number, imageWidth: number, imageHeight: number, padding: number) => {
+        const availableHeight = imageHeight - frameWidth - heightPadding - titleFontSize - heightPadding * 2;
+        const linePadding = (availableHeight - 3 * normalFontSize) / 5;
+        const summaryStartY = frameWidth + heightPadding + titleFontSize + heightPadding + linePadding / 2;
+
+        const calculateSummaryY = (index: number) => summaryStartY + (normalFontSize + linePadding) * index;
+
+        return {
+            titleY: frameWidth + heightPadding + titleFontSize,
+            availableHeight,
+            linePadding,
+            summaryStartY,
+            summary1Y: calculateSummaryY(0),
+            summary2Y: calculateSummaryY(1),
+            summary3Y: calculateSummaryY(2),
+            summaryX: frameWidth + padding,
+            logoX: imageWidth - frameWidth - padding,
+            logoY: imageHeight - frameWidth - heightPadding,
+        };
     };
 
-    console.log('layout', layout);
+    const layout = calculateLayout(FRAME_WIDTH, HEIGHT_PADDING, TITLE_FONT_SIZE, NORMAL_FONT_SIZE, IMAGE_WIDTH, IMAGE_HEIGHT, PADDING);
+
 
     return (
         <div style={{ ...style, width: '100%', height: '100%' }}>
