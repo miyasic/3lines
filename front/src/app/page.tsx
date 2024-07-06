@@ -29,14 +29,7 @@ const Home = () => {
     <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
       <Header />
       {!state.windowSizeLoading && (
-        <div ref={containerRef} style={{
-          ...containerStyle,
-          marginBottom: '30px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-        }}>
+        <div ref={containerRef} className={styles.container} style={containerStyle}>
           <div style={{
             ...innerContainerStyle,
             width: '100%',

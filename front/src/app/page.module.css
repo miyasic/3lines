@@ -9,12 +9,11 @@
 }
 
 .container {
+    margin-bottom: 30px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    height: 100vh;
-    padding: 0 20px;
-    box-sizing: border-box;
+    width: 100%;
 }
 
 .h2 {
