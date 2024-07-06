@@ -9,6 +9,7 @@ import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
 import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
+import { GET_SUMMARY, REGISTER_SUMMARY } from '@/constants/constantsTexts';
 
 
 const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
@@ -236,7 +237,7 @@ const Home = () => {
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
-                <AppButton title={'要約を登録'} onClick={handleSaveSummary} />
+                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} />
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
@@ -255,7 +256,7 @@ const Home = () => {
                     fontSize: '16px', // フォントサイズを指定
                   }}
                 />
-                <AppButton title={'要約を取得'} onClick={handleSubmit} />
+                <AppButton title={GET_SUMMARY} onClick={handleSubmit} />
               </div>
             )}
           </div>

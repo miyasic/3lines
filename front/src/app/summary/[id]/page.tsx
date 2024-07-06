@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import Header from '../../../components/Header';
 import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
+import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 
 const SummaryDetail = () => {
     const [summary, setSummary] = useState<Summary | null>(null);
@@ -108,7 +109,7 @@ const SummaryDetail = () => {
                             }}
                         />
                     </div>
-                    <AppButton title={'記事を開く'} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                    <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
                 </div>
             </div>
         </div>

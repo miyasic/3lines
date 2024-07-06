@@ -1,10 +1,11 @@
 // app/components/Header.tsx
+import { IMAKITA_SANGYO } from '@/constants/constantsTexts';
 import Link from 'next/link';
 
 const Header = () => (
     <header className="header">
         <Link href="/">
-            今北産業
+            {IMAKITA_SANGYO}
         </Link>
     </header>
 );
