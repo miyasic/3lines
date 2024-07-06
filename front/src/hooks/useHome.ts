@@ -147,6 +147,7 @@ export const useHome = () => {
     };
 
     const updateEditedSummary = (key: keyof SummaryResponse, value: string) => {
+        console.log('updateEditedSummary:', key, value);
         setState(prevState => topPageStateCopyWith(prevState, {
             editedSummary: summaryResponseCopyWith(prevState.editedSummary, { [key]: value }),
         }));

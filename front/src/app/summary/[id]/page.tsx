@@ -1,16 +1,16 @@
 "use client";
 
 import React from 'react';
-import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 import Header from '../../../components/Header';
-import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import { PAGE_MAX_WIDTH, BACKGROUND_IMAGE_PATH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 import styles from './page.module.css';
-import '../../globals.css';
+import AnimatedSummary from '@/components/summary/AnimatedSummary';
+import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 
 const SummaryDetail = () => {
-    const { summary, countdown } = useSummaryDetail();
+    const { summary, containerRef, containerStyle, innerContainerStyle, windowSizeLoading } = useSummaryDetail();
 
     if (!summary) {
         return (
@@ -21,20 +21,24 @@ const SummaryDetail = () => {
     }
 
     return (
-        <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
+        <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
             <Header />
-            <div className={styles.contentContainer}>
-                <div className="innerContainer" style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
-                    <div className={styles.imageContainer}>
-                        <img
-                            src={summary.imageUrl}
-                            alt={summary.title}
-                            className={styles.image}
-                        />
+            {!windowSizeLoading && (
+                <div ref={containerRef} className={styles.contentContainer} style={containerStyle}>
+                    <div className={styles.innerContainer} style={innerContainerStyle}>
+                        <div style={{ marginBottom: '20px' }}>
+                            <AnimatedSummary
+                                title={summary.title}
+                                summary1={summary.summary[0]}
+                                summary2={summary.summary[1]}
+                                summary3={summary.summary[2]}
+                                backgroundImage={BACKGROUND_IMAGE_PATH}
+                            />
+                            <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                        </div>
                     </div>
-                    <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
                 </div>
-            </div>
+            )}
         </div>
     );
 };
