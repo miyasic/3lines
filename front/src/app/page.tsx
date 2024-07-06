@@ -7,32 +7,11 @@ import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
-import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import { ASPECT_RATIO, BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, REGISTER_SUMMARY } from '@/constants/constantsTexts';
+import { summaryResponseCopyWith, topPageStateCopyWith } from '@/utils/helpers';
 
-
-const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
-  return { ...state, ...updates };
-};
-
-const summaryResponseCopyWith = (summaryResponse: SummaryResponse | null, update: Partial<SummaryResponse>): SummaryResponse => {
-  if (!summaryResponse) {
-    return {
-      ...{
-        title: "",
-        summary1: "",
-        summary2: "",
-        summary3: ""
-      },
-      ...update
-    };
-  }
-  return {
-    ...summaryResponse,
-    ...update
-  };
-}
 
 
 const Home = () => {
@@ -183,8 +162,6 @@ const Home = () => {
     }));
   };
 
-  const backgroundImage = '/default_background.png';
-
   return (
 
     <div style={{
@@ -228,7 +205,7 @@ const Home = () => {
                     setSummary1={summary1 => updateEditedSummary('summary1', summary1)}
                     setSummary2={summary2 => updateEditedSummary('summary2', summary2)}
                     setSummary3={summary3 => updateEditedSummary('summary3', summary3)}
-                    backgroundImage={backgroundImage}
+                    backgroundImage={BACKGROUND_IMAGE_PATH}
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
