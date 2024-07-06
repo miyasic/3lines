@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import styles from './page.module.css';
-import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 import './globals.css';
+import ImagePreview from '@/components/ImagePreview';
 
 
 const Home = () => {
