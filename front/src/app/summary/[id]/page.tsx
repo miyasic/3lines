@@ -8,13 +8,14 @@ import AppButton from '@/components/AppButton';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 import styles from './page.module.css';
 import '../../globals.css';
+import AnimatedSummary from '@/components/summary/AnimatedSummary';
 
 const SummaryDetail = () => {
     const { summary, countdown } = useSummaryDetail();
 
     if (!summary) {
         return (
-            <div className={styles.loading}>
+            <div className="loading">
                 Loading...
             </div>
         );
@@ -24,14 +25,20 @@ const SummaryDetail = () => {
         <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
             <Header />
             <div className={styles.contentContainer}>
-                <div className="innerContainer" style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
-                    <div className={styles.imageContainer}>
+                <div className={styles.innerContainer} style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
+                    {/* <div className={styles.imageContainer}>
                         <img
                             src={summary.imageUrl}
                             alt={summary.title}
                             className={styles.image}
                         />
-                    </div>
+                    </div> */}
+                    <AnimatedSummary
+                        title={summary.title}
+                        summary1={summary.summary[0]}
+                        summary2={summary.summary[1]}
+                        summary3={summary.summary[2]}
+                    />
                     <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
                 </div>
             </div>
