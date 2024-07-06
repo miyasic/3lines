@@ -8,7 +8,7 @@ import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/c
 import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
-
+import './globals.css';
 
 
 const Home = () => {
@@ -26,11 +26,11 @@ const Home = () => {
 
   return (
 
-    <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
+    <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
       <Header />
       {!state.windowSizeLoading && (
         <div ref={containerRef} className={styles.container} style={containerStyle}>
-          <div className={styles.innerContainer} style={{ ...innerContainerStyle, maxWidth: `${PAGE_INNER_MAX_WIDTH}px`, }}>
+          <div className="styles.innerContainer" style={{ ...innerContainerStyle, maxWidth: `${PAGE_INNER_MAX_WIDTH}px`, }}>
             {state.summary ? (
               <div className={styles.summaryContainer}>
                 <div style={{ marginBottom: '20px' }}>

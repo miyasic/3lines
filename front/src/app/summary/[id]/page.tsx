@@ -7,6 +7,7 @@ import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 import styles from './page.module.css';
+import '../../globals.css';
 
 const SummaryDetail = () => {
     const { summary, countdown } = useSummaryDetail();
@@ -20,10 +21,10 @@ const SummaryDetail = () => {
     }
 
     return (
-        <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
+        <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
             <Header />
             <div className={styles.contentContainer}>
-                <div className={styles.innerContainer} style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
+                <div className="innerContainer" style={{ maxWidth: `${PAGE_INNER_MAX_WIDTH}px` }}>
                     <div className={styles.imageContainer}>
                         <img
                             src={summary.imageUrl}
