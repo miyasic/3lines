@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { firestore } from '../../../firebase/firebase';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Header from '../../../components/Header';
 import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
@@ -12,6 +12,8 @@ const SummaryDetail = () => {
     const [summary, setSummary] = useState<Summary | null>(null);
     const [countdown, setCountdown] = useState(3);
     const { id } = useParams();
+    const router = useRouter();
+    const opened = useRef(false);
 
     useEffect(() => {
         if (id) {
@@ -36,12 +38,18 @@ const SummaryDetail = () => {
     }, [id]);
 
     useEffect(() => {
-        if (summary) {
+        const queryParams = new URLSearchParams(window.location.search);
+        const autoOpen = queryParams.get('autoOpen') !== 'false'; // クエリパラメータがfalseでない限りリンクを自動で開く
+
+        if (summary && autoOpen && !opened.current) {
             const timer = setInterval(() => {
                 setCountdown((prev) => {
                     if (prev <= 1) {
                         clearInterval(timer);
-                        window.open(summary.articleUrl, '_blank');
+                        if (!opened.current) {
+                            window.open(summary.articleUrl, '_blank');
+                            opened.current = true;
+                        }
                         return 0;
                     }
                     return prev - 1;
@@ -51,7 +59,6 @@ const SummaryDetail = () => {
             return () => clearInterval(timer);
         }
     }, [summary]);
-
 
     if (!summary) {
         return (
