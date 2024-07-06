@@ -1,7 +1,7 @@
 // app/components/ImagePreview.tsx
+import { IMAKITA_SANGYO as IMAKITA_SANGYO } from '@/constants/constantsTexts';
 import React, { useCallback, useMemo, useState } from 'react';
 
-const LOGO_TEXT = "今北産業";
 const IMAGE_WIDTH = 1200;
 const IMAGE_HEIGHT = 628;
 const TITLE_FONT_SIZE = 40;
@@ -156,7 +156,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     fontFamily="RocknRollOne-Regular, sans-serif"
                     fill="#000"
                 >
-                    {LOGO_TEXT}
+                    {IMAKITA_SANGYO}
                 </text>
             </svg>
         </div>

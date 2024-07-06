@@ -1,31 +1,29 @@
-.summaryContainer {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.summaryTitle {
-    font-size: 2rem;
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 24px;
     font-weight: bold;
+}
+
+.contentContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.imageContainer {
+    width: 100%;
+    position: relative;
     margin-bottom: 20px;
 }
 
-.summaryImage {
-    max-width: 100%;
+.image {
+    width: 100%;
     height: auto;
-    margin-bottom: 20px;
-}
-
-.openButton {
-    padding: 10px 20px;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.openButton:hover {
-    background-color: #005bb5;
+    object-fit: cover;
+    border-radius: 10px;
 }

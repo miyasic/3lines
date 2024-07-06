@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import firebase from './firebase/firebase'; // パスはプロジェクトの構造に合わせて修正
+import firebase from '../firebase/firebase'; // パスはプロジェクトの構造に合わせて修正
 import React from 'react';
 import './globals.css';
 
