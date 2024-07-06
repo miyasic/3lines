@@ -1,64 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { firestore } from '../../../firebase/firebase';
-import { useParams, useRouter } from 'next/navigation';
 import Header from '../../../components/Header';
 import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
+import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 
 const SummaryDetail = () => {
-    const [summary, setSummary] = useState<Summary | null>(null);
-    const [countdown, setCountdown] = useState(3);
-    const { id } = useParams();
-    const router = useRouter();
-    const opened = useRef(false);
-
-    useEffect(() => {
-        if (id) {
-            const fetchSummary = async () => {
-                try {
-                    const doc = await firestore.collection('summary').doc(id as string).get();
-                    if (doc.exists) {
-                        setSummary({
-                            id: doc.id,
-                            ...doc.data()
-                        } as Summary);
-                    } else {
-                        console.error("No such document!");
-                    }
-                } catch (error) {
-                    console.error("Error fetching document:", error);
-                }
-            };
-
-            fetchSummary();
-        }
-    }, [id]);
-
-    useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const autoOpen = queryParams.get('autoOpen') !== 'false'; // クエリパラメータがfalseでない限りリンクを自動で開く
-
-        if (summary && autoOpen && !opened.current) {
-            const timer = setInterval(() => {
-                setCountdown((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        if (!opened.current) {
-                            window.open(summary.articleUrl, '_blank');
-                            opened.current = true;
-                        }
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-
-            return () => clearInterval(timer);
-        }
-    }, [summary]);
+    const { summary, countdown } = useSummaryDetail();
 
     if (!summary) {
         return (
@@ -74,7 +23,6 @@ const SummaryDetail = () => {
             </div>
         );
     }
-
     return (
         <div style={{
             display: 'flex',
