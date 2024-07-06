@@ -1,5 +1,3 @@
-import { TopPageState, SummaryResponse } from '@/types';
-
 export const topPageStateCopyWith = (state: TopPageState, updates: Partial<TopPageState>): TopPageState => {
     return { ...state, ...updates };
 };
