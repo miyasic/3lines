@@ -26,16 +26,7 @@ const Home = () => {
 
   return (
 
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-      width: '100%',
-      maxWidth: `${PAGE_MAX_WIDTH}px`,
-      margin: '0 auto',
-      padding: '20px',
-      boxSizing: 'border-box',
-    }}>
+    <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
       <Header />
       {!state.windowSizeLoading && (
         <div ref={containerRef} style={{
