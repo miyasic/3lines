@@ -49,7 +49,7 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({
                 <image href={backgroundImage} width={IMAGE_WIDTH} height={IMAGE_HEIGHT} />
 
                 <foreignObject x={layout.summaryX} y={layout.titleY - TITLE_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={TITLE_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', fontSize: `${TITLE_FONT_SIZE}px` }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', fontSize: `${TITLE_FONT_SIZE}px`, fontWeight: 'bold' }}>
                         {title}
                     </div>
                 </foreignObject>

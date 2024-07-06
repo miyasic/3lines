@@ -28,7 +28,6 @@ const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit,
     <div
         className={styles.editable}
         style={{
-            fontSize: '35px',
             color: isOverLimit ? 'red' : 'inherit',
         }}
         contentEditable
