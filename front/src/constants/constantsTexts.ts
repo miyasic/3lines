@@ -8,3 +8,6 @@ export const OPEN_ORIGINAL_ARTICLE = "記事を開く";
 
 // Hint
 export const INPUT_URL = "記事のURLを入力してください";
+
+// SectionTitle
+export const SUMMARY_LIST = "みんなの三行";

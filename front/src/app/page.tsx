@@ -6,7 +6,7 @@ import ImagePreview from '../components/IMagePreview';
 import Header from '../components/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import AppButton from '@/components/AppButton';
-import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY } from '@/constants/constantsTexts';
+import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 
 
@@ -66,31 +66,15 @@ const Home = () => {
       )}
 
       {!state.windowSizeLoading && (
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: 0,
-          width: '100%',
-        }}>
-          <h2 style={{
-            fontSize: '20px',
-            fontWeight: 'bold',
-            marginBottom: '10px',
-            flexShrink: 0,
-          }}>
-            保存された要約一覧
+        <div className={styles.summaryListContainer}>
+          <h2 className={styles.summaryListHeader}>
+            {SUMMARY_LIST}
           </h2>
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            width: '100%',
-          }}>
+          <div className={styles.summaryList}>
             {state.fetchSummariesLoading ?
               (Array.from({ length: 12 }).map((_, index) => (
                 <div key={index} className={styles.skeleton}>
-                  <img src="/default_background.png" alt="Loading" className={styles.skeletonImage} />
+                  <img src={BACKGROUND_IMAGE_PATH} alt="Loading" className={styles.skeletonImage} />
                   <div className={styles.shimmer}></div>
                 </div>
               ))) :
