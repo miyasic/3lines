@@ -30,15 +30,7 @@ const Home = () => {
       <Header />
       {!state.windowSizeLoading && (
         <div ref={containerRef} className={styles.container} style={containerStyle}>
-          <div style={{
-            ...innerContainerStyle,
-            width: '100%',
-            maxWidth: `${PAGE_INNER_MAX_WIDTH}px`,
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}>
+          <div className={styles.innerContainer} style={{ ...innerContainerStyle, maxWidth: `${PAGE_INNER_MAX_WIDTH}px`, }}>
             {state.summary ? (
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
                 <div style={{ marginBottom: '20px' }}>
