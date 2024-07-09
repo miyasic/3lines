@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
             url: `https://3lines-lemon.vercel.app/summary/${params.id}`,
         },
         twitter: {
-            description: description + '#今北産業'
+            title: data.title + '  #今北産業',
         },
     };
 }
