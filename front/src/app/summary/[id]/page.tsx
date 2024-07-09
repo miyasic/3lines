@@ -55,4 +55,6 @@ const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     );
 };
 
+export const revalidate = 60;
+
 export default SummaryDetail;
