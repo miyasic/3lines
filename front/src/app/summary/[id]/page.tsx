@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
                     url: data.imageUrl,
                 },
             ],
-            url: `https://your-website.com/summary/${data.id}`,
+            url: `https://3lines-afx83u1kq-miyasics-projects.vercel.app/summary/${data.id}`,
         },
     };
 }
