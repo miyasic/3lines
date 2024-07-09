@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         title: data.title,
         openGraph: {
             title: data.title,
-            description: data.summary[0],
+            description: data.summary[0] + '¥n' + data.summary[1] + '¥n' + data.summary[2],
             images: [
                 {
                     url: data.imageUrl,
