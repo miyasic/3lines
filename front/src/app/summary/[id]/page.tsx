@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
     const doc = await firestore.collection('summary').doc(params.id).get();
     const data = doc.data() as Summary;
-    const description = data.summary[0] + '¥n' + data.summary[1] + '¥n' + data.summary[2];
+    const description = data.summary[0] + '\n' + data.summary[1] + '\n' + data.summary[2];
     return {
         title: data.title,
         openGraph: {
