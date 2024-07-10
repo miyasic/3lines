@@ -14,9 +14,23 @@ const firebaseConfig = {
     measurementId: "G-R3KEXWL32W"
 };
 
+const devFirebaesConfig = {
+    apiKey: "AIzaSyBgq94c2DSbVLaDUj2yETqiPvBFOoxPRGE",
+    authDomain: "lines-31c04-dev.firebaseapp.com",
+    projectId: "lines-31c04-dev",
+    storageBucket: "lines-31c04-dev.appspot.com",
+    messagingSenderId: "186772937007",
+    appId: "1:186772937007:web:4b58e2c988cb5e3523e9da"
+};
+
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+    // 環境ごとに切り替える
+    if (process.env.NODE_ENV === 'development') {
+        firebase.initializeApp(devFirebaesConfig);
+    } else if (process.env.NODE_ENV === 'production') {
+        firebase.initializeApp(firebaseConfig);
+    }
     // emulatorを使うときはコメントアウトを外す
     // firebase.functions().useEmulator("localhost", 5001);
     // firebase.firestore().useEmulator("localhost", 8080);
