@@ -1,16 +1,44 @@
-"use client";
-
 import React from 'react';
-import Header from '../../../components/Header';
-import { PAGE_MAX_WIDTH, BACKGROUND_IMAGE_PATH } from '@/constants/constants';
-import AppButton from '@/components/AppButton';
-import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 import styles from './page.module.css';
-import AnimatedSummary from '@/components/summary/AnimatedSummary';
-import { useSummaryDetail } from '@/hooks/useSummaryDetail';
+import { SummaryDetailClient } from '@/components/summaryDetailClient';
+import { firestore } from '@/firebase/firebase';
+import { Metadata } from 'next';
 
-const SummaryDetail = () => {
-    const { summary, containerRef, containerStyle, innerContainerStyle, windowSizeLoading } = useSummaryDetail();
+
+export async function generateStaticParams() {
+    const snapshot = await firestore.collection('summary').get();
+    const paths = snapshot.docs.map(doc => ({
+        id: doc.id,
+    }));
+
+    return paths;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    const doc = await firestore.collection('summary').doc(params.id).get();
+    const data = doc.data() as Summary;
+    const description = data.summary[0] + '\n' + data.summary[1] + '\n' + data.summary[2];
+    return {
+        title: data.title,
+        openGraph: {
+            title: data.title,
+            description: description,
+            images: [
+                {
+                    url: data.imageUrl,
+                },
+            ],
+            url: `https://3lines-lemon.vercel.app/summary/${params.id}`,
+        },
+        twitter: {
+            title: data.title + '  #今北産業',
+        },
+    };
+}
+
+const SummaryDetail = async ({ params }: { params: { id: string } }) => {
+    const doc = await firestore.collection('summary').doc(params.id).get();
+    const summary = doc.data() as Summary;
 
     if (!summary) {
         return (
@@ -21,26 +49,12 @@ const SummaryDetail = () => {
     }
 
     return (
-        <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
-            <Header />
-            {!windowSizeLoading && (
-                <div ref={containerRef} className={styles.contentContainer} style={containerStyle}>
-                    <div className={styles.innerContainer} style={innerContainerStyle}>
-                        <div style={{ marginBottom: '20px' }}>
-                            <AnimatedSummary
-                                title={summary.title}
-                                summary1={summary.summary[0]}
-                                summary2={summary.summary[1]}
-                                summary3={summary.summary[2]}
-                                backgroundImage={BACKGROUND_IMAGE_PATH}
-                            />
-                            <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
-                        </div>
-                    </div>
-                </div>
-            )}
+        <div>
+            <SummaryDetailClient summary={summary} />
         </div>
     );
 };
+
+export const revalidate = 3600;
 
 export default SummaryDetail;
