@@ -88,3 +88,17 @@ resource "google_identity_platform_config" "default" {
         }
     }
 }
+
+# Firebaseプロジェクトにウェブアプリを追加する
+resource "google_firebase_web_app" "basic" {
+  provider = google-beta
+  project  = google_project.default.project_id
+  display_name = "Front"
+}
+
+# Firebaseウェブアプリの設定を取得する
+data "google_firebase_web_app_config" "basic" {
+  provider = google-beta
+  project  = google_project.default.project_id
+  web_app_id = google_firebase_web_app.basic.app_id
+}
