@@ -3,7 +3,7 @@ terraform {
   required_providers {
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "~> 4.0"
+      version = "5.37.0"
     }
   }
 }
@@ -89,6 +89,29 @@ resource "google_identity_platform_config" "default" {
     }
 }
 
+
+resource "google_firestore_database" "database" {
+  project  = google_project.default.project_id
+  name        = "(default)"
+  location_id = "nam5"
+  type        = "FIRESTORE_NATIVE"
+}
+
+resource "google_storage_bucket" "default" {
+  provider                    = google-beta
+  name                        = "lines-31c04-dev"
+  location                    = "US"
+  uniform_bucket_level_access = true
+  project  = google_project.default.project_id
+}
+
+
+resource "google_firebase_storage_bucket" "default" {
+  provider  = google-beta
+  project  = google_project.default.project_id
+  bucket_id = google_storage_bucket.default.id
+}
+
 # Firebaseプロジェクトにウェブアプリを追加する
 resource "google_firebase_web_app" "basic" {
   provider = google-beta
@@ -102,3 +125,4 @@ data "google_firebase_web_app_config" "basic" {
   project  = google_project.default.project_id
   web_app_id = google_firebase_web_app.basic.app_id
 }
+
