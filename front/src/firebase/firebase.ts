@@ -26,7 +26,9 @@ const devFirebaesConfig = {
 
 if (!firebase.apps.length) {
     // 環境ごとに切り替える
-    const isProd = process.env.NODE_ENV === 'production' || process.env.ENV === 'production';
+    console.log(process.env.NODE_ENV);
+    console.log(process.env.NEXT_PUBLIC_ENV);
+    const isProd = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_ENV === 'production';
     const config = isProd ? firebaseConfig : devFirebaesConfig;
     firebase.initializeApp(config);
     // emulatorを使うときはコメントアウトを外す
