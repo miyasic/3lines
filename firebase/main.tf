@@ -8,6 +8,13 @@ terraform {
   }
 }
 
+provider "google" {
+  credentials = file("devTerraformServiceKey.json")
+  project     = "lines-31c04-dev"
+  region      = "us-central1"
+  user_project_override = true
+}
+
 # Configures the provider to use the resource block's specified project for quota checks.
 provider "google-beta" {
   user_project_override = true
@@ -53,6 +60,7 @@ resource "google_project_service" "default" {
   disable_on_destroy = false
 }
 
+
 # Enables Firebase services for the new project created above.
 resource "google_firebase_project" "default" {
   provider = google-beta
@@ -62,4 +70,21 @@ resource "google_firebase_project" "default" {
   depends_on = [
     google_project_service.default
   ]
+}
+
+resource "google_project_service" "identitytoolkit" {
+  provider = google
+  project  = google_project.default.project_id
+  service  = "identitytoolkit.googleapis.com"
+}
+
+
+resource "google_identity_platform_config" "default" {
+  project = google_project.default.project_id
+  autodelete_anonymous_users = true
+  sign_in {
+    anonymous {
+        enabled = true
+        }
+    }
 }
