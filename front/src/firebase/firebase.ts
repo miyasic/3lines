@@ -26,11 +26,9 @@ const devFirebaesConfig = {
 
 if (!firebase.apps.length) {
     // 環境ごとに切り替える
-    if (process.env.NODE_ENV === 'development') {
-        firebase.initializeApp(devFirebaesConfig);
-    } else if (process.env.NODE_ENV === 'production') {
-        firebase.initializeApp(firebaseConfig);
-    }
+    const isProd = process.env.NODE_ENV === 'production' || process.env.ENV === 'production';
+    const config = isProd ? firebaseConfig : devFirebaesConfig;
+    firebase.initializeApp(config);
     // emulatorを使うときはコメントアウトを外す
     // firebase.functions().useEmulator("localhost", 5001);
     // firebase.firestore().useEmulator("localhost", 8080);
