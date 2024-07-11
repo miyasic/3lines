@@ -3,11 +3,11 @@ from firebase_admin import initialize_app,firestore, storage,credentials
 from storage_repository import upload_image_to_storage
 from firestore_repository import  save_summary_data
 from summarize import summarize_text
-from firebase_functions.params import SecretParam
+from firebase_functions.params import SecretParam, PROJECT_ID
 from generate_summarized_image import generate_image
 import os
 
-project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
+project_id = PROJECT_ID.value
 
 # プロジェクトIDに基づいてサービスアカウントキーを設定
 if project_id == 'lines-31c04-dev':
