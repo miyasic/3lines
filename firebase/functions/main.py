@@ -7,7 +7,14 @@ from firebase_functions.params import SecretParam
 from generate_summarized_image import generate_image
 import os
 
-cred = credentials.Certificate('serviceAccountKey.json')
+project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
+
+# プロジェクトIDに基づいてサービスアカウントキーを設定
+if project_id == 'lines-31c04-dev':
+    cred = credentials.Certificate('devFirebaseServiceAccountKey.json')
+else:
+    cred = credentials.Certificate('serviceAccountKey.json')
+
 initialize_app(cred)
 
 API_KEY = SecretParam('API_KEY')
