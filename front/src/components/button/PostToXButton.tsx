@@ -5,18 +5,16 @@ import buttonStyles from './Button.module.css';
 
 interface XPostButtonProps {
     text: string;
-    url: string;
+    id: string;
     className?: string;
 }
 
 
 
-const XPostButton = ({ text, url, className = '' }: XPostButtonProps) => {
-    const shareText = encodeURIComponent(text);
-    const shareUrl = encodeURIComponent(url);
+const XPostButton = ({ text, id, className = '' }: XPostButtonProps) => {
     const handleClick = () => {
         const shareText = encodeURIComponent(text);
-        const shareUrl = encodeURIComponent(url);
+        const shareUrl = encodeURIComponent(`https://3lines.me/summary/${id}`);
         const xShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
         window.open(xShareUrl, '_blank', 'noopener,noreferrer');
 

@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
 const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     const doc = await firestore.collection('summary').doc(params.id).get();
-    const summary = doc.data() as Summary;
+    const summary = { ...doc.data(), id: params.id } as Summary;
 
     if (!summary) {
         return (
