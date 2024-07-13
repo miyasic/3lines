@@ -8,6 +8,7 @@ import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 import ImagePreview from '@/components/IMagePreview';
+import Footer from '@/components/Footer';
 
 
 
@@ -90,6 +91,9 @@ const Home = () => {
               ))}
           </div>
         </div>
+      )}
+      {!state.windowSizeLoading && (
+        <Footer />
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import { SummaryDetailClient } from '@/components/summaryDetailClient';
 import { firestore } from '@/firebase/firebase';
 import { Metadata } from 'next';
+import Footer from '@/components/Footer';
 
 
 export async function generateStaticParams() {
@@ -51,6 +52,7 @@ const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     return (
         <div>
             <SummaryDetailClient summary={summary} />
+            <Footer />
         </div>
     );
 };
