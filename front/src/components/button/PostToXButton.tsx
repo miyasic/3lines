@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './PostToXButton.module.css';
-import buttonStyles from './Button.module.css';
+import buttonStyles from './button.module.css';
 
 interface XPostButtonProps {
     text: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from './AppButton.module.css';
-import buttonStyles from './Button.module.css';
+import buttonStyles from './button.module.css';
 
 interface AppButtonProps {
     title: string;
