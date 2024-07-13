@@ -52,14 +52,35 @@
     width: 100%;
 }
 
+.article,
 .skeleton {
     position: relative;
-    flex: 1 0 30%;
-    max-width: 30%;
+    flex: 0 0 calc(50%);
+    max-width: 100%;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 5px;
+    margin-bottom: 20px;
 }
 
+@media (min-width: 600px) {
+
+    .article,
+    .skeleton {
+        flex: 0 0 calc(50% - 10px);
+        padding: 5px;
+    }
+}
+
+@media (min-width: 900px) {
+
+    .article,
+    .skeleton {
+        flex: 0 0 30%;
+        padding: 10px;
+    }
+}
+
+.image,
 .skeletonImage {
     width: 100%;
     height: auto;
@@ -84,17 +105,4 @@
     100% {
         transform: translateX(100%);
     }
-}
-
-.article {
-    flex: 1 0 30%;
-    max-width: 30%;
-    box-sizing: border-box;
-    padding: 10px;
-}
-
-.image {
-    width: 100%;
-    height: auto;
-    display: block;
 }

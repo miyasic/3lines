@@ -80,7 +80,7 @@ const Home = () => {
                   <div className={styles.shimmer}></div>
                 </div>
               ))) :
-              [...state.summaries, ...Array(3 - (state.summaries.length % 3)).fill(null)].map((summary, index) => (
+              [...state.summaries, ...(state.summaries.length % 3 === 0 ? [] : Array(3 - (state.summaries.length % 3)).fill(null))].map((summary, index) => (
                 summary ? (
                   <div key={summary.id} className={styles.article}>
                     <Link href={`/summary/${summary.id}`}>
