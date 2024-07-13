@@ -18,4 +18,4 @@ if [ ! -z "$fork_window_id" ]; then
 fi
 
 
-open -a "Google Chrome" https://3lines-lemon-dev.vercel.app/ https://github.com/miyasic/3lines/pulls https://console.firebase.google.com/project/lines-31c04-dev/overview?hl=ja
+open -a "Google Chrome" https://3lines-lemon-dev.vercel.app/ https://github.com/miyasic/3lines/pulls https://console.firebase.google.com/project/lines-31c04-dev/overview?hl=ja https://vercel.com/miyasics-projects/3lines https://www.notion.so/miyasic/6d93b86b093d4cd782c1aac401c19990
