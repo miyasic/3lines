@@ -124,12 +124,15 @@ export const useHome = () => {
     };
 
     const saveSummary = async (summaryData: SaveSummaryRequest) => {
+
         const saveSummaryFunction = functions.httpsCallable('save_summary');
         try {
             const result = await saveSummaryFunction(summaryData);
             console.log('Summary saved:', result.data);
+
             return result.data.summaryId;
         } catch (error) {
+            setState(prevState => topPageStateCopyWith(prevState, { saveSummaryLoading: false }));
             console.error('Error saving summary:', error);
         }
     };
@@ -138,6 +141,7 @@ export const useHome = () => {
         if (!state.editedSummary) {
             return;
         }
+        setState(prevState => topPageStateCopyWith(prevState, { saveSummaryLoading: true }));
         const requestData: SaveSummaryRequest = {
             articleUrl: state.summarizedArticleUrl,
             title: state.editedSummary.title,

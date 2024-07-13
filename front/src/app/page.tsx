@@ -47,7 +47,7 @@ const Home = () => {
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
-                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} />
+                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} isLoading={state.saveSummaryLoading} />
               </div>
             ) : (
               <div className={styles.inputContainer}>
@@ -58,7 +58,7 @@ const Home = () => {
                   placeholder={INPUT_URL}
                   className={styles.input}
                 />
-                <AppButton title={GET_SUMMARY} onClick={handleSubmit} disabled={!state.isValidUrl} />
+                <AppButton title={GET_SUMMARY} onClick={handleSubmit} disabled={!state.isValidUrl} isLoading={state.summarizeLoading} />
               </div>
             )}
           </div>
