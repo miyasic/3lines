@@ -7,6 +7,8 @@ import AnimatedSummary from './summary/AnimatedSummary';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
 import AppButton from './button/AppButton';
 import { useSummaryDetail } from '@/hooks/useSummaryDetail';
+import Footer from './layout/Footer';
+import XPostButton from './button/PostToXButton';
 
 
 interface SummaryDetailProps {
@@ -39,10 +41,14 @@ export const SummaryDetailClient: React.FC<SummaryDetailProps> = ({ summary }) =
                                 backgroundImage={BACKGROUND_IMAGE_PATH}
                             />
                             <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                            <XPostButton text={summary.title} url={`https://3lines-lemon.vercel.app/summary/${summary.id}`} />
                         </div>
+
                     </div>
+
                 </div>
             )}
+
         </div>
     );
 }
