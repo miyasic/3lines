@@ -58,7 +58,7 @@ const Home = () => {
                   placeholder={INPUT_URL}
                   className={styles.input}
                 />
-                <AppButton title={GET_SUMMARY} onClick={handleSubmit} />
+                <AppButton title={GET_SUMMARY} onClick={handleSubmit} disabled={!state.isValidUrl} />
               </div>
             )}
           </div>

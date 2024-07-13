@@ -13,3 +13,13 @@
     margin: 0 auto;
     display: block;
 }
+
+.appButton:hover {
+    background-color: #2f855a;
+}
+
+.appButton:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    color: #ffffff;
+}
