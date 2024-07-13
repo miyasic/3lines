@@ -66,3 +66,4 @@ node_modules/
 .env
 
 functions/serviceAccountKey.json
+functions/devFirebaseServiceAccountKey.json
