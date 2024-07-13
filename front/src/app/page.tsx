@@ -24,9 +24,6 @@ const Home = () => {
     updateEditedSummary,
   } = useHome();
 
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.NEXT_PUBLIC_ENV);
-
   return (
 
     <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
