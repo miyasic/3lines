@@ -2,11 +2,13 @@
 
 import { BACKGROUND_IMAGE_PATH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import styles from '../app/summary/[id]/page.module.css';
-import Header from './Header';
+import Header from './layout/Header';
 import AnimatedSummary from './summary/AnimatedSummary';
-import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
-import AppButton from './AppButton';
+import { OPEN_ORIGINAL_ARTICLE, SHARE_TEXT } from '@/constants/constantsTexts';
+import AppButton from './button/AppButton';
 import { useSummaryDetail } from '@/hooks/useSummaryDetail';
+import Footer from './layout/Footer';
+import XPostButton from './button/PostToXButton';
 
 
 interface SummaryDetailProps {
@@ -38,11 +40,15 @@ export const SummaryDetailClient: React.FC<SummaryDetailProps> = ({ summary }) =
                                 summary3={summary.summary[2]}
                                 backgroundImage={BACKGROUND_IMAGE_PATH}
                             />
-                            <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                            <div className={styles.buttonContainer}>
+                                <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                                <XPostButton text={`${summary.title} \n ${SHARE_TEXT}`} id={summary.id} />
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
         </div>
+
     );
 }
