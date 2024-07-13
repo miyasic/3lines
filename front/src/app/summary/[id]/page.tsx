@@ -3,7 +3,7 @@ import styles from './page.module.css';
 import { SummaryDetailClient } from '@/components/summaryDetailClient';
 import { firestore } from '@/firebase/firebase';
 import { Metadata } from 'next';
-import Footer from '@/components/Footer';
+import Footer from '@/components/layout/Footer';
 
 
 export async function generateStaticParams() {

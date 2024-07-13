@@ -2,10 +2,10 @@
 
 import { BACKGROUND_IMAGE_PATH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import styles from '../app/summary/[id]/page.module.css';
-import Header from './Header';
+import Header from './layout/Header';
 import AnimatedSummary from './summary/AnimatedSummary';
 import { OPEN_ORIGINAL_ARTICLE } from '@/constants/constantsTexts';
-import AppButton from './AppButton';
+import AppButton from './button/AppButton';
 import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 
 

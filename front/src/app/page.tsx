@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import styles from './page.module.css';
-import Header from '../components/Header';
+import Header from '../components/layout/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
-import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 import ImagePreview from '@/components/IMagePreview';
-import Footer from '@/components/Footer';
+import Footer from '@/components/layout/Footer';
+import AppButton from '@/components/button/AppButton';
 
 
 
