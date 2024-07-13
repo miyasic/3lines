@@ -37,30 +37,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .buttonContainer>* {
-    flex: 0 1 auto;
-    margin: 10px;
-    max-width: 300px;
-}
-
-.limitedWidthButton {
-    width: 100% !important;
-    max-width: 300px !important;
-    margin: 10px auto !important;
-}
-
-@media (max-width: 768px) {
-    .buttonContainer {
-        flex-direction: column;
-    }
-
-    .buttonContainer>*,
-    .limitedWidthButton {
-        width: 80% !important;
-        margin: 10px auto !important;
-    }
+    margin: 20px;
 }
