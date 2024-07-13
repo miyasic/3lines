@@ -40,15 +40,15 @@ export const SummaryDetailClient: React.FC<SummaryDetailProps> = ({ summary }) =
                                 summary3={summary.summary[2]}
                                 backgroundImage={BACKGROUND_IMAGE_PATH}
                             />
-                            <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
-                            <XPostButton text={summary.title} url={`https://3lines-lemon.vercel.app/summary/${summary.id}`} />
+                            <div className={styles.buttonContainer}>
+                                <AppButton title={OPEN_ORIGINAL_ARTICLE} onClick={() => window.open(summary.articleUrl, '_blank')} />
+                                <XPostButton text={summary.title} url={`https://3lines-lemon.vercel.app/summary/${summary.id}`} />
+                            </div>
                         </div>
-
                     </div>
-
                 </div>
             )}
-
         </div>
+
     );
 }

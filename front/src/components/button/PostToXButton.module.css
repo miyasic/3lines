@@ -11,8 +11,7 @@
     align-items: center;
     justify-content: center;
     margin-right: 8px;
-    /* ↓目で見て高さを揃えたので理由はない↓ */
-    padding-bottom: 6px;
+
     width: 18px;
     height: 18px;
 }
