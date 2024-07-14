@@ -2,7 +2,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { AuthError, GithubAuthProvider, linkWithPopup, signInAnonymously, signInWithPopup, User, UserCredential } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
@@ -20,7 +20,7 @@ const devFirebaesConfig = {
     projectId: "lines-31c04-dev",
     storageBucket: "lines-31c04-dev.appspot.com",
     messagingSenderId: "186772937007",
-    appId: "1:186772937007:web:4b58e2c988cb5e3523e9da"
+    appId: "1:186772937007:web:d8e42ee700b19d8723e9da"
 };
 
 
@@ -48,5 +48,50 @@ signInAnonymously(auth)
         console.error(error);
     });
 
-export { firestore, functions, auth };
+export const signInWithGithub = async (): Promise<User | null> => {
+    const provider = new GithubAuthProvider();
+    try {
+        provider.addScope('read:user');
+        const result: UserCredential = await signInWithPopup(auth, provider);
+        return result.user;
+    } catch (error) {
+        console.error("Error during GitHub sign-in:", error);
+        handleAuthError(error as AuthError);
+        return null;
+    }
+};
+
+export const linkAnonymousUserWithGithub = async (): Promise<User | null> => {
+    const provider = new GithubAuthProvider();
+    try {
+        provider.addScope('read:user');
+        const user = auth.currentUser;
+        if (user) {
+            const result: UserCredential = await linkWithPopup(user, provider);
+            return result.user;
+        } else {
+            console.error("No anonymous user is currently signed in");
+            return null;
+        }
+    } catch (error) {
+        handleAuthError(error as AuthError);
+        return null;
+    }
+};
+
+const handleAuthError = (error: AuthError): void => {
+    console.error("Authentication Error:", error);
+    if (error.code) {
+        console.error("Error code:", error.code);
+    }
+    if (error.message) {
+        console.error("Error message:", error.message);
+    }
+    if (error.customData?.email) {
+        console.error("Email associated with error:", error.customData.email);
+    }
+
+};
+
+export { firestore, functions, auth, };
 export default firebase;
