@@ -39,14 +39,15 @@ const firestore = firebase.firestore();
 const functions = firebase.functions();
 const auth = firebase.auth();
 
-signInAnonymously(auth)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('User ID:', user.uid);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+
+firebase.auth().onAuthStateChanged(async (user) => {
+    // 未ログイン時
+    if (!user) {
+        firebase.auth().signInAnonymously();
+    }
+    // ログイン時
+    else { }
+});
 
 export const signInWithGithub = async (): Promise<User | null> => {
     const provider = new GithubAuthProvider();
