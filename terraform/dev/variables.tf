@@ -22,3 +22,14 @@ variable "credentials_path" {
   description = "Path to the service account key file"
   type        = string
 }
+
+variable "github_client_id" {
+  description = "GitHub OAuth クライアントID"
+  type        = string
+}
+
+variable "github_client_secret" {
+  description = "GitHub OAuth クライアントシークレット"
+  type        = string
+  sensitive   = true
+}
