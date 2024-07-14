@@ -17,10 +17,15 @@ deploy-functions-prod:
 	firebase deploy --only functions
 
 ## infrastructure
-terraform:
-	cd firebase && \
+terraform-dev:
+	cd terraform/dev && \
 	terraform init && \
-	terraform apply
+	terraform apply -var-file=terraform.tfvars
+
+terraform-prod:
+	cd terraform/prod && \
+	terraform init && \
+	terraform apply -var-file=terraform.tfvars
 
 ## Frontend
 front-dev:
