@@ -3,6 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
 import { AuthError, GithubAuthProvider, linkWithPopup, signInAnonymously, signInWithPopup, User, UserCredential } from "firebase/auth";
+import { sign } from 'crypto';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
@@ -49,7 +50,9 @@ firebase.auth().onAuthStateChanged(async (user) => {
     else { }
 });
 
-export const signInWithGithub = async (): Promise<User | null> => {
+
+
+const signInWithGithub = async (): Promise<User | null> => {
     const provider = new GithubAuthProvider();
     try {
         provider.addScope('read:user');
@@ -62,7 +65,7 @@ export const signInWithGithub = async (): Promise<User | null> => {
     }
 };
 
-export const linkAnonymousUserWithGithub = async (): Promise<User | null> => {
+const linkAnonymousUserWithGithub = async (): Promise<User | null> => {
     const provider = new GithubAuthProvider();
     try {
         provider.addScope('read:user');
@@ -80,7 +83,33 @@ export const linkAnonymousUserWithGithub = async (): Promise<User | null> => {
     }
 };
 
-const handleAuthError = (error: AuthError): void => {
+export const signOut = async (): Promise<void> => {
+    try {
+        await auth.signOut();
+    } catch (error) {
+        console.error("Error signing out:", error);
+    }
+}
+export const signIn = async (user: User | null): Promise<User | null> => {
+    if (user && user.isAnonymous) {
+        try {
+            await linkAnonymousUserWithGithub();
+        } catch (error) {
+            handleAuthError(error as AuthError);
+        }
+    } else if (user == null) {
+        await signInWithGithub();
+    }
+    return auth.currentUser as User;
+}
+
+const handleAuthError = async (error: AuthError): Promise<void> => {
+    if (error.code === 'auth/credential-already-in-use') {
+        // 既に別のアカウントにリンクされている場合
+        await auth.signOut();
+        await signInWithGithub();
+        return;
+    }
     console.error("Authentication Error:", error);
     if (error.code) {
         console.error("Error code:", error.code);
