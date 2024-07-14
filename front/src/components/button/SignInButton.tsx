@@ -10,8 +10,9 @@ const GitHubSignInButton: React.FC<GitHubSignInButtonProps> = ({ onClick }) => (
         className={styles.githubSigninButton}
         onClick={onClick}
     >
+        <span>Sign in with</span>
         <Image src="/github-mark-white.svg" alt="GitHub logo" width={20} height={20} />
-        <span>Sign in with GitHub</span>
+
     </button>
 );
 
