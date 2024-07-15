@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         title: data.title,
         openGraph: {
             title: data.title,
+            description: "今北産業はGeminiAPIで技術記事を3行に要約・シェアできるサービスです。",
             images: [
                 {
                     url: data.imageUrl,
