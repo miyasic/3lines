@@ -18,12 +18,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
     const doc = await firestore.collection('summary').doc(params.id).get();
     const data = doc.data() as Summary;
-    const description = data.summary[0] + ' ' + data.summary[1] + ' ' + data.summary[2];
+    const description = data.summary[0] + '...';
     return {
         title: data.title,
         openGraph: {
             title: data.title,
-            description: "今北産業はGeminiAPIで技術記事を3行に要約・シェアできるサービスです。",
+            description: description,
             images: [
                 {
                     url: data.imageUrl,
