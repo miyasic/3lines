@@ -4,6 +4,8 @@ provider "google" {
   user_project_override = true
 }
 
+
+
 terraform {
   backend "gcs" {
     bucket = "remote-backend-for-terraform-dev"
@@ -87,16 +89,6 @@ resource "google_project_service" "identitytoolkit" {
 }
 
 
-resource "google_identity_platform_config" "default" {
-  project = google_project.default.project_id
-  autodelete_anonymous_users = true
-  sign_in {
-    anonymous {
-        enabled = true
-        }
-    }
-}
-
 
 resource "google_firestore_database" "database" {
   project  = google_project.default.project_id
@@ -132,4 +124,28 @@ data "google_firebase_web_app_config" "basic" {
   provider = google-beta
   project  = google_project.default.project_id
   web_app_id = google_firebase_web_app.basic.app_id
+}
+
+resource "google_identity_platform_default_supported_idp_config" "idp_config" {
+  enabled       = true
+  idp_id        = "github.com"
+  client_id     = var.github_client_id
+  client_secret = var.github_client_secret
+}
+
+
+# Firebaseのプロジェクト設定にGitHub認証を追加
+resource "google_identity_platform_config" "default" {
+  project = google_project.default.project_id
+  autodelete_anonymous_users = true
+  sign_in {
+    anonymous {
+      enabled = true
+    }
+  }
+
+  depends_on = [
+    google_project_service.identitytoolkit,
+    google_identity_platform_default_supported_idp_config.idp_config
+  ]
 }
