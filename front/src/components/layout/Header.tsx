@@ -19,6 +19,7 @@ const Header: React.FC = () => {
 
     const handleGithubLogin = async () => {
         const newUser = await signIn(user);
+        setUser(newUser);
     };
 
     const hideLoginButton = user == null;
