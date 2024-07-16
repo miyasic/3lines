@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import { SummaryDetailClient } from '@/components/summaryDetailClient';
 import { firestore } from '@/firebase/firebase';
 import { Metadata } from 'next';
+import Footer from '@/components/layout/Footer';
 
 
 export async function generateStaticParams() {
@@ -17,28 +18,24 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
     const doc = await firestore.collection('summary').doc(params.id).get();
     const data = doc.data() as Summary;
-    const description = data.summary[0] + '\n' + data.summary[1] + '\n' + data.summary[2];
+    const description = data.summary[0];
     return {
         title: data.title,
         openGraph: {
             title: data.title,
-            description: description,
             images: [
                 {
                     url: data.imageUrl,
                 },
             ],
-            url: `https://3lines-lemon.vercel.app/summary/${params.id}`,
-        },
-        twitter: {
-            title: data.title + '  #今北産業',
+            url: `https://3lines.me/summary/${params.id}`,
         },
     };
 }
 
 const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     const doc = await firestore.collection('summary').doc(params.id).get();
-    const summary = doc.data() as Summary;
+    const summary = { ...doc.data(), id: params.id } as Summary;
 
     if (!summary) {
         return (
@@ -51,6 +48,7 @@ const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     return (
         <div>
             <SummaryDetailClient summary={summary} />
+            <Footer />
         </div>
     );
 };

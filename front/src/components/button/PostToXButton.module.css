@@ -1,0 +1,17 @@
+.postToXButton {
+    background-color: black;
+}
+
+.postToXButton:hover {
+    background-color: #333;
+}
+
+.xLogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+
+    width: 18px;
+    height: 18px;
+}

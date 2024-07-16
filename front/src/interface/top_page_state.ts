@@ -2,6 +2,7 @@
 interface TopPageState {
     summaries: Summary[];
     url: string;
+    isValidUrl: boolean;
     summarizedArticleUrl: string;
     windowSizeLoading: boolean;
     fetchSummariesLoading: boolean;

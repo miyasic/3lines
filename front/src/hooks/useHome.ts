@@ -4,10 +4,13 @@ import { topPageStateCopyWith, summaryResponseCopyWith } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 
+const URL_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
+
 export const useHome = () => {
     const [state, setState] = useState<TopPageState>({
         summaries: [],
         url: '',
+        isValidUrl: false,
         summarizedArticleUrl: '',
         windowSizeLoading: true,
         fetchSummariesLoading: false,
@@ -81,13 +84,14 @@ export const useHome = () => {
     }, []);
 
     const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setState(prevState => topPageStateCopyWith(prevState, { url: event.target.value }));
+        const url = event.target.value;
+        setState(prevState => topPageStateCopyWith(prevState, { url: event.target.value, isValidUrl: URL_REGEX.test(url) }));
     };
 
     const handleSubmit = async () => {
         setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: true }));
 
-        const summarizeFunction = functions.httpsCallable('mock_summarize');
+        const summarizeFunction = functions.httpsCallable('summarize');
 
         try {
             const url = state.url;
@@ -120,12 +124,15 @@ export const useHome = () => {
     };
 
     const saveSummary = async (summaryData: SaveSummaryRequest) => {
+
         const saveSummaryFunction = functions.httpsCallable('save_summary');
         try {
             const result = await saveSummaryFunction(summaryData);
             console.log('Summary saved:', result.data);
+
             return result.data.summaryId;
         } catch (error) {
+            setState(prevState => topPageStateCopyWith(prevState, { saveSummaryLoading: false }));
             console.error('Error saving summary:', error);
         }
     };
@@ -134,6 +141,7 @@ export const useHome = () => {
         if (!state.editedSummary) {
             return;
         }
+        setState(prevState => topPageStateCopyWith(prevState, { saveSummaryLoading: true }));
         const requestData: SaveSummaryRequest = {
             articleUrl: state.summarizedArticleUrl,
             title: state.editedSummary.title,

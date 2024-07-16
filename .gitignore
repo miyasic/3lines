@@ -1,5 +1,3 @@
 firebase/serviceAccountKey.json
 firebase/devFirebaseServiceAccountKey.json
-firebase/devTerraformServiceKey.json
 .DS_Store
-firebase/.terraform

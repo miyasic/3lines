@@ -2,7 +2,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { AuthError, GithubAuthProvider, linkWithPopup, signInAnonymously, signInWithPopup, User, UserCredential } from "firebase/auth";
+import { sign } from 'crypto';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
@@ -20,7 +21,7 @@ const devFirebaesConfig = {
     projectId: "lines-31c04-dev",
     storageBucket: "lines-31c04-dev.appspot.com",
     messagingSenderId: "186772937007",
-    appId: "1:186772937007:web:4b58e2c988cb5e3523e9da"
+    appId: "1:186772937007:web:d8e42ee700b19d8723e9da"
 };
 
 
@@ -39,14 +40,88 @@ const firestore = firebase.firestore();
 const functions = firebase.functions();
 const auth = firebase.auth();
 
-signInAnonymously(auth)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('User ID:', user.uid);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
 
-export { firestore, functions, auth };
+firebase.auth().onAuthStateChanged(async (user) => {
+    // 未ログイン時
+    if (!user) {
+        firebase.auth().signInAnonymously();
+    }
+    // ログイン時
+    else { }
+});
+
+
+
+const signInWithGithub = async (): Promise<User | null> => {
+    const provider = new GithubAuthProvider();
+    try {
+        provider.addScope('read:user');
+        const result: UserCredential = await signInWithPopup(auth, provider);
+        return result.user;
+    } catch (error) {
+        console.error("Error during GitHub sign-in:", error);
+        handleAuthError(error as AuthError);
+        return null;
+    }
+};
+
+const linkAnonymousUserWithGithub = async (): Promise<User | null> => {
+    const provider = new GithubAuthProvider();
+    try {
+        provider.addScope('read:user');
+        const user = auth.currentUser;
+        if (user) {
+            const result: UserCredential = await linkWithPopup(user, provider);
+            return result.user;
+        } else {
+            console.error("No anonymous user is currently signed in");
+            return null;
+        }
+    } catch (error) {
+        handleAuthError(error as AuthError);
+        return null;
+    }
+};
+
+export const signOut = async (): Promise<void> => {
+    try {
+        await auth.signOut();
+    } catch (error) {
+        console.error("Error signing out:", error);
+    }
+}
+export const signIn = async (user: User | null): Promise<User | null> => {
+    if (user && user.isAnonymous) {
+        try {
+            await linkAnonymousUserWithGithub();
+        } catch (error) {
+            handleAuthError(error as AuthError);
+        }
+    } else if (user == null) {
+        await signInWithGithub();
+    }
+    return auth.currentUser as User;
+}
+
+const handleAuthError = async (error: AuthError): Promise<void> => {
+    if (error.code === 'auth/credential-already-in-use') {
+        // 既に別のアカウントにリンクされている場合
+        await auth.signOut();
+        await signInWithGithub();
+        return;
+    }
+    console.error("Authentication Error:", error);
+    if (error.code) {
+        console.error("Error code:", error.code);
+    }
+    if (error.message) {
+        console.error("Error message:", error.message);
+    }
+    if (error.customData?.email) {
+        console.error("Email associated with error:", error.customData.email);
+    }
+
+};
+
+export { firestore, functions, auth, };
 export default firebase;

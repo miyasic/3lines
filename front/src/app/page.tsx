@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import styles from './page.module.css';
-import Header from '../components/Header';
+import Header from '../components/layout/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
-import AppButton from '@/components/AppButton';
 import { GET_SUMMARY, INPUT_URL, REGISTER_SUMMARY, SUMMARY_LIST } from '@/constants/constantsTexts';
 import { useHome } from '@/hooks/useHome';
 import ImagePreview from '@/components/IMagePreview';
+import Footer from '@/components/layout/Footer';
+import AppButton from '@/components/button/AppButton';
 
 
 
@@ -23,9 +24,6 @@ const Home = () => {
     handleSaveSummary,
     updateEditedSummary,
   } = useHome();
-
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.NEXT_PUBLIC_ENV);
 
   return (
 
@@ -50,7 +48,7 @@ const Home = () => {
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
-                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} />
+                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} isLoading={state.saveSummaryLoading} />
               </div>
             ) : (
               <div className={styles.inputContainer}>
@@ -61,7 +59,7 @@ const Home = () => {
                   placeholder={INPUT_URL}
                   className={styles.input}
                 />
-                <AppButton title={GET_SUMMARY} onClick={handleSubmit} />
+                <AppButton title={GET_SUMMARY} onClick={handleSubmit} disabled={!state.isValidUrl} isLoading={state.summarizeLoading} />
               </div>
             )}
           </div>
@@ -93,6 +91,9 @@ const Home = () => {
               ))}
           </div>
         </div>
+      )}
+      {!state.windowSizeLoading && (
+        <Footer />
       )}
     </div>
   );

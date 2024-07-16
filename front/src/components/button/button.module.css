@@ -1,8 +1,9 @@
-.appButton {
+.baseButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: auto;
-    min-width: 200px;
     padding: 12px 24px;
-    background-color: #38a169;
     color: white;
     border: none;
     border-radius: 5px;
@@ -10,6 +11,5 @@
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s;
-    margin: 0 auto;
-    display: block;
+    text-decoration: none;
 }

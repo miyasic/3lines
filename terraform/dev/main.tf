@@ -1,5 +1,16 @@
-# Terraform configuration to set up providers by version.
+provider "google" {
+  credentials = file(var.credentials_path)
+  project = var.project_id
+  user_project_override = true
+}
+
+
+
 terraform {
+  backend "gcs" {
+    bucket = "remote-backend-for-terraform-dev"
+    prefix = "terraform/state/dev"
+  }
   required_providers {
     google-beta = {
       source  = "hashicorp/google-beta"
@@ -8,12 +19,11 @@ terraform {
   }
 }
 
-provider "google" {
-  credentials = file("devTerraformServiceKey.json")
-  project     = "lines-31c04-dev"
-  region      = "us-central1"
-  user_project_override = true
+resource "google_project_service" "firebase" {
+  project = var.project_id
+  service = "firebase.googleapis.com"
 }
+
 
 # Configures the provider to use the resource block's specified project for quota checks.
 provider "google-beta" {
@@ -31,8 +41,8 @@ provider "google-beta" {
 resource "google_project" "default" {
   provider   = google-beta.no_user_project_override
 
-  name       = "3Lines Dev"
-  project_id = "lines-31c04-dev"
+  name       = var.project_name
+  project_id = var.project_id
   # Required for any service that requires the Blaze pricing plan
   # (like Firebase Authentication with GCIP)
   billing_account = "019C4D-F3C2A9-54C90E"
@@ -79,27 +89,17 @@ resource "google_project_service" "identitytoolkit" {
 }
 
 
-resource "google_identity_platform_config" "default" {
-  project = google_project.default.project_id
-  autodelete_anonymous_users = true
-  sign_in {
-    anonymous {
-        enabled = true
-        }
-    }
-}
-
 
 resource "google_firestore_database" "database" {
   project  = google_project.default.project_id
   name        = "(default)"
-  location_id = "nam5"
+  location_id = var.region
   type        = "FIRESTORE_NATIVE"
 }
 
 resource "google_storage_bucket" "default" {
   provider                    = google-beta
-  name                        = "lines-31c04-dev"
+  name                        = var.project_id
   location                    = "US"
   uniform_bucket_level_access = true
   project  = google_project.default.project_id
@@ -126,3 +126,26 @@ data "google_firebase_web_app_config" "basic" {
   web_app_id = google_firebase_web_app.basic.app_id
 }
 
+resource "google_identity_platform_default_supported_idp_config" "idp_config" {
+  enabled       = true
+  idp_id        = "github.com"
+  client_id     = var.github_client_id
+  client_secret = var.github_client_secret
+}
+
+
+# Firebaseのプロジェクト設定にGitHub認証を追加
+resource "google_identity_platform_config" "default" {
+  project = google_project.default.project_id
+  autodelete_anonymous_users = true
+  sign_in {
+    anonymous {
+      enabled = true
+    }
+  }
+
+  depends_on = [
+    google_project_service.identitytoolkit,
+    google_identity_platform_default_supported_idp_config.idp_config
+  ]
+}
