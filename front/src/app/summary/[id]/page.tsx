@@ -31,9 +31,6 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
             ],
             url: `https://3lines.me/summary/${params.id}`,
         },
-        twitter: {
-            title: data.title + '  #今北産業',
-        },
     };
 }
 
