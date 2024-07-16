@@ -42,12 +42,7 @@ const auth = firebase.auth();
 
 
 firebase.auth().onAuthStateChanged(async (user) => {
-    // 未ログイン時
-    if (!user) {
-        firebase.auth().signInAnonymously();
-    }
-    // ログイン時
-    else { }
+
 });
 
 
