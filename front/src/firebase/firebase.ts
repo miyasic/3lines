@@ -41,11 +41,6 @@ const functions = firebase.functions();
 const auth = firebase.auth();
 
 
-firebase.auth().onAuthStateChanged(async (user) => {
-
-});
-
-
 
 const signInWithGithub = async (): Promise<User | null> => {
     const provider = new GithubAuthProvider();
