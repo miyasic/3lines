@@ -12,6 +12,10 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            // 未ログイン時
+            if (!user) {
+                auth.signInAnonymously();
+            }
             setUser(user as User);
         });
         return () => unsubscribe();
