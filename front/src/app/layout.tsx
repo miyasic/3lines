@@ -6,7 +6,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "今北産業",
-  description: "今北産業はGeminiAPIで技術記事を3行に要約・シェアできるサービスです。",
 };
 
 export default function RootLayout({
