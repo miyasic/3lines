@@ -91,7 +91,7 @@ export const useHome = () => {
     const handleSubmit = async () => {
         setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: true }));
 
-        const summarizeFunction = functions.httpsCallable('mock_summarize');
+        const summarizeFunction = functions.httpsCallable('summarize');
 
         try {
             const url = state.url;
