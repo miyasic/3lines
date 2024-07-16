@@ -100,20 +100,24 @@ export const useHome = () => {
             console.log('Function result:', result);
 
             const data = result.data as SummaryResponse;
+            // summaryを30文字に制限
+            const summary1 = data.summary1.slice(0, 30);
+            const summary2 = data.summary2.slice(0, 30);
+            const summary3 = data.summary3.slice(0, 30);
             setState(prevState => topPageStateCopyWith(prevState, {
                 url: '',
                 summarizedArticleUrl: url,
                 summary: {
                     title: data.title,
-                    summary1: data.summary1,
-                    summary2: data.summary2,
-                    summary3: data.summary3
+                    summary1: summary1,
+                    summary2: summary2,
+                    summary3: summary3
                 },
                 editedSummary: {
-                    title: data.title ?? '',
-                    summary1: data.summary1 ?? '',
-                    summary2: data.summary2 ?? '',
-                    summary3: data.summary3 ?? ''
+                    title: data.title,
+                    summary1: summary1,
+                    summary2: summary2,
+                    summary3: summary3
                 },
                 summarizeLoading: false
             }));
