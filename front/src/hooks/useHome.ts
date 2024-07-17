@@ -11,6 +11,7 @@ export const useHome = () => {
         summaries: [],
         url: '',
         isValidUrl: false,
+        isAllUnderLimit: true,
         summarizedArticleUrl: '',
         windowSizeLoading: true,
         fetchSummariesLoading: false,
@@ -83,6 +84,9 @@ export const useHome = () => {
         return () => window.removeEventListener('resize', updateLayout);
     }, []);
 
+    const setIsAllUnderLimit = (isAllUnderLimit: boolean) => {
+        setState(prevState => topPageStateCopyWith(prevState, { isAllUnderLimit }));
+    }
     const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const url = event.target.value;
         setState(prevState => topPageStateCopyWith(prevState, { url: event.target.value, isValidUrl: URL_REGEX.test(url) }));
@@ -175,5 +179,6 @@ export const useHome = () => {
         handleSubmit,
         handleSaveSummary,
         updateEditedSummary,
+        setIsAllUnderLimit,
     };
 };
