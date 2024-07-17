@@ -23,6 +23,7 @@ const Home = () => {
     handleSubmit,
     handleSaveSummary,
     updateEditedSummary,
+    setIsAllUnderLimit,
   } = useHome();
 
   return (
@@ -44,11 +45,12 @@ const Home = () => {
                     setSummary1={summary1 => updateEditedSummary('summary1', summary1)}
                     setSummary2={summary2 => updateEditedSummary('summary2', summary2)}
                     setSummary3={summary3 => updateEditedSummary('summary3', summary3)}
+                    setIsAllUnderLimit={setIsAllUnderLimit}
                     backgroundImage={BACKGROUND_IMAGE_PATH}
                     style={{ ...imagePreviewStyle, maxWidth: '100%' }}
                   />
                 </div>
-                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} isLoading={state.saveSummaryLoading} />
+                <AppButton title={REGISTER_SUMMARY} onClick={handleSaveSummary} disabled={!state.isAllUnderLimit} isLoading={state.saveSummaryLoading} />
               </div>
             ) : (
               <div className={styles.inputContainer}>

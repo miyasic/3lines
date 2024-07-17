@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
 
-const MAX_CHARS = 30;
+const MAX_CHARS_TITLE = 25;
+const MAX_CHARS_SUMMARY = 30;
 
-const useEditableSummary = () => {
+const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
     const [isOverLimit, setIsOverLimit] = useState({
         title: false,
         summary1: false,
@@ -10,29 +11,23 @@ const useEditableSummary = () => {
         summary3: false
     });
 
+    const checkAllUnderLimit = (updatedIsOverLimit: typeof isOverLimit) => {
+        setIsAllUnderLimit(Object.values(updatedIsOverLimit).every(value => !value));
+    };
+
     const handleInput = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.FormEvent<HTMLDivElement>) => {
         const newText = event.currentTarget.textContent || "";
-        if (newText.length <= MAX_CHARS) {
-            setter(newText);
-            setIsOverLimit(prev => ({ ...prev, [field]: false }));
-        } else {
-            event.currentTarget.textContent = newText.slice(0, MAX_CHARS);
-            setter(newText.slice(0, MAX_CHARS));
-            setIsOverLimit(prev => ({ ...prev, [field]: true }));
-        }
-    }, []);
+        const maxChars = field === 'title' ? MAX_CHARS_TITLE : MAX_CHARS_SUMMARY;
 
-    const handlePaste = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.ClipboardEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        const pastedText = event.clipboardData.getData('text');
-        const currentText = event.currentTarget.textContent || "";
-        const newText = (currentText + pastedText).slice(0, MAX_CHARS);
-        event.currentTarget.textContent = newText;
         setter(newText);
-        setIsOverLimit(prev => ({ ...prev, [field]: newText.length > MAX_CHARS }));
+        setIsOverLimit(prev => {
+            const updatedIsOverLimit = { ...prev, [field]: newText.length > maxChars };
+            checkAllUnderLimit(updatedIsOverLimit);
+            return updatedIsOverLimit;
+        });
     }, []);
 
-    return { isOverLimit, handleInput, handlePaste };
+    return { isOverLimit, handleInput };
 };
 
 export default useEditableSummary;
