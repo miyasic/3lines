@@ -11,13 +11,13 @@ const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
         summary3: false
     });
 
-    const checkAllUnderLimit = (updatedIsOverLimit: typeof isOverLimit) => {
-        setIsAllUnderLimit(Object.values(updatedIsOverLimit).every(value => !value));
-    };
-
     const handleInput = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.FormEvent<HTMLDivElement>) => {
         const newText = event.currentTarget.textContent || "";
         const maxChars = field === 'title' ? MAX_CHARS_TITLE : MAX_CHARS_SUMMARY;
+
+        const checkAllUnderLimit = (updatedIsOverLimit: typeof isOverLimit) => {
+            setIsAllUnderLimit(Object.values(updatedIsOverLimit).every(value => !value));
+        };
 
         setter(newText);
         setIsOverLimit(prev => {
@@ -25,7 +25,7 @@ const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
             checkAllUnderLimit(updatedIsOverLimit);
             return updatedIsOverLimit;
         });
-    }, []);
+    }, [setIsAllUnderLimit]);
 
     return { isOverLimit, handleInput };
 };
