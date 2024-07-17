@@ -15,6 +15,20 @@ IMAGE_WIDTH, IMAGE_HEIGHT = 1200, 628
 
 LOGO_TEXT = "今北産業"
 
+def validation_check(title, summary1, summary2, summary3):
+    MAX_CHARS_TITLE = 25
+    MAX_CHARS_SUMMARY = 30
+    if len(title) > MAX_CHARS_TITLE:
+        raise ValueError(f"Title must be less than {MAX_CHARS_TITLE} characters.")
+    if len(summary1) > MAX_CHARS_SUMMARY:
+        raise ValueError(f"Summary1 must be less than {MAX_CHARS_SUMMARY} characters.")
+    if len(summary2) > MAX_CHARS_SUMMARY:
+        raise ValueError(f"Summary2 must be less than {MAX_CHARS_SUMMARY} characters.")
+    if len(summary3) > MAX_CHARS_SUMMARY:
+        raise ValueError(f"Summary3 must be less than {MAX_CHARS_SUMMARY} characters.")
+    return True
+
+
 def generate_image(title, summary1, summary2, summary3):
     # 背景画像を生成または読み込み
     image = Image.open(BACKGROUND_IMAGE_PATH).resize((IMAGE_WIDTH, IMAGE_HEIGHT))
