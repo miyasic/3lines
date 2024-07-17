@@ -105,6 +105,7 @@ export const useHome = () => {
 
             const data = result.data as SummaryResponse;
             // summaryを30文字に制限
+            const title = data.title.slice(0, 25);
             const summary1 = data.summary1.slice(0, 30);
             const summary2 = data.summary2.slice(0, 30);
             const summary3 = data.summary3.slice(0, 30);
@@ -112,13 +113,13 @@ export const useHome = () => {
                 url: '',
                 summarizedArticleUrl: url,
                 summary: {
-                    title: data.title,
+                    title: title,
                     summary1: summary1,
                     summary2: summary2,
                     summary3: summary3
                 },
                 editedSummary: {
-                    title: data.title,
+                    title: title,
                     summary1: summary1,
                     summary2: summary2,
                     summary3: summary3
