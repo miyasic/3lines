@@ -4,7 +4,7 @@ from storage_repository import upload_image_to_storage
 from firestore_repository import  save_summary_data
 from summarize import summarize_text
 from firebase_functions.params import SecretParam, PROJECT_ID
-from generate_summarized_image import generate_image
+from generate_summarized_image import generate_image, validation_check
 import os
 
 project_id = PROJECT_ID.value
@@ -51,6 +51,13 @@ def mock_summarize(req: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_call()
 def save_summary(req: https_fn.Request) -> https_fn.Response:
+    validation_check(
+        req.data['title'],
+        req.data['summary'][0],
+        req.data['summary'][1],
+        req.data['summary'][2],
+    )
+
     file_path = generate_image(
         req.data['title'],
         req.data['summary'][0],
