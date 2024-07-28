@@ -15,3 +15,8 @@ export const MY_SUMMARY_LIST = "あなたの三行";
 
 // Share
 export const SHARE_TEXT = "#今北産業 #3Lines";
+
+// message
+export const CONFIRM_DELETE_SUMMARY = `非公開にすると、一覧画面に表示されなくなります。
+詳細ページへのアクセスは引き続き可能です。
+`;

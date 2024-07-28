@@ -3,36 +3,49 @@ import Link from 'next/link';
 import styles from './SummaryList.module.css';
 import { BACKGROUND_IMAGE_PATH } from '@/constants/constants';
 import { usePathname } from 'next/navigation';
-import { KeyIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { TrashIcon } from '@heroicons/react/24/solid';
+import CustomDialog from '@/components/dialog';
+import { CONFIRM_DELETE_SUMMARY } from '@/constants/constantsTexts';
 
 interface Summary {
     id: string;
     title: string;
     imageUrl: string;
-    content?: string;  // ダイアログに表示する内容
+    content?: string;
 }
-
 
 interface SummaryListProps {
     summaries: Summary[];
     isLoading: boolean;
     title: string;
+    onDelete?: (id: string) => void; // 削除処理を行う関数
 }
 
-const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title }) => {
+const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, onDelete }) => {
     const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
     const pathname = usePathname();
     const isMyPage = pathname === '/mypage';
 
-    const handleDelete = (e: React.MouseEvent, id: string) => {
+    const handleDelete = (e: React.MouseEvent, summary: Summary) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Delete', id);
-        // if (onDelete) {
-        //     onDelete(id);
-        // }
+        setSelectedSummary(summary);
+        setIsConfirmDialogOpen(true);
     };
 
+    const handleConfirmDelete = () => {
+        if (selectedSummary && onDelete) {
+            onDelete(selectedSummary.id);
+        }
+        setIsConfirmDialogOpen(false);
+        setSelectedSummary(null);
+    };
+
+    const handleCancelDelete = () => {
+        setIsConfirmDialogOpen(false);
+        setSelectedSummary(null);
+    };
 
     return (
         <div className={styles.summaryListContainer}>
@@ -54,10 +67,9 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title }
                                         <div className={styles.imageContainer}>
                                             <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
                                             {isMyPage && (
-                                                <div className={styles.deleteIconWrapper}>
-                                                    <KeyIcon
+                                                <div className={styles.deleteIconWrapper} onClick={(e) => handleDelete(e, summary)}>
+                                                    <TrashIcon
                                                         className={styles.deleteIcon}
-                                                        onClick={(e) => handleDelete(e, summary.id)}
                                                     />
                                                 </div>
                                             )}
@@ -70,6 +82,13 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title }
                     )
                 )}
             </div>
+            <CustomDialog
+                isOpen={isConfirmDialogOpen}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
+                title={`「${selectedSummary?.title}」を非公開にしますか？`}
+                message={CONFIRM_DELETE_SUMMARY}
+            />
         </div>
     );
 };
