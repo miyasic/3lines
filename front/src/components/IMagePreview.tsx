@@ -2,10 +2,8 @@ import React from 'react';
 import CommonLayout from '@/components/summary/CommonLayout';
 import styles from './ImagePreview.module.css';
 import useEditableSummary from './useEditableSummary';
+import { MAX_CHARS_SUMMARY, MAX_CHARS_TITLE } from '@/constants/constants';
 
-
-const MAX_CHARS_TITLE = 25;
-const MAX_CHARS_SUMMARY = 30;
 
 
 type EditableSummaryProps = {
@@ -61,7 +59,13 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     setIsAllUnderLimit,
     style
 }) => {
-    const { isOverLimit, length, handleInput } = useEditableSummary(setIsAllUnderLimit);
+    const { isOverLimit, length, handleInput } = useEditableSummary(setIsAllUnderLimit, {
+        title,
+        summary1,
+        summary2,
+        summary3
+    }
+    );
 
     return (
         <CommonLayout
