@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './dialog.module.css';
+import AppButton from './button/AppButton';
+import { CANCEL, DELETE_SUMMARY } from '@/constants/constantsTexts';
 
 interface CustomDialogProps {
     isOpen: boolean;
@@ -18,8 +20,8 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ isOpen, onClose, onConfirm,
                 <h2 className={styles.title}>{title}</h2>
                 <p className={styles.message}>{message}</p>
                 <div className={styles.buttonContainer}>
-                    <button className={styles.cancelButton} onClick={onClose}>キャンセル</button>
-                    <button className={styles.confirmButton} onClick={onConfirm}>OK</button>
+                    <AppButton title={CANCEL} onClick={onClose}></AppButton>
+                    <AppButton title={DELETE_SUMMARY} onClick={onConfirm} overrideStyles={{ backgroundColor: '#ff4444', }}></AppButton>
                 </div>
             </div>
         </div>
