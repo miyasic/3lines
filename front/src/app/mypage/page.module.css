@@ -1,0 +1,38 @@
+.container {
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+    margin-top: 100px;
+    min-height: calc(100vh - 145px - 100px);
+    /* Headerの高さに合わせて調整 */
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.welcomeMessage {
+    margin-bottom: 1rem;
+}
+
+.logoutButtonContainer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+}

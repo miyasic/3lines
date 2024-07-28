@@ -39,7 +39,7 @@ const Header: React.FC = () => {
                 <GitHubSignInButton onClick={handleGithubLogin} />
             }
             {showSignOutButton &&
-                <SignOutButton onClick={() => signOut()} />}
+                <div>マイページ</div>}
         </header >
     );
 };

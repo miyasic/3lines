@@ -11,6 +11,7 @@ export const INPUT_URL = "記事のURLを入力してください";
 
 // SectionTitle
 export const SUMMARY_LIST = "みんなの三行";
+export const MY_SUMMARY_LIST = "あなたの三行";
 
 // Share
 export const SHARE_TEXT = "#今北産業 #3Lines";
