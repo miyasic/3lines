@@ -24,7 +24,7 @@ const MyPage: React.FC = () => {
                         isLoading={isLoading}
                         title={MY_SUMMARY_LIST}
                     />
-                    <SignOutButton onClick={() => signOut()} />
+
                 </div>
             </main>
             <Footer />

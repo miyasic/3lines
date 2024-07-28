@@ -5,6 +5,8 @@ import GitHubSignInButton from '../button/SignInButton';
 import { auth, signIn } from '@/firebase/firebase';
 import { User } from 'firebase/auth';
 import { UserCircleIcon } from '@heroicons/react/24/solid'
+import { usePathname, useRouter } from 'next/navigation';
+import SignOutButton from '../button/SignOutButton';
 
 
 const Header: React.FC = () => {
@@ -29,6 +31,8 @@ const Header: React.FC = () => {
     const hideLoginButton = user == null;
     const showLoginButton = user?.isAnonymous ?? false;
     const showUserIcon = !showLoginButton && !hideLoginButton;
+    const pathname = usePathname();
+    const isMyPage = pathname === '/mypage';
 
     return (
         <header className={'header'}>
@@ -39,9 +43,12 @@ const Header: React.FC = () => {
                 <GitHubSignInButton onClick={handleGithubLogin} />
             }
             {showUserIcon &&
-                <Link href="/mypage">
-                    <UserCircleIcon className="h-10 w-10 text-gray-500 cursor-pointer hover:text-gray-700" />
-                </Link>}
+                (!isMyPage ?
+                    <Link href="/mypage">
+                        <UserCircleIcon className="h-10 w-10 text-gray-500 cursor-pointer hover:text-gray-700" />
+                    </Link>
+                    : <SignOutButton onClick={() => auth.signOut()} />)
+            }
         </header >
     );
 };
