@@ -7,4 +7,5 @@ interface Summary {
     title: string;
     summary: string[];
     language: string;
+    isPrivate: boolean;
 }
