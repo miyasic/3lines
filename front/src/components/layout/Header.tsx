@@ -2,10 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { IMAKITA_SANGYO } from '@/constants/constantsTexts';
 import Link from 'next/link';
 import GitHubSignInButton from '../button/SignInButton';
-import { auth, signIn, signOut } from '@/firebase/firebase';
+import { auth, signIn } from '@/firebase/firebase';
 import { User } from 'firebase/auth';
-import AppButton from '../button/AppButton';
-import SignOutButton from '../button/SignOutButton';
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);

@@ -1,6 +1,4 @@
 "use client";
-
-import Link from 'next/link';
 import styles from './page.module.css';
 import Header from '../components/layout/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
