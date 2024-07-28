@@ -63,19 +63,19 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({
                     </div>
                 </foreignObject>
 
-                <foreignObject x={layout.summaryX} y={layout.summary1Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
+                <foreignObject x={layout.summaryX} y={layout.summary1Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 3} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div style={{ fontSize: `${NORMAL_FONT_SIZE}px` }}>
                         {summary1}
                     </div>
                 </foreignObject>
 
-                <foreignObject x={layout.summaryX} y={layout.summary2Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
+                <foreignObject x={layout.summaryX} y={layout.summary2Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 3} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div style={{ fontSize: `${NORMAL_FONT_SIZE}px` }}>
                         {summary2}
                     </div>
                 </foreignObject>
 
-                <foreignObject x={layout.summaryX} y={layout.summary3Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 2} requiredExtensions="http://www.w3.org/1999/xhtml">
+                <foreignObject x={layout.summaryX} y={layout.summary3Y - NORMAL_FONT_SIZE} width={IMAGE_WIDTH - layout.summaryX * 2} height={NORMAL_FONT_SIZE * 3} requiredExtensions="http://www.w3.org/1999/xhtml">
                     <div style={{ fontSize: `${NORMAL_FONT_SIZE}px` }}>
                         {summary3}
                     </div>

@@ -3,10 +3,17 @@ import CommonLayout from '@/components/summary/CommonLayout';
 import styles from './ImagePreview.module.css';
 import useEditableSummary from './useEditableSummary';
 
+
+const MAX_CHARS_TITLE = 25;
+const MAX_CHARS_SUMMARY = 30;
+
+
 type EditableSummaryProps = {
     summary: string;
     isOverLimit: boolean;
     handleInput: (event: React.FormEvent<HTMLDivElement>) => void;
+    charCount: number;
+    maxChars: number;
 };
 
 interface ImagePreviewProps {
@@ -23,17 +30,21 @@ interface ImagePreviewProps {
     style?: React.CSSProperties;
 }
 
-const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit, handleInput }) => (
-    <div
-        className={styles.editable}
-        style={{
-            color: isOverLimit ? 'red' : 'inherit',
-        }}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={handleInput}
-    >
-        {summary}
+const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit, handleInput, charCount, maxChars }) => (
+    <div style={{ position: 'relative' }}>
+        <div
+            className={styles.editable}
+            contentEditable
+            suppressContentEditableWarning
+            onInput={handleInput}
+        >
+            {summary}
+        </div>
+        {isOverLimit && (
+            <div style={{ position: 'fixed', bottom: 0, right: 0, color: 'red' }}>
+                {`${charCount}/${maxChars}`}
+            </div>
+        )}
     </div>
 );
 
@@ -50,7 +61,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     setIsAllUnderLimit,
     style
 }) => {
-    const { isOverLimit, handleInput } = useEditableSummary(setIsAllUnderLimit);
+    const { isOverLimit, length, handleInput } = useEditableSummary(setIsAllUnderLimit);
 
     return (
         <CommonLayout
@@ -59,6 +70,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     summary={title}
                     isOverLimit={isOverLimit.title}
                     handleInput={handleInput(setTitle, 'title')}
+                    charCount={length.title}
+                    maxChars={MAX_CHARS_TITLE}
                 />
             }
             summary1={
@@ -66,6 +79,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     summary={summary1}
                     isOverLimit={isOverLimit.summary1}
                     handleInput={handleInput(setSummary1, 'summary1')}
+                    charCount={length.summary1}
+                    maxChars={MAX_CHARS_SUMMARY}
                 />
             }
             summary2={
@@ -73,6 +88,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     summary={summary2}
                     isOverLimit={isOverLimit.summary2}
                     handleInput={handleInput(setSummary2, 'summary2')}
+                    charCount={length.summary2}
+                    maxChars={MAX_CHARS_SUMMARY}
                 />
             }
             summary3={
@@ -80,6 +97,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     summary={summary3}
                     isOverLimit={isOverLimit.summary3}
                     handleInput={handleInput(setSummary3, 'summary3')}
+                    charCount={length.summary3}
+                    maxChars={MAX_CHARS_SUMMARY}
                 />
             }
             backgroundImage={backgroundImage}

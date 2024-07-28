@@ -10,6 +10,12 @@ const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
         summary2: false,
         summary3: false
     });
+    const [length, setLength] = useState({
+        title: 0,
+        summary1: 0,
+        summary2: 0,
+        summary3: 0
+    });
 
     const handleInput = useCallback((setter: (value: string) => void, field: keyof typeof isOverLimit) => (event: React.FormEvent<HTMLDivElement>) => {
         const newText = event.currentTarget.textContent || "";
@@ -20,6 +26,10 @@ const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
         };
 
         setter(newText);
+        setLength(prev => {
+            const updatedLength = { ...prev, [field]: newText.length };
+            return updatedLength;
+        });
         setIsOverLimit(prev => {
             const updatedIsOverLimit = { ...prev, [field]: newText.length > maxChars };
             checkAllUnderLimit(updatedIsOverLimit);
@@ -27,7 +37,7 @@ const useEditableSummary = (setIsAllUnderLimit: (value: boolean) => void) => {
         });
     }, [setIsAllUnderLimit]);
 
-    return { isOverLimit, handleInput };
+    return { isOverLimit,length, handleInput };
 };
 
 export default useEditableSummary;
