@@ -6,7 +6,7 @@ interface SignOutButtonProps {
 
 const SignOutButton: React.FC<SignOutButtonProps> = ({ onClick }) => (
     <button
-        className={styles.githubSigninButton}
+        className={styles.githubSignoutButton}
         onClick={onClick}
     >
         <span>Sign out</span>

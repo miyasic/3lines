@@ -1,6 +1,4 @@
 "use client";
-
-import Link from 'next/link';
 import styles from './page.module.css';
 import Header from '../components/layout/Header';
 import { BACKGROUND_IMAGE_PATH, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
@@ -9,6 +7,7 @@ import { useHome } from '@/hooks/useHome';
 import ImagePreview from '@/components/IMagePreview';
 import Footer from '@/components/layout/Footer';
 import AppButton from '@/components/button/AppButton';
+import SummaryList from '@/components/summary/SummaryList';
 
 
 
@@ -68,31 +67,7 @@ const Home = () => {
         </div>
       )}
       {!state.windowSizeLoading && (
-        <div className={styles.summaryListContainer}>
-          <h2 className={styles.summaryListHeader}>
-            {SUMMARY_LIST}
-          </h2>
-          <div className={styles.summaryList}>
-            {state.fetchSummariesLoading ?
-              (Array.from({ length: 12 }).map((_, index) => (
-                <div key={index} className={styles.skeleton}>
-                  <img src={BACKGROUND_IMAGE_PATH} alt="Loading" className={styles.skeletonImage} />
-                  <div className={styles.shimmer}></div>
-                </div>
-              ))) :
-              [...state.summaries, ...(state.summaries.length % 3 === 0 ? [] : Array(3 - (state.summaries.length % 3)).fill(null))].map((summary, index) => (
-                summary ? (
-                  <div key={summary.id} className={styles.article}>
-                    <Link href={`/summary/${summary.id}`}>
-                      <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
-                    </Link>
-                  </div>
-                ) : (
-                  <div key={`placeholder-${index}`} className={styles.article} style={{ visibility: 'hidden' }} />
-                )
-              ))}
-          </div>
-        </div>
+        <SummaryList summaries={state.summaries} isLoading={state.fetchSummariesLoading} title={SUMMARY_LIST} />
       )}
       {!state.windowSizeLoading && (
         <Footer />

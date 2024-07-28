@@ -2,8 +2,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
-import { AuthError, GithubAuthProvider, linkWithPopup, signInAnonymously, signInWithPopup, User, UserCredential } from "firebase/auth";
-import { sign } from 'crypto';
+import { AuthError, GithubAuthProvider, linkWithPopup, signInWithPopup, User, UserCredential } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
