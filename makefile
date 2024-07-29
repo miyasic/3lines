@@ -16,6 +16,16 @@ deploy-functions-prod:
 	firebase use lines-31c04 && \
 	firebase deploy --only functions
 
+deploy-rule-dev:
+	cd firebase && \
+	firebase use lines-31c04-dev && \
+	firebase deploy --only firestore:rules
+
+deploy-rule-prod:
+	cd firebase && \
+	firebase use lines-31c04 && \
+	firebase deploy --only firestore:rules
+
 ## infrastructure
 terraform-dev:
 	cd terraform/dev && \
