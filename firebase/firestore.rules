@@ -8,10 +8,14 @@ service cloud.firestore {
       allow delete: if false; // deleteは禁止
 
       // updateを許可する条件
-      allow update: if isOwner() && isValidUpdate();
+      allow update: if isOwner() && isValidUpdate() && isGithubUser();
 
       function isOwner() {
         return request.auth != null && request.auth.uid == resource.data.userId;
+      }
+
+      function isGithubUser() {
+        return request.auth.token.firebase.sign_in_provider == "github.com";
       }
 
       function isValidUpdate() {
