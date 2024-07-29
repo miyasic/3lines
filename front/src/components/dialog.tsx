@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './dialog.module.css';
+import styles from './Dialog.module.css';
 import AppButton from './button/AppButton';
 import { CANCEL, DELETE_SUMMARY } from '@/constants/constantsTexts';
 
