@@ -92,10 +92,10 @@ export const signIn = async (user: User | null): Promise<User | null> => {
     return auth.currentUser as User;
 }
 
-export const makeSummaryPrivate = async (summary: Summary): Promise<void> => {
+export const makeSummaryPrivate = async (id: string): Promise<void> => {
     // 論理削除する
-    const privateSummary = { ...summary, isPrivate: true };
-    await firestore.collection('summary').doc(summary.id).update(privateSummary);
+    const privateSummary = { isPrivate: true };
+    await firestore.collection('summary').doc(id).update(privateSummary);
 }
 
 const handleAuthError = async (error: AuthError): Promise<void> => {

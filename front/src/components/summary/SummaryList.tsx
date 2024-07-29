@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import CustomDialog from '@/components/dialog';
 import { CONFIRM_DELETE_SUMMARY } from '@/constants/constantsTexts';
+import { makeSummaryPrivate } from '@/firebase/firebase';
 
 interface Summary {
     id: string;
@@ -27,7 +28,7 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
     const pathname = usePathname();
     const isMyPage = pathname === '/mypage';
 
-    const handleDelete = (e: React.MouseEvent, summary: Summary) => {
+    const showDeleteDialog = (e: React.MouseEvent, summary: Summary) => {
         e.preventDefault();
         e.stopPropagation();
         setSelectedSummary(summary);
@@ -35,8 +36,8 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
     };
 
     const handleConfirmDelete = () => {
-        if (selectedSummary && onDelete) {
-            onDelete(selectedSummary.id);
+        if (selectedSummary) {
+            makeSummaryPrivate(selectedSummary.id);
         }
         setIsConfirmDialogOpen(false);
         setSelectedSummary(null);
@@ -67,7 +68,7 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
                                         <div className={styles.imageContainer}>
                                             <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
                                             {isMyPage && (
-                                                <div className={styles.deleteIconWrapper} onClick={(e) => handleDelete(e, summary)}>
+                                                <div className={styles.deleteIconWrapper} onClick={(e) => showDeleteDialog(e, summary)}>
                                                     <TrashIcon
                                                         className={styles.deleteIcon}
                                                     />
