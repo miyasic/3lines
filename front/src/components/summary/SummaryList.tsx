@@ -5,7 +5,7 @@ import { BACKGROUND_IMAGE_PATH } from '@/constants/constants';
 import { usePathname } from 'next/navigation';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import CustomDialog from '@/components/dialog';
-import { CONFIRM_DELETE_SUMMARY } from '@/constants/constantsTexts';
+import { ALREADY_DELETED_SUMMARY, CONFIRM_DELETE_SUMMARY } from '@/constants/constantsTexts';
 import { makeSummaryPrivate } from '@/firebase/firebase';
 
 interface Summary {
@@ -13,6 +13,7 @@ interface Summary {
     title: string;
     imageUrl: string;
     content?: string;
+    isPrivate: boolean;
 }
 
 interface SummaryListProps {
@@ -83,13 +84,22 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
                     )
                 )}
             </div>
-            <CustomDialog
+            {selectedSummary?.isPrivate ? <CustomDialog
                 isOpen={isConfirmDialogOpen}
                 onClose={handleCancelDelete}
-                onConfirm={handleConfirmDelete}
-                title={`「${selectedSummary?.title}」を非公開にしますか？`}
-                message={CONFIRM_DELETE_SUMMARY}
-            />
+                onConfirm={null}
+                title={`「${selectedSummary?.title}」は非公開です。`}
+                message={ALREADY_DELETED_SUMMARY}
+                cancelText='閉じる'
+            /> :
+                <CustomDialog
+                    isOpen={isConfirmDialogOpen}
+                    onClose={handleCancelDelete}
+                    onConfirm={handleConfirmDelete}
+                    title={`「${selectedSummary?.title}」を非公開にしますか？`}
+                    message={CONFIRM_DELETE_SUMMARY}
+                />
+            }
         </div>
     );
 };
