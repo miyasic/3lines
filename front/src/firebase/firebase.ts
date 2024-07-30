@@ -92,6 +92,12 @@ export const signIn = async (user: User | null): Promise<User | null> => {
     return auth.currentUser as User;
 }
 
+export const makeSummaryPrivate = async (id: string): Promise<void> => {
+    // 論理削除する
+    const privateSummary = { isPrivate: true };
+    await firestore.collection('summary').doc(id).update(privateSummary);
+}
+
 const handleAuthError = async (error: AuthError): Promise<void> => {
     if (error.code === 'auth/credential-already-in-use') {
         // 既に別のアカウントにリンクされている場合
