@@ -26,7 +26,7 @@ export const useMyPage = () => {
                 setState(prevState => myPageStateCopyWith(prevState, { isLoading: true }));
                 console.log(auth.currentUser?.uid);
                 try {
-                    const snapshot = await firestore.collection('summary').where('userId', '==', auth.currentUser?.uid).get();
+                    const snapshot = await firestore.collection('summary').where('userId', '==', auth.currentUser?.uid).orderBy('createdAt', 'desc').get();
                     const summariesData = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
