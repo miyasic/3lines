@@ -1,0 +1,12 @@
+[debug] [2024-07-29T22:15:31.781Z] ----------------------------------------------------------------------
+[debug] [2024-07-29T22:15:31.782Z] Command:       /Users/miyasic/.nvm/versions/node/v20.12.2/bin/node /Users/miyasic/.nvm/versions/node/v20.12.2/bin/firebase init
+[debug] [2024-07-29T22:15:31.782Z] CLI Version:   13.14.0
+[debug] [2024-07-29T22:15:31.782Z] Platform:      darwin
+[debug] [2024-07-29T22:15:31.782Z] Node Version:  v20.12.2
+[debug] [2024-07-29T22:15:31.782Z] Time:          Tue Jul 30 2024 07:15:31 GMT+0900 (日本標準時)
+[debug] [2024-07-29T22:15:31.783Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-29T22:15:31.784Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-07-29T22:15:31.805Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-29T22:15:32.359Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-07-29T22:15:32.359Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
