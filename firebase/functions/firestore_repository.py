@@ -20,7 +20,8 @@ def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language):
         "title": title,
         "summary": summary,
         "language": language,
-        "numRead": 0
+        "numRead": 0,
+        "isPrivate": False
     }
 
     summaryId = str(uuid.uuid4())
