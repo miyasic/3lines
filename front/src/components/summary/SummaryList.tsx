@@ -66,7 +66,7 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
                                 <div key={summary.id} className={`${styles.article} ${isMyPage ? styles.articleHoverable : ''}`}>
                                     <Link href={`/summary/${summary.id}`}>
                                         <div className={styles.imageContainer}>
-                                            <img src={summary.imageUrl} alt={summary.title} className={styles.image} />
+                                            <img src={summary.imageUrl} alt={summary.title} className={`${styles.image} ${summary.isPrivate ? styles.grayOutImage : ''}`} />
                                             {isMyPage && (
                                                 <div className={styles.deleteIconWrapper} onClick={(e) => showDeleteDialog(e, summary)}>
                                                     <TrashIcon

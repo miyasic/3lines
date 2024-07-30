@@ -25,7 +25,10 @@
     overflow: hidden;
 }
 
-
+.grayOutImage {
+    filter: grayscale(50%);
+    opacity: 0.5;
+}
 
 
 .article,
