@@ -7,6 +7,7 @@ export const GET_SUMMARY = "要約を取得";
 export const OPEN_ORIGINAL_ARTICLE = "記事を開く";
 export const DELETE_SUMMARY = "非公開にする";
 export const CANCEL = "やめとく";
+export const MORE = "もっと見る";
 
 // Hint
 export const INPUT_URL = "記事のURLを入力してください";
@@ -23,3 +24,4 @@ export const CONFIRM_DELETE_SUMMARY = `非公開にすると、一覧画面に�
 詳細ページへのアクセスは引き続き可能です。`;
 export const ALREADY_DELETED_SUMMARY = `非公開の要約は一覧画面に表示されません。
 詳細ページへのアクセスは引き続き可能です。`;
+export const THIS_IS_ALL = "これで全部です！";

@@ -9,3 +9,7 @@ export const BACKGROUND_IMAGE_PATH = '/default_background.png';
 
 export const MAX_CHARS_TITLE = 25;
 export const MAX_CHARS_SUMMARY = 30;
+
+
+export const LIST_SIZE_SIX = 6;
+export const LIST_SIZE_TWELVE = 12;

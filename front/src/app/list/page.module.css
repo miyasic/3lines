@@ -3,6 +3,12 @@
     flex-direction: column;
     padding: 0 2rem;
     margin-top: 100px;
+    margin-bottom: 20px;
     min-height: calc(100vh - 145px - 100px);
-    /* Headerの高さに合わせて調整 */
+
+}
+
+.noMoreMessage {
+    text-align: center;
+    color: #718096;
 }
