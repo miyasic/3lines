@@ -88,7 +88,7 @@ const SummaryList: React.FC<SummaryListProps> = ({ summaries, isLoading, title, 
                 isOpen={isConfirmDialogOpen}
                 onClose={handleCancelDelete}
                 onConfirm={null}
-                title={`「${selectedSummary?.title}」は非公開です。`}
+                title={`「${selectedSummary?.title}」はすでに非公開です。`}
                 message={ALREADY_DELETED_SUMMARY}
                 cancelText='閉じる'
             /> :
