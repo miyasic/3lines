@@ -3,6 +3,7 @@ import { firestore, functions } from '../firebase/firebase';
 import { topPageStateCopyWith, summaryResponseCopyWith } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import { MAX_CHARS_TITLE, MAX_CHARS_SUMMARY } from '@/constants/constants';
 
 const URL_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
 
@@ -31,7 +32,7 @@ export const useHome = () => {
             setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
 
             try {
-                const snapshot = await firestore.collection('summary').get();
+                const snapshot = await firestore.collection('summary').where('isPrivate', '==', false).orderBy('createdAt', 'desc').get();
                 const summariesData = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
@@ -95,7 +96,7 @@ export const useHome = () => {
     const handleSubmit = async () => {
         setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: true }));
 
-        const summarizeFunction = functions.httpsCallable('summarize');
+        const summarizeFunction = functions.httpsCallable('mock_summarize');
 
         try {
             const url = state.url;
@@ -104,25 +105,27 @@ export const useHome = () => {
             console.log('Function result:', result);
 
             const data = result.data as SummaryResponse;
-            // summaryを30文字に制限
-            const title = data.title.slice(0, 25);
-            const summary1 = data.summary1.slice(0, 30);
-            const summary2 = data.summary2.slice(0, 30);
-            const summary3 = data.summary3.slice(0, 30);
+            const updatedIsOverLimit = {
+                title: data.title.length > MAX_CHARS_TITLE,
+                summary1: data.summary1.length > MAX_CHARS_SUMMARY,
+                summary2: data.summary2.length > MAX_CHARS_SUMMARY,
+                summary3: data.summary3.length > MAX_CHARS_SUMMARY,
+            };
+            setIsAllUnderLimit(Object.values(updatedIsOverLimit).every(value => !value));
             setState(prevState => topPageStateCopyWith(prevState, {
                 url: '',
                 summarizedArticleUrl: url,
                 summary: {
-                    title: title,
-                    summary1: summary1,
-                    summary2: summary2,
-                    summary3: summary3
+                    title: data.title,
+                    summary1: data.summary1,
+                    summary2: data.summary2,
+                    summary3: data.summary3
                 },
                 editedSummary: {
-                    title: title,
-                    summary1: summary1,
-                    summary2: summary2,
-                    summary3: summary3
+                    title: data.title,
+                    summary1: data.summary1,
+                    summary2: data.summary2,
+                    summary3: data.summary3
                 },
                 summarizeLoading: false
             }));

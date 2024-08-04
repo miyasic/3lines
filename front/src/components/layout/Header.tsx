@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { IMAKITA_SANGYO } from '@/constants/constantsTexts';
 import Link from 'next/link';
 import GitHubSignInButton from '../button/SignInButton';
-import { auth, signIn, signOut } from '@/firebase/firebase';
+import { auth, signIn } from '@/firebase/firebase';
 import { User } from 'firebase/auth';
-import AppButton from '../button/AppButton';
+import { UserCircleIcon } from '@heroicons/react/24/solid'
+import { usePathname, useRouter } from 'next/navigation';
 import SignOutButton from '../button/SignOutButton';
+
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -28,7 +30,9 @@ const Header: React.FC = () => {
 
     const hideLoginButton = user == null;
     const showLoginButton = user?.isAnonymous ?? false;
-    const showSignOutButton = !showLoginButton && !hideLoginButton;
+    const showUserIcon = !showLoginButton && !hideLoginButton;
+    const pathname = usePathname();
+    const isMyPage = pathname === '/mypage';
 
     return (
         <header className={'header'}>
@@ -38,8 +42,13 @@ const Header: React.FC = () => {
             {showLoginButton &&
                 <GitHubSignInButton onClick={handleGithubLogin} />
             }
-            {showSignOutButton &&
-                <SignOutButton onClick={() => signOut()} />}
+            {showUserIcon &&
+                (!isMyPage ?
+                    <Link href="/mypage">
+                        <UserCircleIcon className="h-10 w-10 text-gray-500 cursor-pointer hover:text-gray-700" />
+                    </Link>
+                    : <SignOutButton onClick={() => auth.signOut()} />)
+            }
         </header >
     );
 };

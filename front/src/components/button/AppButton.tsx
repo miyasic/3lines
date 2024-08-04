@@ -7,15 +7,17 @@ interface AppButtonProps {
     title: string;
     disabled?: boolean;
     isLoading?: boolean;
+    overrideStyles?: React.CSSProperties;
     onClick: () => void;
 }
 
-const AppButton = ({ title, disabled, isLoading, onClick }: AppButtonProps) => {
+const AppButton = ({ title, disabled, isLoading, overrideStyles, onClick }: AppButtonProps) => {
     return (
         <button
             onClick={() => onClick()}
-            className={`${buttonStyles.baseButton} ${styles.appButton} ${isLoading ? styles.loading : ''}`}
+            className={`${buttonStyles.baseButton} ${styles.appButton} ${isLoading ? styles.loading : ''} ${overrideStyles}`}
             disabled={disabled || isLoading}
+            style={overrideStyles}
         >
             {isLoading ? (
                 <span className={styles.loadingDots}>

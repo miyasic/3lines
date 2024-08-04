@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /summary/{summaryId} {
+      allow read: if true; // readは常に許可
+      allow create: if false; // createは禁止
+      allow delete: if false; // deleteは禁止
+
+      // updateを許可する条件
+      allow update: if isOwner() && isValidUpdate() && isGithubUser();
+
+      function isOwner() {
+        return request.auth != null && request.auth.uid == resource.data.userId;
+      }
+
+      function isGithubUser() {
+        return request.auth.token.firebase.sign_in_provider == "github.com";
+      }
+
+      function isValidUpdate() {
+
+        // isPrivateの更新のみ許可する
+        return request.resource.data.keys().hasAll(['isPrivate']) &&
+        request.resource.data.size() == 10 &&
+        request.resource.data.isPrivate == true &&
+        // 下記他のフィールドが変更されていないことを確認
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.title == resource.data.title &&
+        request.resource.data.articleUrl == resource.data.articleUrl &&
+        request.resource.data.imageUrl == resource.data.imageUrl &&
+        request.resource.data.domain == resource.data.domain &&
+        request.resource.data.summary == resource.data.summary &&
+        request.resource.data.language == resource.data.language;
+
+      }
+    }
+  }
+}
