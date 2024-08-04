@@ -23,8 +23,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return (
         <>
             <Head>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6246635878467153"
-                    crossOrigin="anonymous"></script>
+                <meta name="google-adsense-account" content="ca-pub-6246635878467153"></meta>
             </Head>
             <Component {...pageProps} />
         </>
