@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { firestore, functions } from '../firebase/firebase';
 import { topPageStateCopyWith, summaryResponseCopyWith } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
-import { ASPECT_RATIO, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import { ASPECT_RATIO, LIST_SIZE_SIX, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import { MAX_CHARS_TITLE, MAX_CHARS_SUMMARY } from '@/constants/constants';
 
 const URL_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
@@ -32,7 +32,7 @@ export const useHome = () => {
             setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
 
             try {
-                const snapshot = await firestore.collection('summary').where('isPrivate', '==', false).orderBy('createdAt', 'desc').get();
+                const snapshot = await firestore.collection('summary').where('isPrivate', '==', false).orderBy('createdAt', 'desc').limit(LIST_SIZE_SIX).get();
                 const summariesData = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
