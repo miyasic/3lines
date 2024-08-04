@@ -4,6 +4,7 @@ import { SummaryDetailClient } from '@/components/summaryDetailClient';
 import { firestore } from '@/firebase/firebase';
 import { Metadata } from 'next';
 import Footer from '@/components/layout/Footer';
+import AdSense from '@/components/adsense';
 
 
 export async function generateStaticParams() {
@@ -48,6 +49,7 @@ const SummaryDetail = async ({ params }: { params: { id: string } }) => {
     return (
         <div>
             <SummaryDetailClient summary={summary} />
+            <AdSense />
             <Footer />
         </div>
     );
