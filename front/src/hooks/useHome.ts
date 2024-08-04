@@ -32,7 +32,7 @@ export const useHome = () => {
             setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
 
             try {
-                const snapshot = await firestore.collection('summary').where('isPrivate', '==', false).orderBy('createdAt', 'desc').get();
+                const snapshot = await firestore.collection('summary').get();
                 const summariesData = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()

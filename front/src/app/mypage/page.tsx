@@ -15,7 +15,7 @@ import { signOut } from '@/firebase/firebase';
 const MyPage: React.FC = () => {
     const { userSummaries, isLoading } = useMyPage();
     return (
-        <div className="pageContainer" style={{ maxWidth: PAGE_MAX_WIDTH }}>
+        <div className={styles.pageContainer} style={{ maxWidth: PAGE_MAX_WIDTH }}>
             <Header />
             <main className={styles.mainContent}>
                 <div className={styles.container}>
