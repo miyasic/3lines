@@ -68,7 +68,8 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
     db = firestore.client()
 
     uid = req.auth.uid
-    print(uid)
+    isAnonymous = req.auth.token["firebase"]["sign_in_provider"] == 'anonymous'
+
 
     summaryId = save_summary_data(
         db,
@@ -77,5 +78,7 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
         image_url,
         req.data['title'],
         req.data['summary'],
-        req.data['language'],)
+        req.data['language'],
+        isAnonymous,
+        )
     return {"summaryId": summaryId}

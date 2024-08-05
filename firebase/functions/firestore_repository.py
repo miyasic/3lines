@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 
 
-def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language):
+def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language, isAnonymous):
     # ドメインをarticleUrlから抽出
     parsed_url = urlparse(articleUrl)
     domain = parsed_url.netloc
@@ -21,7 +21,8 @@ def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language):
         "summary": summary,
         "language": language,
         "numRead": 0,
-        "isPrivate": False
+        "isPrivate": False,
+        "isAnonymous": isAnonymous,
     }
 
     summaryId = str(uuid.uuid4())
