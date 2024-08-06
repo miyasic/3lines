@@ -31,3 +31,12 @@ def save_summary_data(db,uid, articleUrl, imageUrl, title, summary, language, is
     doc_ref.set(data)
 
     return summaryId
+
+
+def update_is_anonymous(db,uid):
+    summaries = db.collection('summary').where('userId', '==', uid).where('isAnonymous', '==', True).get()
+    for summary in summaries:
+        summaryId = summary.id
+        db.collection('summary').document(summaryId).update({
+            "isAnonymous": False
+        })
