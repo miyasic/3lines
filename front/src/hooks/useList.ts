@@ -1,5 +1,6 @@
 import { LIST_SIZE_TWELVE } from "@/constants/constants";
 import { firestore } from "@/firebase/firebase";
+import { query, where, collection, or, getDocs, limit, orderBy, and } from "firebase/firestore";
 import { ListPageStateCopyWith } from "@/utils/helpers";
 import { useCallback, useEffect, useState } from "react";
 
@@ -20,13 +21,20 @@ export const useList = () => {
         setState(prevState => ListPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
 
         try {
+            const now = new Date();
+            const limitDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+            const db = firestore;
+            const summaryRef = collection(db, 'summary');
+            const q = query(summaryRef,
+                and(
+                    where('isPrivate', '==', false),
+                    or(where('isAnonymous', '==', false),
+                        and(where('isAnonymous', '==', true), where('createdAt', '>', limitDate
+                        )))),
+                limit(LIST_SIZE_TWELVE),
+                orderBy('createdAt', 'desc'),);
 
-            let query = firestore.collection('summary')
-                .where('isPrivate', '==', false)
-                .orderBy('createdAt', 'desc')
-                .limit(LIST_SIZE_TWELVE);
-
-            const snapshot = await query.get();
+            const snapshot = await getDocs(q);
             if (!snapshot.empty) {
                 const newLastVisible = snapshot.docs[snapshot.docs.length - 1];
                 const summariesData = snapshot.docs.map(doc => ({

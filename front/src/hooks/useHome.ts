@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { firestore, functions } from '../firebase/firebase';
+import { query, where, collection, or, getDocs, limit, orderBy, and } from "firebase/firestore";
 import { topPageStateCopyWith, summaryResponseCopyWith } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { ASPECT_RATIO, LIST_SIZE_SIX, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
@@ -32,7 +33,20 @@ export const useHome = () => {
             setState(prevState => topPageStateCopyWith(prevState, { fetchSummariesLoading: true }));
 
             try {
-                const snapshot = await firestore.collection('summary').where('isPrivate', '==', false).orderBy('createdAt', 'desc').limit(LIST_SIZE_SIX).get();
+                // public　and (認証済み or 匿名かつ24時間以内)の記事を最新順に6件取得
+                const now = new Date();
+                const limitDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                const db = firestore;
+                const summaryRef = collection(db, 'summary');
+                const q = query(summaryRef,
+                    and(
+                        where('isPrivate', '==', false),
+                        or(where('isAnonymous', '==', false),
+                            and(where('isAnonymous', '==', true), where('createdAt', '>', limitDate
+                            )))),
+                    limit(LIST_SIZE_SIX),
+                    orderBy('createdAt', 'desc'),);
+                const snapshot = await getDocs(q);
                 const summariesData = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
