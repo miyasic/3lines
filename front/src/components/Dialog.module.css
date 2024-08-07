@@ -40,7 +40,8 @@
 }
 
 .cancelButton,
-.confirmButton {
+.confirmButton,
+.githubSigninButton {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -68,7 +69,8 @@
     }
 
     .cancelButton,
-    .confirmButton {
+    .confirmButton,
+    .githubSigninButton {
         width: 100%;
     }
 }

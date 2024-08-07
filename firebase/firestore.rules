@@ -22,7 +22,7 @@ service cloud.firestore {
 
         // isPrivateの更新のみ許可する
         return request.resource.data.keys().hasAll(['isPrivate']) &&
-        request.resource.data.size() == 10 &&
+        request.resource.data.size() == 11 &&
         request.resource.data.isPrivate == true &&
         // 下記他のフィールドが変更されていないことを確認
         request.resource.data.userId == resource.data.userId &&

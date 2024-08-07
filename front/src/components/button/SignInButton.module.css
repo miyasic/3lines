@@ -13,3 +13,10 @@
 .githubSigninButton:hover {
     background-color: #374151;
 }
+
+.inDialog {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    min-width: 200px;
+}

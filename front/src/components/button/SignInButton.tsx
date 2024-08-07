@@ -3,11 +3,12 @@ import styles from './SignInButton.module.css';
 
 interface GitHubSignInButtonProps {
     onClick?: () => void;
+    inDialog?: boolean;
 }
 
-const GitHubSignInButton: React.FC<GitHubSignInButtonProps> = ({ onClick }) => (
+const GitHubSignInButton: React.FC<GitHubSignInButtonProps> = ({ onClick, inDialog = false }) => (
     <button
-        className={styles.githubSigninButton}
+        className={`${styles.githubSigninButton} ${inDialog ? styles.inDialog : ''}`}
         onClick={onClick}
     >
         <span>Sign in with</span>

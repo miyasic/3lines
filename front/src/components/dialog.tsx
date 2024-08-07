@@ -9,10 +9,12 @@ interface CustomDialogProps {
     onConfirm: (() => void) | null;
     title: string;
     message: string;
+    confirmText?: string;
     cancelText?: string;
+    confirmButton?: React.ReactNode;
 }
 
-const CustomDialog: React.FC<CustomDialogProps> = ({ isOpen, onClose, onConfirm, title, message, cancelText }) => {
+const CustomDialog: React.FC<CustomDialogProps> = ({ isOpen, onClose, onConfirm, title, message, cancelText, confirmText, confirmButton }) => {
     if (!isOpen) return null;
 
     return (
@@ -22,7 +24,9 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ isOpen, onClose, onConfirm,
                 <p className={styles.message}>{message}</p>
                 <div className={styles.buttonContainer}>
                     <AppButton title={cancelText ?? CANCEL} onClick={onClose}></AppButton>
-                    {onConfirm && <AppButton title={DELETE_SUMMARY} onClick={onConfirm} overrideStyles={{ backgroundColor: '#ff4444', }}></AppButton>}
+                    {confirmButton ? (confirmButton) :
+                        (onConfirm && <AppButton title={confirmText ?? DELETE_SUMMARY} onClick={onConfirm} overrideStyles={{ backgroundColor: '#ff4444', }}></AppButton>)
+                    }
                 </div>
             </div>
         </div>
