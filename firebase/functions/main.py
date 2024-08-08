@@ -88,7 +88,7 @@ def on_link_with_github(req: https_fn.Request) -> https_fn.Response:
     uid = req.auth.uid
     isAnonymous = req.auth.token["firebase"]["sign_in_provider"] == 'anonymous'
     if isAnonymous:
-        return https_fn.Response("Anonymous user cannot link with GitHub", status=400)
+        return https_fn.Response("Anonymous user cannot link with GitHub")
     
     ## ユーザが作成したサマリーを取得
     db = firestore.client()

@@ -89,10 +89,13 @@ export const signIn = async (user: User | null): Promise<User | null> => {
     } else if (user == null) {
         await signInWithGithub();
     }
-    if (auth.currentUser?.isAnonymous == false) {
-        const onLinkWithGithub = functions.httpsCallable('on_link_with_github');
-        await onLinkWithGithub();
-    }
+
+    auth.onAuthStateChanged(async (user) => {
+        if (user != null && !user.isAnonymous) {
+            const onLinkWithGithub = functions.httpsCallable('on_link_with_github');
+            await onLinkWithGithub();
+        }
+    });
     return auth.currentUser as User;
 }
 
