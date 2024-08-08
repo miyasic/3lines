@@ -65,6 +65,7 @@
     height: auto;
     display: block;
     transition: transform 0.3s ease;
+    border-radius: 20px;
 }
 
 .shimmer {
