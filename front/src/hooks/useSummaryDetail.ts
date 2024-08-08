@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
+import { auth, signIn } from '@/firebase/firebase';
+import { User } from 'firebase/auth';
 
 export const useSummaryDetail = (summary: Summary) => {
     const [countdown, setCountdown] = useState(3);
@@ -8,18 +10,29 @@ export const useSummaryDetail = (summary: Summary) => {
     const [containerStyle, setContainerStyle] = useState<React.CSSProperties>({});
     const [innerContainerStyle, setInnerContainerStyle] = useState<React.CSSProperties>({});
     const [windowSizeLoading, setWindowSizeLoading] = useState(true);
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         const autoOpen = queryParams.get('autoOpen') !== 'false'; // クエリパラメータがfalseでない限りリンクを自動で開く
-
+        const after3Seconds = () => {
+            if (summary.userId === auth.currentUser?.uid) {
+                if (auth.currentUser?.isAnonymous) {
+                    setIsConfirmDialogOpen(true);
+                }
+            } else {
+                window.open(summary.articleUrl, '_blank');
+            }
+        };
         if (summary && autoOpen && !opened.current) {
             const timer = setInterval(() => {
                 setCountdown((prev) => {
                     if (prev <= 1) {
                         clearInterval(timer);
                         if (!opened.current) {
-                            window.open(summary.articleUrl, '_blank');
+                            after3Seconds();
                             opened.current = true;
                         }
                         return 0;
@@ -60,5 +73,22 @@ export const useSummaryDetail = (summary: Summary) => {
         return () => window.removeEventListener('resize', updateLayout);
     }, []);
 
-    return { summary, containerRef, containerStyle, innerContainerStyle, windowSizeLoading };
+    const handleCancelDelete = () => {
+        setIsConfirmDialogOpen(false);
+    }
+
+
+    const handleGithubLogin = async () => {
+        const user = auth.currentUser as User;
+        if (user) {
+            const newUser = await signIn(user);
+            setIsConfirmDialogOpen(false);
+        };
+    }
+
+
+    return {
+        summary, containerRef, containerStyle, innerContainerStyle, windowSizeLoading, isConfirmDialogOpen, handleCancelDelete, handleGithubLogin
+    };
 };
+

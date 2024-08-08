@@ -1,7 +1,7 @@
 from firebase_functions import https_fn
 from firebase_admin import initialize_app,firestore, storage,credentials
 from storage_repository import upload_image_to_storage
-from firestore_repository import  save_summary_data
+from firestore_repository import  save_summary_data, update_is_anonymous
 from summarize import summarize_text
 from firebase_functions.params import SecretParam, PROJECT_ID
 from generate_summarized_image import generate_image, validation_check
@@ -68,7 +68,8 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
     db = firestore.client()
 
     uid = req.auth.uid
-    print(uid)
+    isAnonymous = req.auth.token["firebase"]["sign_in_provider"] == 'anonymous'
+
 
     summaryId = save_summary_data(
         db,
@@ -77,5 +78,21 @@ def save_summary(req: https_fn.Request) -> https_fn.Response:
         image_url,
         req.data['title'],
         req.data['summary'],
-        req.data['language'],)
+        req.data['language'],
+        isAnonymous,
+        )
     return {"summaryId": summaryId}
+
+@https_fn.on_call()
+def on_link_with_github(req: https_fn.Request) -> https_fn.Response:
+    uid = req.auth.uid
+    isAnonymous = req.auth.token["firebase"]["sign_in_provider"] == 'anonymous'
+    if isAnonymous:
+        return https_fn.Response("Anonymous user cannot link with GitHub")
+    
+    ## ユーザが作成したサマリーを取得
+    db = firestore.client()
+
+    ## isAnonymousをFalseに変更
+    update_is_anonymous(db,uid)
+    return {"message": "success"}

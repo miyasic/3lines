@@ -8,4 +8,5 @@ interface Summary {
     summary: string[];
     language: string;
     isPrivate: boolean;
+    isAnonymous: boolean;
 }

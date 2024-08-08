@@ -23,3 +23,7 @@ export const summaryResponseCopyWith = (summaryResponse: SummaryResponse | null,
 export const myPageStateCopyWith = (state: MyPageState, updates: Partial<MyPageState>): MyPageState => {
     return { ...state, ...updates };
 };
+
+export const ListPageStateCopyWith = (state: ListPageState, updates: Partial<ListPageState>): ListPageState => {
+    return { ...state, ...updates };
+}

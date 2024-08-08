@@ -2,13 +2,16 @@
 
 import { BACKGROUND_IMAGE_PATH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import styles from '../app/summary/[id]/page.module.css';
+import dialogStyles from './dialog.module.css';
 import Header from './layout/Header';
 import AnimatedSummary from './summary/AnimatedSummary';
-import { OPEN_ORIGINAL_ARTICLE, SHARE_TEXT } from '@/constants/constantsTexts';
+import { CANCEL, OPEN_ORIGINAL_ARTICLE, PROMOTE_GITHUB_SIGNIN_DESCRIPTION, PROMOTE_GITHUB_SIGNIN_TITLE, SHARE_TEXT } from '@/constants/constantsTexts';
 import AppButton from './button/AppButton';
 import { useSummaryDetail } from '@/hooks/useSummaryDetail';
 import Footer from './layout/Footer';
 import XPostButton from './button/PostToXButton';
+import CustomDialog from './dialog';
+import GitHubSignInButton from './button/SignInButton';
 
 
 interface SummaryDetailProps {
@@ -17,7 +20,7 @@ interface SummaryDetailProps {
 
 
 export const SummaryDetailClient: React.FC<SummaryDetailProps> = ({ summary }) => {
-    const { containerRef, containerStyle, innerContainerStyle, windowSizeLoading } = useSummaryDetail(summary);
+    const { containerRef, containerStyle, innerContainerStyle, windowSizeLoading, isConfirmDialogOpen, handleCancelDelete, handleGithubLogin } = useSummaryDetail(summary);
     if (!summary) {
         return (
             <div className={styles.loading}>
@@ -48,6 +51,17 @@ export const SummaryDetailClient: React.FC<SummaryDetailProps> = ({ summary }) =
                     </div>
                 </div>
             )}
+            <CustomDialog
+                isOpen={isConfirmDialogOpen}
+                onClose={handleCancelDelete}
+                onConfirm={null}
+                title={PROMOTE_GITHUB_SIGNIN_TITLE}
+                message={PROMOTE_GITHUB_SIGNIN_DESCRIPTION}
+                cancelText={CANCEL}
+                confirmButton={
+                    <GitHubSignInButton onClick={handleGithubLogin} inDialog={true} />
+                }
+            />
         </div>
 
     );
