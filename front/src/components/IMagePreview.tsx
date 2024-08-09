@@ -3,6 +3,7 @@ import CommonLayout from '@/components/summary/CommonLayout';
 import styles from './ImagePreview.module.css';
 import useEditableSummary from './useEditableSummary';
 import { MAX_CHARS_SUMMARY, MAX_CHARS_TITLE } from '@/constants/constants';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 
 
@@ -12,6 +13,7 @@ type EditableSummaryProps = {
     handleInput: (event: React.FormEvent<HTMLDivElement>) => void;
     charCount: number;
     maxChars: number;
+    isTitle?: boolean;
 };
 
 interface ImagePreviewProps {
@@ -28,10 +30,11 @@ interface ImagePreviewProps {
     style?: React.CSSProperties;
 }
 
-const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit, handleInput, charCount, maxChars }) => (
-    <div style={{ position: 'relative' }}>
+const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit, handleInput, charCount, maxChars, isTitle }) => (
+    <div style={{ position: isMobile ? 'static' : 'relative', display: isTitle ? 'flex' : '' }}>
         <div
             className={styles.editable}
+            style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}
             contentEditable
             suppressContentEditableWarning
             onInput={handleInput}
@@ -39,7 +42,9 @@ const EditableSummary: React.FC<EditableSummaryProps> = ({ summary, isOverLimit,
             {summary}
         </div>
         {isOverLimit && (
-            <div style={{ position: 'fixed', bottom: 0, right: 0, color: 'red' }}>
+            <div style={{
+                position: isMobile ? 'static' : 'fixed', bottom: 0, right: 0, textAlign: 'right', color: 'red',
+            }}>
                 {`${charCount}/${maxChars}`}
             </div>
         )}
@@ -76,6 +81,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     handleInput={handleInput(setTitle, 'title')}
                     charCount={length.title}
                     maxChars={MAX_CHARS_TITLE}
+                    isTitle={true}
                 />
             }
             summary1={
