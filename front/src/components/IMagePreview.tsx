@@ -3,7 +3,7 @@ import CommonLayout from '@/components/summary/CommonLayout';
 import styles from './ImagePreview.module.css';
 import useEditableSummary from './useEditableSummary';
 import { MAX_CHARS_SUMMARY, MAX_CHARS_TITLE } from '@/constants/constants';
-import { isBrowser, isMobile } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 
 
