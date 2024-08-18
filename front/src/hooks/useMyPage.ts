@@ -1,3 +1,4 @@
+import { firestoreCollectionSummary, firestoreFieldCreatedAt, firestoreFieldUserId } from "@/constants/constantsFirebase";
 import { auth, firestore } from "@/firebase/firebase";
 import { myPageStateCopyWith } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
@@ -26,7 +27,7 @@ export const useMyPage = () => {
                 setState(prevState => myPageStateCopyWith(prevState, { isLoading: true }));
                 console.log(auth.currentUser?.uid);
                 try {
-                    const snapshot = await firestore.collection('summary').where('userId', '==', auth.currentUser?.uid).orderBy('createdAt', 'desc').get();
+                    const snapshot = await firestore.collection(firestoreCollectionSummary).where(firestoreFieldUserId, '==', auth.currentUser?.uid).orderBy(firestoreFieldCreatedAt, 'desc').get();
                     const summariesData = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
