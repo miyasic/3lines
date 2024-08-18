@@ -3,6 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 import 'firebase/compat/auth';
 import { AuthError, GithubAuthProvider, linkWithPopup, signInWithPopup, User, UserCredential } from "firebase/auth";
+import { firestoreCollectionSummary, functionsOnLinkWithGithub } from '@/constants/constantsFirebase';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDl0jNRpeZySiT7HPFAtndU-F8CIkPqNwY",
@@ -92,7 +93,7 @@ export const signIn = async (user: User | null): Promise<User | null> => {
 
     auth.onAuthStateChanged(async (user) => {
         if (user != null && !user.isAnonymous) {
-            const onLinkWithGithub = functions.httpsCallable('on_link_with_github');
+            const onLinkWithGithub = functions.httpsCallable(functionsOnLinkWithGithub);
             await onLinkWithGithub();
         }
     });
@@ -102,7 +103,7 @@ export const signIn = async (user: User | null): Promise<User | null> => {
 export const makeSummaryPrivate = async (id: string): Promise<void> => {
     // 論理削除する
     const privateSummary = { isPrivate: true };
-    await firestore.collection('summary').doc(id).update(privateSummary);
+    await firestore.collection(firestoreCollectionSummary).doc(id).update(privateSummary);
 }
 
 const handleAuthError = async (error: AuthError): Promise<void> => {
