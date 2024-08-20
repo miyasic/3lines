@@ -5,10 +5,11 @@ import { firestore } from '@/firebase/firebase';
 import { Metadata } from 'next';
 import Footer from '@/components/layout/Footer';
 import AdSense from '@/components/adsense';
+import { firestoreCollectionSummary } from '@/constants/constantsFirebase';
 
 
 export async function generateStaticParams() {
-    const snapshot = await firestore.collection('summary').get();
+    const snapshot = await firestore.collection(firestoreCollectionSummary).get();
     const paths = snapshot.docs.map(doc => ({
         id: doc.id,
     }));
@@ -17,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-    const doc = await firestore.collection('summary').doc(params.id).get();
+    const doc = await firestore.collection(firestoreCollectionSummary).doc(params.id).get();
     const data = doc.data() as Summary;
     const description = data.summary[0];
     return {
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 const SummaryDetail = async ({ params }: { params: { id: string } }) => {
-    const doc = await firestore.collection('summary').doc(params.id).get();
+    const doc = await firestore.collection(firestoreCollectionSummary).doc(params.id).get();
     const summary = { ...doc.data(), id: params.id } as Summary;
 
     if (!summary) {

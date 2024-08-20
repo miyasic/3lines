@@ -5,6 +5,7 @@ import { topPageStateCopyWith, summaryResponseCopyWith } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { ASPECT_RATIO, LIST_SIZE_SIX, PAGE_INNER_MAX_WIDTH, PAGE_MAX_WIDTH } from '@/constants/constants';
 import { MAX_CHARS_TITLE, MAX_CHARS_SUMMARY } from '@/constants/constants';
+import { firestoreCollectionSummary, firestoreFieldCreatedAt, firestoreFieldIsAnonymous, firestoreFieldIsPrivate, functionsSaveSummary, functionsSummarize } from '@/constants/constantsFirebase';
 
 const URL_REGEX = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
 
@@ -37,15 +38,15 @@ export const useHome = () => {
                 const now = new Date();
                 const limitDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
                 const db = firestore;
-                const summaryRef = collection(db, 'summary');
+                const summaryRef = collection(db, firestoreCollectionSummary);
                 const q = query(summaryRef,
                     and(
-                        where('isPrivate', '==', false),
-                        or(where('isAnonymous', '==', false),
-                            and(where('isAnonymous', '==', true), where('createdAt', '>', limitDate
+                        where(firestoreFieldIsPrivate, '==', false),
+                        or(where(firestoreFieldIsAnonymous, '==', false),
+                            and(where(firestoreFieldIsAnonymous, '==', true), where(firestoreFieldCreatedAt, '>', limitDate
                             )))),
                     limit(LIST_SIZE_SIX),
-                    orderBy('createdAt', 'desc'),);
+                    orderBy(firestoreFieldCreatedAt, 'desc'),);
                 const snapshot = await getDocs(q);
                 const summariesData = snapshot.docs.map(doc => ({
                     id: doc.id,
@@ -110,7 +111,7 @@ export const useHome = () => {
     const handleSubmit = async () => {
         setState(prevState => topPageStateCopyWith(prevState, { summarizeLoading: true }));
 
-        const summarizeFunction = functions.httpsCallable('summarize');
+        const summarizeFunction = functions.httpsCallable(functionsSummarize);
 
         try {
             const url = state.url;
@@ -151,7 +152,7 @@ export const useHome = () => {
 
     const saveSummary = async (summaryData: SaveSummaryRequest) => {
 
-        const saveSummaryFunction = functions.httpsCallable('save_summary');
+        const saveSummaryFunction = functions.httpsCallable(functionsSaveSummary);
         try {
             const result = await saveSummaryFunction(summaryData);
             console.log('Summary saved:', result.data);
@@ -176,7 +177,7 @@ export const useHome = () => {
         };
         const summaryId = await saveSummary(requestData);
         if (summaryId) {
-            router.push(`/summary/${summaryId}`);
+            router.push(`/${firestoreCollectionSummary}/${summaryId}`);
         }
     };
 

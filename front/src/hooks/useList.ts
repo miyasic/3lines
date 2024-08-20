@@ -3,6 +3,7 @@ import { firestore } from "@/firebase/firebase";
 import { query, where, collection, or, getDocs, limit, orderBy, and } from "firebase/firestore";
 import { ListPageStateCopyWith } from "@/utils/helpers";
 import { useCallback, useEffect, useState } from "react";
+import { firestoreCollectionSummary, firestoreFieldCreatedAt, firestoreFieldIsAnonymous, firestoreFieldIsPrivate } from "@/constants/constantsFirebase";
 
 export const useList = () => {
     const [state, setState] = useState<ListPageState>({
@@ -24,15 +25,15 @@ export const useList = () => {
             const now = new Date();
             const limitDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
             const db = firestore;
-            const summaryRef = collection(db, 'summary');
+            const summaryRef = collection(db, firestoreCollectionSummary);
             const q = query(summaryRef,
                 and(
-                    where('isPrivate', '==', false),
-                    or(where('isAnonymous', '==', false),
-                        and(where('isAnonymous', '==', true), where('createdAt', '>', limitDate
+                    where(firestoreFieldIsPrivate, '==', false),
+                    or(where(firestoreFieldIsAnonymous, '==', false),
+                        and(where(firestoreFieldIsAnonymous, '==', true), where(firestoreFieldCreatedAt, '>', limitDate
                         )))),
                 limit(LIST_SIZE_TWELVE),
-                orderBy('createdAt', 'desc'),);
+                orderBy(firestoreFieldCreatedAt, 'desc'),);
 
             const snapshot = await getDocs(q);
             if (!snapshot.empty) {
@@ -66,9 +67,9 @@ export const useList = () => {
 
         try {
 
-            let query = firestore.collection('summary')
-                .where('isPrivate', '==', false)
-                .orderBy('createdAt', 'desc')
+            let query = firestore.collection(firestoreCollectionSummary)
+                .where(firestoreFieldIsPrivate, '==', false)
+                .orderBy(firestoreFieldCreatedAt, 'desc')
                 .limit(LIST_SIZE_TWELVE);
 
             if (lastVisible) {
