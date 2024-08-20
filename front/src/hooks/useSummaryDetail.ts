@@ -4,46 +4,11 @@ import { auth, signIn } from '@/firebase/firebase';
 import { User } from 'firebase/auth';
 
 export const useSummaryDetail = (summary: Summary) => {
-    const [countdown, setCountdown] = useState(3);
-    const opened = useRef(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const [containerStyle, setContainerStyle] = useState<React.CSSProperties>({});
     const [innerContainerStyle, setInnerContainerStyle] = useState<React.CSSProperties>({});
     const [windowSizeLoading, setWindowSizeLoading] = useState(true);
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-
-
-
-    useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const autoOpen = queryParams.get('autoOpen') !== 'false'; // クエリパラメータがfalseでない限りリンクを自動で開く
-        const after3Seconds = () => {
-            if (summary.userId === auth.currentUser?.uid) {
-                if (auth.currentUser?.isAnonymous) {
-                    setIsConfirmDialogOpen(true);
-                }
-            } else {
-                window.open(summary.articleUrl, '_blank');
-            }
-        };
-        if (summary && autoOpen && !opened.current) {
-            const timer = setInterval(() => {
-                setCountdown((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        if (!opened.current) {
-                            after3Seconds();
-                            opened.current = true;
-                        }
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-
-            return () => clearInterval(timer);
-        }
-    }, [summary]);
 
     useEffect(() => {
         const updateLayout = () => {
@@ -55,6 +20,7 @@ export const useSummaryDetail = (summary: Summary) => {
 
             setContainerStyle({
                 height: `${containerHeight}px`,
+                
                 width: `${containerWidth}px`,
                 padding: '0 20px', // 左右のパディングを追加
             });
