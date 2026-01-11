@@ -2,4 +2,4 @@
 
 技術記事要約シェアサービス今北産業のレポジトリ
 
-https://3lines.me/
+https://3lines-lemon.vercel.app/
