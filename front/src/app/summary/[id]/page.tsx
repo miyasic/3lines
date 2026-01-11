@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
                     url: data.imageUrl,
                 },
             ],
-            url: `https://3lines.me/summary/${params.id}`,
+            url: `https://3lines-lemon.vercel.app/summary/${params.id}`,
         },
     };
 }
