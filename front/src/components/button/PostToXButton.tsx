@@ -14,7 +14,7 @@ interface XPostButtonProps {
 const XPostButton = ({ text, id, className = '' }: XPostButtonProps) => {
     const handleClick = () => {
         const shareText = encodeURIComponent(text);
-        const shareUrl = encodeURIComponent(`https://3lines.me/summary/${id}`);
+        const shareUrl = encodeURIComponent(`https://3lines-lemon.vercel.app/summary/${id}`);
         const xShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
         window.open(xShareUrl, '_blank', 'noopener,noreferrer');
 
